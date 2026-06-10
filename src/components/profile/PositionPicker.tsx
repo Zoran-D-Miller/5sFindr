@@ -7,9 +7,11 @@ import type { Position } from "@/lib/types";
 export function PositionPicker({
   value,
   onChange,
+  label = "Preferred positions",
 }: {
   value: Position[];
   onChange: (v: Position[]) => void;
+  label?: string;
 }) {
   function toggle(p: Position) {
     if (p === "ANY") return onChange(["ANY"]);
@@ -19,7 +21,7 @@ export function PositionPicker({
 
   return (
     <div>
-      <label className="text-sm font-medium text-white/70">Preferred positions</label>
+      <label className="text-sm font-medium text-white/70">{label}</label>
       <div className="mt-2 flex flex-wrap gap-2">
         {POSITIONS.map(({ key, label }) => {
           const active = value.includes(key);

@@ -6,14 +6,16 @@ import { SKILL_LABELS } from "@/lib/positions";
 export function SkillMeter({
   value,
   onChange,
+  label = "Skill level",
 }: {
   value: number;
   onChange: (v: number) => void;
+  label?: string;
 }) {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-white/70">Skill level</label>
+        <label className="text-sm font-medium text-white/70">{label}</label>
         <span className="text-sm font-semibold text-pitch">{SKILL_LABELS[value]}</span>
       </div>
       <div className="mt-2 flex gap-1.5">

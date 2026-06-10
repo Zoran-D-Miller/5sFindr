@@ -83,9 +83,35 @@ export interface MatchFeedItem {
   location_name: string;
   neighborhood: string | null;
   location_type: VenueType;
-  latitude: number;
-  longitude: number;
+  latitude: number | null;
+  longitude: number | null;
   spots_taken: number;
+}
+
+/** A seeded venue option for the create-match dropdown. */
+export interface VenueOption {
+  id: string;
+  name: string;
+  type: VenueType;
+  neighborhood: string | null;
+}
+
+/** Payload the create-match form sends to the createMatch server action. */
+export interface CreateMatchInput {
+  venueMode: "seeded" | "custom";
+  locationId?: string;
+  customVenueName?: string;
+  customNeighborhood?: string;
+  title?: string;
+  kickoffAtIso: string; // UTC ISO, converted from the organizer's local time client-side
+  durationMin: number;
+  maxPlayers: number;
+  pricePerPlayerZar: number;
+  joinMode: JoinMode;
+  // Instant-booking auto-accept criteria (ignored when joinMode = "manual"):
+  minSkillLevel?: number;
+  requiredPositions?: Position[];
+  minReliabilityScore?: number;
 }
 
 /** The editable slice of a profile (what the Profile Editor writes back). */
