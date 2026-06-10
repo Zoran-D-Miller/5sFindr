@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { MatchFeedItem } from "@/lib/types";
 
 function kickoffLabel(iso: string): { day: string; time: string } {
@@ -15,7 +16,10 @@ export function MatchCard({ match, manage = false }: { match: MatchFeedItem; man
   const spotsLeft = Math.max(0, match.max_players - match.spots_taken);
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-ink-700 bg-ink-800/60 p-4">
+    <Link
+      href={`/matches/${match.id}`}
+      className="flex items-center gap-3 rounded-2xl border border-ink-700 bg-ink-800/60 p-4 transition hover:border-pitch/40"
+    >
       {/* Time block */}
       <div className="w-14 shrink-0 text-center">
         <p className="text-[11px] font-medium uppercase text-white/40">{day}</p>
@@ -59,6 +63,6 @@ export function MatchCard({ match, manage = false }: { match: MatchFeedItem; man
           {manage ? "joined" : full ? "full" : `${spotsLeft} left`}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

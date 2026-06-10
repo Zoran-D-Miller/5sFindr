@@ -58,6 +58,27 @@ export interface TokenTransaction {
 
 export type ViewMode = "player" | "organizer";
 
+export type TeamColor = "light" | "dark";
+export type ParticipantStatus =
+  | "requested"
+  | "accepted"
+  | "rejected"
+  | "cancelled_early"
+  | "cancelled_late"
+  | "no_show"
+  | "attended";
+
+/** A player on a match roster (joined with their profile). */
+export interface RosterEntry {
+  user_id: string;
+  status: ParticipantStatus;
+  team_color: TeamColor | null;
+  position: Position | null;
+  name: string;
+  skill_level: number;
+  reliability_score: number;
+}
+
 export type VenueType = "official_court" | "open_area";
 export type JoinMode = "instant" | "manual";
 export type MatchStatus =
