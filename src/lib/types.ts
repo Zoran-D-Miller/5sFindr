@@ -56,6 +56,38 @@ export interface TokenTransaction {
   created_at: string;
 }
 
+export type ViewMode = "player" | "organizer";
+
+export type VenueType = "official_court" | "open_area";
+export type JoinMode = "instant" | "manual";
+export type MatchStatus =
+  | "draft"
+  | "open"
+  | "full"
+  | "in_progress"
+  | "completed"
+  | "cancelled";
+
+/** One row of the match_feed view — drives the /feed cards. */
+export interface MatchFeedItem {
+  id: string;
+  title: string | null;
+  kickoff_at: string;
+  ends_at: string;
+  venue_type: VenueType;
+  join_mode: JoinMode;
+  status: MatchStatus;
+  max_players: number;
+  price_per_player_zar: number;
+  organizer_id: string;
+  location_name: string;
+  neighborhood: string | null;
+  location_type: VenueType;
+  latitude: number;
+  longitude: number;
+  spots_taken: number;
+}
+
 /** The editable slice of a profile (what the Profile Editor writes back). */
 export type ProfileDraft = Pick<
   Profile,
