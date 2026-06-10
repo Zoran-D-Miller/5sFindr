@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { signOut } from "@/server/actions/auth";
 
 // Authed shell for the in-app routes. The full Player ⇄ Organizer view
 // switcher lands in Phase 3; for now this guards auth and gives bottom nav.
@@ -17,6 +18,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <Link href="/feed" className="text-lg font-extrabold tracking-tight">
           5s<span className="text-pitch">Findr</span>
         </Link>
+        <form action={signOut}>
+          <button
+            type="submit"
+            className="text-sm font-medium text-white/40 transition hover:text-white/80"
+          >
+            Sign out
+          </button>
+        </form>
       </header>
 
       {children}
