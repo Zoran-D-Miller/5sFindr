@@ -1,0 +1,31 @@
+{
+  "name": "5sFindr — Find your next 5-a-side",
+  "short_name": "5sFindr",
+  "description": "Tinder meets Strava for 5-a-side football. Find games, build your reliability, get on the pitch.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070A09",
+  "theme_color": "#0AE98A",
+  "categories": ["sports", "social", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
