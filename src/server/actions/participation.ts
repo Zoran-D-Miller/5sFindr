@@ -2,27 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-
-// Postgres raises exceptions like `NO_TOKEN`; map the code to a player-facing message.
-const MESSAGES: Record<string, string> = {
-  NOT_AUTHED: "Please log in again.",
-  NOT_PREMIUM: "Go Premium to join matches.",
-  NO_MATCH: "This match no longer exists.",
-  OWN_MATCH: "You can’t join your own match.",
-  NOT_OPEN: "This match isn’t open for joining.",
-  STARTED: "This match has already kicked off.",
-  ALREADY_IN: "You’re already in this match.",
-  NO_TOKEN: "You need an available token. Top up in your wallet.",
-  NOT_IN: "You’re not in this match.",
-  NOT_ORGANIZER: "Only the organizer can do that.",
-  NO_REQUEST: "That request is no longer pending.",
-  MATCH_FULL: "The squad is already full.",
-};
-
-function friendly(message: string | undefined): string {
-  const code = message?.match(/[A-Z_]{4,}/)?.[0];
-  return (code && MESSAGES[code]) || "Something went wrong — please try again.";
-}
+import { friendlyRpcError as friendly } from "@/lib/rpcErrors";
 
 function refresh(matchId: string) {
   revalidatePath(`/matches/${matchId}`);

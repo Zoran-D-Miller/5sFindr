@@ -35,6 +35,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="mx-auto flex max-w-md justify-around py-2 sm:max-w-2xl">
           {[
             ["Feed", "/feed"],
+            ["Ranks", "/leaderboard"],
             ["Wallet", "/wallet"],
             ["Profile", "/profile/edit"],
           ].map(([label, href]) => (

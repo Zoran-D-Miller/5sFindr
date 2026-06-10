@@ -4,6 +4,10 @@ import { isPremium } from "@/lib/entitlements";
 import { PlayerActions } from "@/components/match/PlayerActions";
 import { OrganizerControls } from "@/components/match/OrganizerControls";
 import { TeamPanel } from "@/components/match/TeamPanel";
+import { CheckInPanel } from "@/components/match/CheckInPanel";
+import { MatchCodePanel } from "@/components/match/MatchCodePanel";
+import { MotMVote } from "@/components/match/MotMVote";
+import { settleMatch } from "@/server/actions/attendance";
 import type { MatchStatus, JoinMode, VenueType, RosterEntry } from "@/lib/types";
 
 interface MatchRow {
@@ -12,16 +16,18 @@ interface MatchRow {
   title: string | null;
   venue_type: VenueType;
   kickoff_at: string;
+  ends_at: string;
   duration_min: number;
   max_players: number;
   price_per_player_zar: number;
   join_mode: JoinMode;
   status: MatchStatus;
   teams_assigned: boolean;
-  location: { name: string; neighborhood: string | null; type: VenueType } | null;
+  motm_awarded: boolean;
+  motm_winner_id: string | null;
+  location: { name: string; neighborhood: string | null; type: VenueType; latitude: number | null } | null;
 }
 
-// Supabase returns embedded profile as an object; normalize the roster shape.
 interface RawRosterRow {
   user_id: string;
   status: RosterEntry["status"];
@@ -30,64 +36,71 @@ interface RawRosterRow {
   profile: { name: string; skill_level: number; reliability_score: number } | null;
 }
 
+const MATCH_COLS =
+  "id, organizer_id, title, venue_type, kickoff_at, ends_at, duration_min, max_players, price_per_player_zar, join_mode, status, teams_assigned, motm_awarded, motm_winner_id, location:locations(name, neighborhood, type, latitude)";
+
 function fmt(iso: string) {
   return new Date(iso).toLocaleString("en-ZA", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
+    weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false,
   });
 }
 
 export default async function MatchLobbyPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
   const uid = user!.id;
 
-  const { data: match } = await supabase
-    .from("matches")
-    .select(
-      "id, organizer_id, title, venue_type, kickoff_at, duration_min, max_players, price_per_player_zar, join_mode, status, teams_assigned, location:locations(name, neighborhood, type)",
-    )
-    .eq("id", params.id)
-    .maybeSingle<MatchRow>();
+  const loadMatch = () =>
+    supabase.from("matches").select(MATCH_COLS).eq("id", params.id).maybeSingle<MatchRow>();
 
+  let { data: match } = await loadMatch();
   if (!match) notFound();
 
-  const [{ data: rawRoster }, { count: availableTokens }, premium] = await Promise.all([
-    supabase
-      .from("match_players")
-      .select(
-        "user_id, status, team_color, position, profile:profiles(name, skill_level, reliability_score)",
-      )
-      .eq("match_id", params.id)
-      .returns<RawRosterRow[]>(),
-    supabase
-      .from("tokens")
-      .select("id", { count: "exact", head: true })
-      .eq("owner_id", uid)
-      .eq("status", "available"),
-    isPremium(uid),
-  ]);
+  const now = Date.now();
+  const ended = now >= new Date(match.ends_at).getTime();
+
+  // Lazy automated closure: once a match has ended, settle it (returns tokens
+  // to attendees, forfeits no-shows). Idempotent + row-locked in Postgres.
+  if (ended && match.status !== "completed" && match.status !== "cancelled") {
+    await settleMatch(match.id);
+    ({ data: match } = await loadMatch());
+  }
+  // Lazy MotM finalization once voting has closed (24h after full time).
+  if (match && match.status === "completed" && !match.motm_awarded &&
+      now >= new Date(match.ends_at).getTime() + 24 * 3_600_000) {
+    await supabase.rpc("finalize_motm", { p_match_id: match.id });
+    ({ data: match } = await loadMatch());
+  }
+  if (!match) notFound();
+
+  const [{ data: rawRoster }, { count: availableTokens }, premium, { data: myVote }] =
+    await Promise.all([
+      supabase
+        .from("match_players")
+        .select("user_id, status, team_color, position, profile:profiles(name, skill_level, reliability_score)")
+        .eq("match_id", params.id)
+        .returns<RawRosterRow[]>(),
+      supabase.from("tokens").select("id", { count: "exact", head: true })
+        .eq("owner_id", uid).eq("status", "available"),
+      isPremium(uid),
+      supabase.from("match_votes").select("id").eq("match_id", params.id).eq("voter_id", uid).maybeSingle(),
+    ]);
 
   const roster: RosterEntry[] = (rawRoster ?? []).map((r) => ({
-    user_id: r.user_id,
-    status: r.status,
-    team_color: r.team_color,
-    position: r.position,
+    user_id: r.user_id, status: r.status, team_color: r.team_color, position: r.position,
     name: r.profile?.name ?? "Player",
     skill_level: r.profile?.skill_level ?? 3,
     reliability_score: r.profile?.reliability_score ?? 100,
   }));
 
   const isOrganizer = match.organizer_id === uid;
+  const attended = roster.filter((r) => r.status === "attended");
   const confirmed = roster.filter((r) => r.status === "accepted" || r.status === "attended");
   const requests = roster.filter((r) => r.status === "requested");
   const mine = roster.find((r) => r.user_id === uid) ?? null;
+  const completed = match.status === "completed";
+  const inCheckInWindow = now >= new Date(match.kickoff_at).getTime() && !ended && !completed;
+  const winner = match.motm_winner_id ? roster.find((r) => r.user_id === match!.motm_winner_id) : null;
 
   return (
     <div className="space-y-6 pb-10">
@@ -96,23 +109,13 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
         <h1 className="text-2xl font-black tracking-tight">
           {match.title || match.location?.name || "5-a-side match"}
         </h1>
-        <p className="mt-1 text-sm text-white/60">
-          {fmt(match.kickoff_at)} · {match.duration_min} min
-        </p>
+        <p className="mt-1 text-sm text-white/60">{fmt(match.kickoff_at)} · {match.duration_min} min</p>
         <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
           <span className="rounded-full bg-ink-700 px-2 py-0.5 font-medium text-white/60">
-            {match.location?.name}
-            {match.location?.neighborhood ? ` · ${match.location.neighborhood}` : ""}
+            {match.location?.name}{match.location?.neighborhood ? ` · ${match.location.neighborhood}` : ""}
           </span>
           <span className="rounded-full bg-ink-700 px-2 py-0.5 font-medium text-white/60">
             {match.venue_type === "official_court" ? "Court" : "Open field"}
-          </span>
-          <span
-            className={`rounded-full px-2 py-0.5 font-medium ${
-              match.join_mode === "instant" ? "bg-pitch/15 text-pitch" : "bg-electric/15 text-electric"
-            }`}
-          >
-            {match.join_mode === "instant" ? "Instant" : "Request"}
           </span>
           <span className="rounded-full bg-ink-700 px-2 py-0.5 font-medium capitalize text-white/60">
             {match.status} · {confirmed.length}/{match.max_players}
@@ -120,13 +123,19 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
         </div>
       </div>
 
-      {/* Teams (filled/locked) or confirmed roster */}
+      {/* MotM winner banner */}
+      {completed && winner && (
+        <div className="rounded-2xl border border-pitch/30 bg-pitch/10 p-4 text-center">
+          <p className="text-xs uppercase tracking-wide text-white/50">Man of the Match</p>
+          <p className="mt-0.5 text-lg font-black text-pitch">🏆 {winner.name}</p>
+        </div>
+      )}
+
+      {/* Teams / squad */}
       {match.teams_assigned ? (
         <section>
-          <h3 className="mb-2 px-1 text-sm font-bold uppercase tracking-wide text-white/50">
-            Match tickets
-          </h3>
-          <TeamPanel roster={confirmed} meId={uid} />
+          <h3 className="mb-2 px-1 text-sm font-bold uppercase tracking-wide text-white/50">Match tickets</h3>
+          <TeamPanel roster={completed ? attended : confirmed} meId={uid} />
         </section>
       ) : (
         confirmed.length > 0 && (
@@ -136,13 +145,9 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
             </h3>
             <ul className="space-y-2">
               {confirmed.map((p) => (
-                <li
-                  key={p.user_id}
-                  className="flex items-center justify-between rounded-2xl border border-ink-700 bg-ink-800/60 p-3 text-sm"
-                >
+                <li key={p.user_id} className="flex items-center justify-between rounded-2xl border border-ink-700 bg-ink-800/60 p-3 text-sm">
                   <span className={p.user_id === uid ? "font-bold text-pitch" : ""}>
-                    {p.name}
-                    {p.user_id === uid ? " (you)" : ""}
+                    {p.name}{p.user_id === uid ? " (you)" : ""}
                   </span>
                   <span className="text-xs text-white/40">Skill {p.skill_level}</span>
                 </li>
@@ -152,19 +157,50 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
         )
       )}
 
+      {/* Post-match MotM vote (attendees only) */}
+      {completed && mine?.status === "attended" && (
+        <MotMVote
+          matchId={match.id}
+          candidates={attended.filter((a) => a.user_id !== uid)}
+          alreadyVoted={!!myVote}
+        />
+      )}
+
+      {/* Check-in (accepted players, during the window) */}
+      {!isOrganizer && inCheckInWindow && mine?.status === "accepted" && (
+        <CheckInPanel matchId={match.id} hasGeo={match.location?.latitude != null} />
+      )}
+      {!isOrganizer && mine?.status === "attended" && !completed && (
+        <div className="rounded-2xl border border-pitch/40 bg-pitch/10 p-4 text-center font-bold text-pitch">
+          ✓ Checked in — token returns when the match settles.
+        </div>
+      )}
+
       {/* Actions */}
       {isOrganizer ? (
-        <OrganizerControls matchId={match.id} matchStatus={match.status} requests={requests} />
+        <div className="space-y-4">
+          {!completed && <MatchCodePanel matchId={match.id} />}
+          <OrganizerControls matchId={match.id} matchStatus={match.status} requests={requests} />
+          {!completed && ended && (
+            <form action={async () => { "use server"; await settleMatch(match!.id); }}>
+              <button className="w-full rounded-2xl border border-ink-600 py-3 font-semibold text-white/80 hover:border-pitch">
+                End match & settle tokens
+              </button>
+            </form>
+          )}
+        </div>
       ) : (
-        <PlayerActions
-          matchId={match.id}
-          matchStatus={match.status}
-          joinMode={match.join_mode}
-          kickoffIso={match.kickoff_at}
-          myStatus={mine?.status ?? null}
-          isPremium={premium}
-          availableTokens={availableTokens ?? 0}
-        />
+        !completed && (
+          <PlayerActions
+            matchId={match.id}
+            matchStatus={match.status}
+            joinMode={match.join_mode}
+            kickoffIso={match.kickoff_at}
+            myStatus={mine?.status ?? null}
+            isPremium={premium}
+            availableTokens={availableTokens ?? 0}
+          />
+        )
       )}
     </div>
   );
