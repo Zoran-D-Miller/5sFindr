@@ -57,12 +57,15 @@ src/
 
 ## Roadmap
 - [x] **Phase 0** — scaffold, schema migration, Cape Town venue seed
-- [~] **Phase 1** — landing page ✅ + auth (login/signup + session middleware) ✅; public profile/invite surfaces pending
+- [x] **Phase 1** — landing page + auth (login/signup + session middleware) + public `/m/<slug>` invite surface
 - [x] **Phase 2** — profile editor, Paystack subscription, token wallet, referrals
 - [x] **Phase 3** — Player ⇄ Organizer dashboard switcher + /feed (grouped by neighborhood)
-- [ ] **Phase 4** — match-creation engine (venue picker + join settings)
-- [ ] **Phase 5** — join/cancel + token commit/forfeit + team split
-- [ ] **Phase 6** — dual-layer attendance verification (GPS + 4-digit code)
-- [ ] **Phase 7** — WhatsApp viral invite engine
+- [x] **Phase 4** — match-creation engine (venue picker + join settings)
+- [x] **Phase 5** — join/cancel + token commit/forfeit + team split
+- [x] **Phase 6** — dual-layer attendance verification (GPS + 4-digit code) + settlement + MotM/leaderboard
+- [x] **Phase 7** — WhatsApp viral invite engine + public claim page
 - [ ] **Phase 8** — realtime, offline polish, Cape Town launch
+
+## Tests
+`./supabase/tests/run-local.sh` — Docker-free economy stress test (referral signup, 12-hour cancel fork, match settlement). Requires a local PostgreSQL 15.
 ```

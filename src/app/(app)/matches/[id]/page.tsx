@@ -8,6 +8,7 @@ import { CheckInPanel } from "@/components/match/CheckInPanel";
 import { MatchCodePanel } from "@/components/match/MatchCodePanel";
 import { MotMVote } from "@/components/match/MotMVote";
 import { settleMatch } from "@/server/actions/attendance";
+import { WhatsAppInvite } from "@/components/match/WhatsAppInvite";
 import type { MatchStatus, JoinMode, VenueType, RosterEntry } from "@/lib/types";
 
 interface MatchRow {
@@ -25,7 +26,9 @@ interface MatchRow {
   teams_assigned: boolean;
   motm_awarded: boolean;
   motm_winner_id: string | null;
+  share_slug: string;
   location: { name: string; neighborhood: string | null; type: VenueType; latitude: number | null } | null;
+  organizer: { name: string } | null;
 }
 
 interface RawRosterRow {
@@ -37,7 +40,9 @@ interface RawRosterRow {
 }
 
 const MATCH_COLS =
-  "id, organizer_id, title, venue_type, kickoff_at, ends_at, duration_min, max_players, price_per_player_zar, join_mode, status, teams_assigned, motm_awarded, motm_winner_id, location:locations(name, neighborhood, type, latitude)";
+  "id, organizer_id, title, venue_type, kickoff_at, ends_at, duration_min, max_players, price_per_player_zar, join_mode, status, teams_assigned, motm_awarded, motm_winner_id, share_slug, location:locations(name, neighborhood, type, latitude), organizer:profiles!organizer_id(name)";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://5sfindr.com";
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleString("en-ZA", {
@@ -179,6 +184,15 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
       {/* Actions */}
       {isOrganizer ? (
         <div className="space-y-4">
+          {!completed && match.status !== "cancelled" && (
+            <WhatsAppInvite
+              organizerName={match.organizer?.name ?? "Your organizer"}
+              venue={match.location?.name ?? "the pitch"}
+              kickoffIso={match.kickoff_at}
+              shareSlug={match.share_slug}
+              siteUrl={SITE_URL}
+            />
+          )}
           {!completed && <MatchCodePanel matchId={match.id} />}
           <OrganizerControls matchId={match.id} matchStatus={match.status} requests={requests} />
           {!completed && ended && (

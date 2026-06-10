@@ -32,6 +32,7 @@ export async function signUp(
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   const ref = String(formData.get("ref") ?? "").trim();
+  const next = formData.get("next");
 
   if (!name) return { error: "What should we call you?" };
   if (!email || !password) return { error: "Email and password are required." };
@@ -52,9 +53,10 @@ export async function signUp(
   });
   if (error) return { error: error.message };
 
-  // Confirmations are disabled, so the session is already set — drop the
-  // brand-new baller straight onto their profile.
-  redirect("/profile/edit");
+  // Confirmations are disabled, so the session is already set. If they came
+  // from a match invite (?next=/matches/…) send them there to claim the spot;
+  // otherwise drop the brand-new baller onto their profile.
+  redirect(safeNext(next));
 }
 
 export async function signOut(): Promise<void> {
