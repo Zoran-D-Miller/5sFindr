@@ -295,9 +295,13 @@ begin
   v_name     := coalesce(new.raw_user_meta_data->>'name', split_part(new.email, '@', 1), 'New Baller');
   v_ref_code := new.raw_user_meta_data->>'referral_code';   -- the code that referred THIS user
 
-  -- generate unique-ish slug + personal referral code
-  v_slug    := lower(regexp_replace(v_name, '[^a-zA-Z0-9]+', '-', 'g')) || '-' || encode(gen_random_bytes(3), 'hex');
-  v_my_code := upper(encode(gen_random_bytes(4), 'hex'));
+  -- generate unique-ish slug + personal referral code.
+  -- NOTE: use gen_random_uuid() (Postgres core) rather than pgcrypto's
+  -- gen_random_bytes() — on Supabase pgcrypto lives in the `extensions` schema,
+  -- which a `search_path = public` SECURITY DEFINER function can't resolve.
+  v_slug    := lower(regexp_replace(v_name, '[^a-zA-Z0-9]+', '-', 'g'))
+               || '-' || substr(replace(gen_random_uuid()::text, '-', ''), 1, 6);
+  v_my_code := upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 8));
 
   -- resolve referrer (if any)
   if v_ref_code is not null then
