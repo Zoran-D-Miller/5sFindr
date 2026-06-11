@@ -47,6 +47,7 @@ run "$ROOT/supabase/migrations/0002_match_feed.sql"
 run "$ROOT/supabase/migrations/0003_nullable_coords.sql"
 run "$ROOT/supabase/migrations/0004_lifecycle.sql"
 run "$ROOT/supabase/migrations/0005_attendance.sql"
+run "$ROOT/supabase/migrations/0006_realtime.sql"
 run "$ROOT/supabase/seed.sql"
 
 echo "▸ running economy_test.sql …"

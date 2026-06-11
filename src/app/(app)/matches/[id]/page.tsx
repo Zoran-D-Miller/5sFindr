@@ -7,6 +7,7 @@ import { TeamPanel } from "@/components/match/TeamPanel";
 import { CheckInPanel } from "@/components/match/CheckInPanel";
 import { MatchCodePanel } from "@/components/match/MatchCodePanel";
 import { MotMVote } from "@/components/match/MotMVote";
+import { MatchRealtime } from "@/components/match/MatchRealtime";
 import { settleMatch } from "@/server/actions/attendance";
 import { WhatsAppInvite } from "@/components/match/WhatsAppInvite";
 import type { MatchStatus, JoinMode, VenueType, RosterEntry } from "@/lib/types";
@@ -109,6 +110,8 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
 
   return (
     <div className="space-y-6 pb-10">
+      <MatchRealtime matchId={match.id} />
+
       {/* Header */}
       <div>
         <h1 className="text-2xl font-black tracking-tight">
