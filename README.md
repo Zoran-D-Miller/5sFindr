@@ -64,7 +64,7 @@ src/
 - [x] **Phase 5** — join/cancel + token commit/forfeit + team split
 - [x] **Phase 6** — dual-layer attendance verification (GPS + 4-digit code) + settlement + MotM/leaderboard
 - [x] **Phase 7** — WhatsApp viral invite engine + public claim page
-- [ ] **Phase 8** — realtime, offline polish, Cape Town launch
+- [x] **Phase 8** — Supabase Realtime roster + offline PWA shell + generated icons
 
 ## Tests
 `./supabase/tests/run-local.sh` — Docker-free economy stress test (referral signup, 12-hour cancel fork, match settlement). Requires a local PostgreSQL 15.
