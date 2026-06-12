@@ -77,7 +77,7 @@ function draw(size, bg, fg, discRatio) {
   return buf;
 }
 
-writeFileSync(join(OUT, "icon-192.png"), png(192, draw(192, INK, PITCH, 0.36)));
-writeFileSync(join(OUT, "icon-512.png"), png(512, draw(512, INK, PITCH, 0.36)));
-writeFileSync(join(OUT, "maskable-512.png"), png(512, draw(512, PITCH, INK, 0.26)));
-console.log("✓ wrote icon-192.png, icon-512.png, maskable-512.png to public/icons/");
+writeFileSync(join(OUT, "icon-192x192.png"), png(192, draw(192, INK, PITCH, 0.36)));
+writeFileSync(join(OUT, "icon-512x512.png"), png(512, draw(512, INK, PITCH, 0.36)));
+writeFileSync(join(OUT, "icon-maskable-512x512.png"), png(512, draw(512, PITCH, INK, 0.26)));
+console.log("✓ wrote icon-192x192.png, icon-512x512.png, icon-maskable-512x512.png to public/icons/");
