@@ -1,73 +1,141 @@
-import { createHmac } from "crypto";
+import { createHmac, timingSafeEqual } from "crypto";
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 
 // Paystack signs every webhook with HMAC-SHA512 over the raw body using your
-// secret key. We verify, then update subscriptions with the SERVICE ROLE
-// (RLS blocks all client writes to subscriptions — this is the only writer).
+// secret key. We verify, then bridge subscription lifecycle → our subscriptions
+// table with the SERVICE ROLE (RLS blocks all client writes — this is the only
+// writer). Handlers are idempotent and resolve the user even on renewals, where
+// Paystack omits our original metadata.user_id.
+
+export const dynamic = "force-dynamic";
+
+type SubUpdate = {
+  state?: "active" | "past_due" | "cancelled";
+  paystack_customer_code?: string;
+  paystack_subscription_code?: string;
+  paystack_email_token?: string;
+  current_period_end?: string | null;
+  free_until?: null;
+  cancel_at_period_end?: boolean;
+};
+
+type Supa = ReturnType<typeof createServiceClient>;
+
+// Resolve our user id from an event payload: explicit metadata first (initial
+// transaction), then by stored Paystack customer / subscription codes (renewals).
+async function resolveUserId(supabase: Supa, data: any): Promise<string | null> {
+  const metaId = data?.metadata?.user_id;
+  if (metaId) return metaId as string;
+
+  const customerCode = data?.customer?.customer_code;
+  if (customerCode) {
+    const { data: row } = await supabase
+      .from("subscriptions").select("user_id").eq("paystack_customer_code", customerCode).maybeSingle();
+    if (row?.user_id) return row.user_id;
+  }
+
+  const subCode = data?.subscription_code ?? data?.subscription?.subscription_code;
+  if (subCode) {
+    const { data: row } = await supabase
+      .from("subscriptions").select("user_id").eq("paystack_subscription_code", subCode).maybeSingle();
+    if (row?.user_id) return row.user_id;
+  }
+  return null;
+}
+
+function signatureValid(raw: string, signature: string | null): boolean {
+  if (!signature) return false;
+  const expected = createHmac("sha512", process.env.PAYSTACK_SECRET_KEY ?? "").update(raw).digest("hex");
+  const a = Buffer.from(signature);
+  const b = Buffer.from(expected);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
 export async function POST(req: Request) {
   const raw = await req.text();
-  const signature = req.headers.get("x-paystack-signature");
-  const expected = createHmac("sha512", process.env.PAYSTACK_SECRET_KEY ?? "")
-    .update(raw)
-    .digest("hex");
-
-  if (!signature || signature !== expected) {
+  if (!signatureValid(raw, req.headers.get("x-paystack-signature"))) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  const event = JSON.parse(raw);
-  const supabase = createServiceClient();
-
-  switch (event.event) {
-    // First successful charge / renewal → Premium active
-    case "charge.success":
-    case "subscription.create": {
-      const userId = event.data?.metadata?.user_id;
-      const customerCode = event.data?.customer?.customer_code;
-      const subCode = event.data?.subscription_code ?? null;
-      const nextPayment = event.data?.next_payment_date ?? null;
-      if (userId) {
-        await supabase
-          .from("subscriptions")
-          .update({
-            state: "active",
-            paystack_customer_code: customerCode,
-            paystack_subscription_code: subCode,
-            current_period_end: nextPayment,
-            free_until: null, // trial period is over once they're paying
-          })
-          .eq("user_id", userId);
-      }
-      break;
-    }
-
-    // Renewal failed → grace state
-    case "invoice.payment_failed": {
-      const subCode = event.data?.subscription?.subscription_code;
-      if (subCode) {
-        await supabase
-          .from("subscriptions")
-          .update({ state: "past_due" })
-          .eq("paystack_subscription_code", subCode);
-      }
-      break;
-    }
-
-    // Subscription cancelled / exhausted
-    case "subscription.disable":
-    case "subscription.not_renew": {
-      const subCode = event.data?.subscription_code;
-      if (subCode) {
-        await supabase
-          .from("subscriptions")
-          .update({ state: "cancelled", cancel_at_period_end: true })
-          .eq("paystack_subscription_code", subCode);
-      }
-      break;
-    }
+  let event: any;
+  try {
+    event = JSON.parse(raw);
+  } catch {
+    return NextResponse.json({ error: "Bad payload" }, { status: 400 });
   }
 
-  // Always 200 quickly so Paystack doesn't retry a handled event.
+  const supabase = createServiceClient();
+  const data = event?.data ?? {};
+
+  try {
+    switch (event.event) {
+      // First payment of a new subscription (carries our metadata.user_id).
+      case "charge.success": {
+        const userId = await resolveUserId(supabase, data);
+        if (userId) {
+          const update: SubUpdate = { state: "active", free_until: null };
+          if (data?.customer?.customer_code) update.paystack_customer_code = data.customer.customer_code;
+          if (data?.next_payment_date) update.current_period_end = data.next_payment_date;
+          await supabase.from("subscriptions").update(update).eq("user_id", userId);
+        }
+        break;
+      }
+
+      // Subscription object created — capture codes + email_token (needed to cancel).
+      case "subscription.create": {
+        const userId = await resolveUserId(supabase, data);
+        if (userId) {
+          const update: SubUpdate = { state: "active", free_until: null };
+          if (data?.subscription_code) update.paystack_subscription_code = data.subscription_code;
+          if (data?.email_token) update.paystack_email_token = data.email_token;
+          if (data?.customer?.customer_code) update.paystack_customer_code = data.customer.customer_code;
+          if (data?.next_payment_date) update.current_period_end = data.next_payment_date;
+          await supabase.from("subscriptions").update(update).eq("user_id", userId);
+        }
+        break;
+      }
+
+      // Monthly renewal outcome. invoice.update fires after each billing attempt.
+      case "invoice.create":
+      case "invoice.update": {
+        const userId = await resolveUserId(supabase, data);
+        if (userId) {
+          const paid = data?.status === "success" || data?.paid === true;
+          const update: SubUpdate = paid ? { state: "active" } : { state: "past_due" };
+          const nextPayment = data?.subscription?.next_payment_date ?? data?.period_end ?? null;
+          if (paid && nextPayment) update.current_period_end = nextPayment;
+          await supabase.from("subscriptions").update(update).eq("user_id", userId);
+        }
+        break;
+      }
+
+      // Explicit renewal failure → grace state.
+      case "invoice.payment_failed": {
+        const userId = await resolveUserId(supabase, data);
+        if (userId) {
+          await supabase.from("subscriptions").update({ state: "past_due" }).eq("user_id", userId);
+        }
+        break;
+      }
+
+      // Subscription cancelled or won't renew.
+      case "subscription.disable":
+      case "subscription.not_renew": {
+        const userId = await resolveUserId(supabase, data);
+        if (userId) {
+          await supabase
+            .from("subscriptions")
+            .update({ state: "cancelled", cancel_at_period_end: true })
+            .eq("user_id", userId);
+        }
+        break;
+      }
+    }
+  } catch (e) {
+    // Log but still 200 so Paystack doesn't hammer retries on a handled-but-failed write.
+    console.error("[paystack webhook]", event?.event, e);
+  }
+
   return NextResponse.json({ received: true });
 }
