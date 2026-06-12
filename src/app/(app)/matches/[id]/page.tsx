@@ -67,8 +67,11 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
 
   // Lazy automated closure: once a match has ended, settle it (returns tokens
   // to attendees, forfeits no-shows). Idempotent + row-locked in Postgres.
+  // Call the RPC directly here — NOT the settleMatch() action — because that
+  // action calls revalidatePath(), which is illegal during render. We re-fetch
+  // below, so we don't need revalidation on this path.
   if (ended && match.status !== "completed" && match.status !== "cancelled") {
-    await settleMatch(match.id);
+    await supabase.rpc("settle_match", { p_match_id: match.id });
     ({ data: match } = await loadMatch());
   }
   // Lazy MotM finalization once voting has closed (24h after full time).
