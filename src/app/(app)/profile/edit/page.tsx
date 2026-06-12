@@ -8,11 +8,12 @@ export default async function ProfileEditPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user!.id)
-    .single<Profile>();
+  const uid = user!.id;
+  const [{ data: profile }, { count: followers }, { count: following }] = await Promise.all([
+    supabase.from("profiles").select("*").eq("id", uid).single<Profile>(),
+    supabase.from("follows").select("id", { count: "exact", head: true }).eq("following_id", uid),
+    supabase.from("follows").select("id", { count: "exact", head: true }).eq("follower_id", uid),
+  ]);
 
   if (!profile) {
     return <p className="text-white/60">Setting up your profile…</p>;
@@ -21,7 +22,7 @@ export default async function ProfileEditPage() {
   return (
     <>
       <h1 className="mb-6 text-2xl font-black tracking-tight">Your profile</h1>
-      <ProfileEditor profile={profile} />
+      <ProfileEditor profile={profile} followers={followers ?? 0} following={following ?? 0} />
     </>
   );
 }

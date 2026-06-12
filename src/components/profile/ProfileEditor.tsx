@@ -7,6 +7,7 @@ import { SkillMeter } from "./SkillMeter";
 import { PositionPicker } from "./PositionPicker";
 import { AvailabilityGrid } from "./AvailabilityGrid";
 import { ReliabilityBadge } from "./ReliabilityBadge";
+import { AvatarUpload } from "./AvatarUpload";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -20,8 +21,18 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 const inputCls =
   "mt-2 w-full rounded-xl border border-ink-600 bg-ink-800 px-3.5 py-2.5 text-white placeholder:text-white/30 outline-none focus:border-pitch";
 
-export function ProfileEditor({ profile }: { profile: Profile }) {
+export function ProfileEditor({
+  profile,
+  followers = 0,
+  following = 0,
+}: {
+  profile: Profile;
+  followers?: number;
+  following?: number;
+}) {
   const [name, setName] = useState(profile.name);
+  const [bio, setBio] = useState(profile.bio ?? "");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(profile.avatar_url);
   const [neighborhood, setNeighborhood] = useState(profile.neighborhood ?? "");
   const [skill, setSkill] = useState(profile.skill_level);
   const [positions, setPositions] = useState<Position[]>(profile.preferred_positions);
@@ -38,6 +49,8 @@ export function ProfileEditor({ profile }: { profile: Profile }) {
   function save() {
     const draft: ProfileDraft = {
       name,
+      bio,
+      avatar_url: avatarUrl,
       neighborhood,
       skill_level: skill,
       preferred_positions: positions,
@@ -59,25 +72,40 @@ export function ProfileEditor({ profile }: { profile: Profile }) {
 
   return (
     <div className="space-y-6 pb-28">
-      {/* Header: avatar + reliability */}
-      <div className="flex items-center gap-4">
-        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-ink-700 text-2xl font-black text-pitch">
-          {name.charAt(0).toUpperCase() || "?"}
-        </div>
-        <div className="min-w-0">
-          <p className="truncate text-lg font-bold">{name || "Your name"}</p>
-          <div className="mt-1.5">
-            <ReliabilityBadge
-              score={profile.reliability_score}
-              gamesPlayed={profile.games_played}
-              gamesMissed={profile.games_missed}
-            />
-          </div>
+      {/* Header: avatar upload + reliability + social counts */}
+      <div className="space-y-3">
+        <AvatarUpload
+          userId={profile.id}
+          name={name}
+          currentUrl={avatarUrl}
+          foundingNumber={profile.founding_number}
+          onUploaded={setAvatarUrl}
+        />
+        <div className="flex items-center gap-4">
+          <ReliabilityBadge
+            score={profile.reliability_score}
+            gamesPlayed={profile.games_played}
+            gamesMissed={profile.games_missed}
+          />
+          <span className="text-sm text-white/60">
+            <span className="font-bold text-white">{followers}</span> Followers ·{" "}
+            <span className="font-bold text-white">{following}</span> Following
+          </span>
         </div>
       </div>
 
       <Field label="Display name">
         <input className={inputCls} value={name} onChange={(e) => setName(e.target.value)} maxLength={50} />
+      </Field>
+
+      <Field label="Bio">
+        <textarea
+          className={`${inputCls} min-h-[72px] resize-none`}
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+          maxLength={280}
+          placeholder="Box-to-box midfielder. Never miss a Thursday."
+        />
       </Field>
 
       <Field label="Neighborhood">

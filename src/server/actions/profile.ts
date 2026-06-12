@@ -30,10 +30,15 @@ export async function updateProfile(draft: ProfileDraft): Promise<SaveProfileRes
     POSITIONS.includes(p as (typeof POSITIONS)[number]),
   );
 
+  const bio = draft.bio?.trim() || null;
+  if (bio && bio.length > 280) return { ok: false, error: "Bio is too long (280 max)." };
+
   const { error } = await supabase
     .from("profiles")
     .update({
       name,
+      bio,
+      avatar_url: draft.avatar_url?.trim() || null,
       neighborhood: draft.neighborhood?.trim() || null,
       skill_level: skill,
       preferred_positions: positions.length ? positions : ["ANY"],

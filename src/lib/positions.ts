@@ -1,4 +1,32 @@
-import type { Position, DayKey, Daypart } from "./types";
+import type { Position, DayKey, Daypart, FoundingTier } from "./types";
+
+// Elite short labels for the position badge (FWD shown as "STR" / striker).
+export const POSITION_BADGE: Record<Position, string> = {
+  GK: "GK",
+  DEF: "DEF",
+  MID: "MID",
+  FWD: "STR",
+  ANY: "ANY",
+};
+
+// Founding tier from signup ordinal: Gold ≤100, Silver ≤1000, else none.
+export function foundingTier(n: number | null | undefined): FoundingTier {
+  if (n == null) return null;
+  if (n <= 100) return "baller";
+  if (n <= 1000) return "member";
+  return null;
+}
+
+export const FOUNDING_LABEL: Record<"baller" | "member", string> = {
+  baller: "Founding Baller",
+  member: "Founding Member",
+};
+
+// Tailwind ring classes for the gold / silver avatar accent.
+export const FOUNDING_RING: Record<"baller" | "member", string> = {
+  baller: "ring-2 ring-yellow-400 ring-offset-2 ring-offset-ink-900",
+  member: "ring-2 ring-zinc-300 ring-offset-2 ring-offset-ink-900",
+};
 
 export const POSITIONS: { key: Position; label: string }[] = [
   { key: "GK", label: "Keeper" },

@@ -19,6 +19,8 @@ export interface Profile {
   id: string;
   name: string;
   profile_picture_url: string | null;
+  avatar_url: string | null;
+  bio: string | null;
   neighborhood: string | null;
   skill_level: number; // 1–5
   preferred_positions: Position[];
@@ -30,8 +32,25 @@ export interface Profile {
   games_played: number;
   games_missed: number;
   motm_count: number;
+  founding_number: number | null;
   referral_code: string;
   referred_by_id: string | null;
+}
+
+export type FoundingTier = "baller" | "member" | null;
+
+/** Public slice shown in the slide-up user drawer. */
+export interface DrawerProfile {
+  id: string;
+  name: string;
+  avatar_url: string | null;
+  bio: string | null;
+  neighborhood: string | null;
+  preferred_positions: Position[];
+  reliability_score: number;
+  motm_count: number;
+  founding_number: number | null;
+  created_at: string;
 }
 
 export interface Subscription {
@@ -139,6 +158,8 @@ export interface CreateMatchInput {
 export type ProfileDraft = Pick<
   Profile,
   | "name"
+  | "bio"
+  | "avatar_url"
   | "neighborhood"
   | "skill_level"
   | "preferred_positions"

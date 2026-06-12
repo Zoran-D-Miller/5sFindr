@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { signIn, signUp } from "@/server/actions/auth";
+import { PasswordInput } from "./PasswordInput";
 
 const inputCls =
   "w-full rounded-xl border border-ink-600 bg-ink-800 px-3.5 py-3 text-white placeholder:text-white/30 outline-none focus:border-pitch";
@@ -67,13 +68,9 @@ export function AuthForm({
           className={inputCls}
           required
         />
-        <input
+        <PasswordInput
           name="password"
-          type="password"
-          placeholder="Password"
           autoComplete={isSignup ? "new-password" : "current-password"}
-          className={inputCls}
-          required
         />
 
         {next && <input type="hidden" name="next" value={next} />}

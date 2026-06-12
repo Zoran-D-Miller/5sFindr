@@ -10,6 +10,8 @@ import { MotMVote } from "@/components/match/MotMVote";
 import { MatchRealtime } from "@/components/match/MatchRealtime";
 import { settleMatch } from "@/server/actions/attendance";
 import { WhatsAppInvite } from "@/components/match/WhatsAppInvite";
+import { PingBallers } from "@/components/match/PingBallers";
+import { PlayerChip } from "@/components/profile/PlayerChip";
 import type { MatchStatus, JoinMode, VenueType, RosterEntry } from "@/lib/types";
 
 interface MatchRow {
@@ -157,9 +159,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
             <ul className="space-y-2">
               {confirmed.map((p) => (
                 <li key={p.user_id} className="flex items-center justify-between rounded-2xl border border-ink-700 bg-ink-800/60 p-3 text-sm">
-                  <span className={p.user_id === uid ? "font-bold text-pitch" : ""}>
-                    {p.name}{p.user_id === uid ? " (you)" : ""}
-                  </span>
+                  <PlayerChip userId={p.user_id} name={p.name} highlight={p.user_id === uid} />
                   <span className="text-xs text-white/40">Skill {p.skill_level}</span>
                 </li>
               ))}
@@ -191,13 +191,23 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
       {isOrganizer ? (
         <div className="space-y-4">
           {!completed && match.status !== "cancelled" && (
-            <WhatsAppInvite
-              organizerName={match.organizer?.name ?? "Your organizer"}
-              venue={match.location?.name ?? "the pitch"}
-              kickoffIso={match.kickoff_at}
-              shareSlug={match.share_slug}
-              siteUrl={SITE_URL}
-            />
+            <>
+              <PingBallers
+                matchId={match.id}
+                venue={match.location?.name ?? "the pitch"}
+                kickoffIso={match.kickoff_at}
+                spotsLeft={Math.max(0, match.max_players - confirmed.length)}
+                shareSlug={match.share_slug}
+                siteUrl={SITE_URL}
+              />
+              <WhatsAppInvite
+                organizerName={match.organizer?.name ?? "Your organizer"}
+                venue={match.location?.name ?? "the pitch"}
+                kickoffIso={match.kickoff_at}
+                shareSlug={match.share_slug}
+                siteUrl={SITE_URL}
+              />
+            </>
           )}
           {!completed && <MatchCodePanel matchId={match.id} />}
           <OrganizerControls matchId={match.id} matchStatus={match.status} requests={requests} />

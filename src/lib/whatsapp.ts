@@ -28,3 +28,27 @@ export function buildWhatsAppInvite(params: {
     whatsappUrl: `https://wa.me/?text=${encodeURIComponent(text)}`,
   };
 }
+
+// High-conversion "need N more" blast for pasting into external WhatsApp groups.
+export function buildPingBlast(params: {
+  venue: string;
+  kickoffIso: string;
+  spotsLeft: number;
+  shareSlug: string;
+  siteUrl: string;
+}): string {
+  const d = new Date(params.kickoffIso);
+  const today = new Date();
+  const sameDay = d.toDateString() === today.toDateString();
+  const when = sameDay
+    ? `tonight at ${d.toLocaleTimeString("en-ZA", { hour: "2-digit", minute: "2-digit", hour12: false })}`
+    : d.toLocaleString("en-ZA", { weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false });
+  const need =
+    params.spotsLeft > 0
+      ? `NEED ${params.spotsLeft} MORE BALLER${params.spotsLeft === 1 ? "" : "S"}!`
+      : "GAME ON!";
+  return (
+    `⚽ ${need}\nKickoff at ${params.venue} ${when}.\n` +
+    `Claim your spot (first month free 👇)\n${params.siteUrl}/m/${params.shareSlug}`
+  );
+}
