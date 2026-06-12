@@ -56,11 +56,35 @@ begin
     where id = v_uid;
   end loop;
 
+  -- Resolve the three venues by name; CREATE them if missing so this script
+  -- never depends on seed.sql having run and location_id is never null.
   select id into v_venue_cc from public.locations where name = 'Fives Futbol Century City' limit 1;
+  if v_venue_cc is null then
+    insert into public.locations (name, type, neighborhood, latitude, longitude, is_seeded)
+    values ('Fives Futbol Century City', 'official_court', 'Century City', -33.89160, 18.51060, true)
+    returning id into v_venue_cc;
+  end if;
+
   select id into v_venue_gp from public.locations where name = 'Green Point Urban Park' limit 1;
+  if v_venue_gp is null then
+    insert into public.locations (name, type, neighborhood, latitude, longitude, is_seeded)
+    values ('Green Point Urban Park', 'open_area', 'Green Point', -33.90200, 18.40900, true)
+    returning id into v_venue_gp;
+  end if;
+
   select id into v_venue_ft from public.locations where name = 'Goal Diggers Indoor (Footy)' limit 1;
+  if v_venue_ft is null then
+    insert into public.locations (name, type, neighborhood, latitude, longitude, is_seeded)
+    values ('Goal Diggers Indoor (Footy)', 'official_court', 'Montague Gardens', -33.86700, 18.53800, true)
+    returning id into v_venue_ft;
+  end if;
+
   v_venues := array[v_venue_cc, v_venue_gp, v_venue_ft];
-  v_vhoods := array['Century City','Green Point','Montague Gardens'];
+  v_vhoods := array['Century City', 'Green Point', 'Montague Gardens'];
+
+  if v_venue_cc is null or v_venue_gp is null or v_venue_ft is null then
+    raise exception 'Could not resolve or create seed venues — aborting.';
+  end if;
 
   -- 15 upcoming matches over the next ~3 weeks.
   for i in 1..15 loop
