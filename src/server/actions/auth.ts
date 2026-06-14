@@ -51,11 +51,15 @@ export async function signUp(
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   const ref = String(formData.get("ref") ?? "").trim();
+  const phone = String(formData.get("phone") ?? "").trim();
   const next = formData.get("next");
 
   if (!name) return { error: "What should we call you?" };
   if (!email || !password) return { error: "Email and password are required." };
   if (password.length < 6) return { error: "Password must be at least 6 characters." };
+  // Mandatory mobile number (no OTP — just captured). SA numbers are ~10 digits.
+  if (!phone) return { error: "Mobile number is required." };
+  if (phone.replace(/\D/g, "").length < 9) return { error: "Enter a valid mobile number." };
 
   // name + referral_code go into raw_user_meta_data — the handle_new_user()
   // trigger reads these the instant the auth.users row is inserted, then
@@ -67,7 +71,7 @@ export async function signUp(
       email,
       password,
       options: {
-        data: { name, referral_code: ref || null },
+        data: { name, phone_number: phone, referral_code: ref || null },
       },
     });
     if (error) return { error: error.message };

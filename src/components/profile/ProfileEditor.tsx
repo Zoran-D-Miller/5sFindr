@@ -71,7 +71,7 @@ export function ProfileEditor({
   }
 
   return (
-    <div className="space-y-6 pb-28">
+    <div className="space-y-6 pb-12">
       {/* Header: avatar upload + reliability + social counts */}
       <div className="space-y-3">
         <AvatarUpload
@@ -142,19 +142,15 @@ export function ProfileEditor({
 
       {status === "error" && <p className="text-sm text-red-400">{error}</p>}
 
-      {/* Sticky save bar — thumb-reachable on mobile */}
-      <div className="fixed inset-x-0 bottom-0 border-t border-ink-700 bg-ink-900/90 px-5 py-3 backdrop-blur">
-        <div className="mx-auto max-w-md sm:max-w-2xl">
-          <button
-            type="button"
-            onClick={save}
-            disabled={pending}
-            className="w-full rounded-2xl bg-pitch py-3.5 font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark disabled:opacity-60"
-          >
-            {pending ? "Saving…" : status === "saved" ? "Saved ✓" : "Save profile"}
-          </button>
-        </div>
-      </div>
+      {/* Inline save button — scrolls with the form and clears the bottom nav. */}
+      <button
+        type="button"
+        onClick={save}
+        disabled={pending}
+        className="w-full rounded-2xl bg-pitch py-3.5 font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark disabled:opacity-60"
+      >
+        {pending ? "Saving…" : status === "saved" ? "Saved ✓" : "Save profile"}
+      </button>
     </div>
   );
 }

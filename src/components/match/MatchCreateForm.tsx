@@ -133,7 +133,7 @@ export function MatchCreateForm({ venues }: { venues: VenueOption[] }) {
     .slice(0, 16);
 
   return (
-    <div className="space-y-6 pb-28">
+    <div className="space-y-6 pb-12">
       {/* Venue */}
       <Section label="Where">
         <Segmented
@@ -279,19 +279,15 @@ export function MatchCreateForm({ venues }: { venues: VenueOption[] }) {
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 
-      {/* Sticky create bar */}
-      <div className="fixed inset-x-0 bottom-0 border-t border-ink-700 bg-ink-900/90 px-5 py-3 backdrop-blur">
-        <div className="mx-auto max-w-md sm:max-w-2xl">
-          <button
-            type="button"
-            onClick={submit}
-            disabled={pending}
-            className="w-full rounded-2xl bg-pitch py-3.5 font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark disabled:opacity-60"
-          >
-            {pending ? "Creating…" : "Create match"}
-          </button>
-        </div>
-      </div>
+      {/* Inline create button — scrolls with the form and clears the bottom nav. */}
+      <button
+        type="button"
+        onClick={submit}
+        disabled={pending}
+        className="w-full rounded-2xl bg-pitch py-3.5 font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark disabled:opacity-60"
+      >
+        {pending ? "Creating…" : "Create match"}
+      </button>
     </div>
   );
 }

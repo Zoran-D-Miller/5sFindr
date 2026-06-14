@@ -68,6 +68,17 @@ export function AuthForm({
           className={inputCls}
           required
         />
+        {isSignup && (
+          <input
+            name="phone"
+            type="tel"
+            placeholder="082 123 4567"
+            autoComplete="tel"
+            inputMode="tel"
+            className={inputCls}
+            required
+          />
+        )}
         <PasswordInput
           name="password"
           autoComplete={isSignup ? "new-password" : "current-password"}
