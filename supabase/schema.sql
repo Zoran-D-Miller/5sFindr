@@ -1,7 +1,7 @@
 -- ════════════════════════════════════════════════════════════════════════
 --  5sFindr — CANONICAL SCHEMA (single source of truth)
---  Consolidated final state of migrations 0001–0010. Verified byte-equivalent
---  to the migration chain via pg_dump diff.
+--  Consolidated final state of migrations 0001–0011. Verified equivalent
+--  to the migration chain via catalog signature diff.
 --
 --  Apply to a FRESH Supabase project's SQL Editor for a clean rebuild.
 --  Assumes the Supabase platform provides: schema `auth` (auth.users,
@@ -247,9 +247,11 @@ create index match_pings_region_idx on public.match_pings(neighborhood, created_
 -- §5  FUNCTIONS
 -- ─────────────────────────────────────────────────────────────────────────
 
--- Premium gate
+-- Premium gate. SECURITY DEFINER: it must read ANY user's subscription state
+-- (subscriptions RLS only exposes the caller's own row, which would otherwise
+-- make is_premium(other) always false — breaking the leaderboard filter).
 create or replace function public.is_premium(uid uuid)
-returns boolean language sql stable as $$
+returns boolean language sql stable security definer set search_path = public as $$
   select exists (
     select 1 from public.subscriptions s
     where s.user_id = uid
@@ -762,6 +764,7 @@ create policy "organizer creates pings"    on public.match_pings for insert
 -- ─────────────────────────────────────────────────────────────────────────
 -- §9  GRANTS (function execution + view reads)
 -- ─────────────────────────────────────────────────────────────────────────
+grant execute on function public.is_premium(uuid)                     to anon, authenticated;
 grant execute on function public.join_match(uuid)                     to authenticated;
 grant execute on function public.cancel_participation(uuid)           to authenticated;
 grant execute on function public.manager_respond(uuid, uuid, boolean) to authenticated;

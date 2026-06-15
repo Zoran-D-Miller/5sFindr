@@ -52,6 +52,7 @@ run "$ROOT/supabase/migrations/0007_premium.sql"
 run "$ROOT/supabase/migrations/0008_settlement_cron.sql"
 run "$ROOT/supabase/migrations/0009_phone.sql"
 run "$ROOT/supabase/migrations/0010_custom_location_fix.sql"
+run "$ROOT/supabase/migrations/0011_read_visibility_fix.sql"
 run "$ROOT/supabase/seed.sql"
 
 echo "▸ running economy_test.sql …"

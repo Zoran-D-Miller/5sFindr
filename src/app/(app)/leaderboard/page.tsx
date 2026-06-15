@@ -7,7 +7,7 @@ export default async function LeaderboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: rows } = await supabase
+  const { data: rows, error } = await supabase
     .from("leaderboard")
     .select(
       "id, name, avatar_url, neighborhood, preferred_positions, motm_count, reliability_score, games_played, founding_number, position",
@@ -15,6 +15,8 @@ export default async function LeaderboardPage() {
     .order("position", { ascending: true })
     .limit(100)
     .returns<LeaderRow[]>();
+
+  if (error) console.error("[leaderboard] query error:", error.message);
 
   return (
     <div className="space-y-5">

@@ -21,7 +21,7 @@ export default async function FeedPage() {
 
   const now = new Date().toISOString();
 
-  const [{ data: playerMatches }, { data: organizerMatches }, premium] = await Promise.all([
+  const [playerRes, organizerRes, premium] = await Promise.all([
     // Player feed: open/full upcoming games, not your own, soonest first.
     supabase
       .from("match_feed")
@@ -40,6 +40,13 @@ export default async function FeedPage() {
       .returns<MatchFeedItem[]>(),
     isPremium(uid),
   ]);
+
+  // Surface (don't swallow) read errors — an empty feed from a permission/RLS
+  // error must be visible in logs, not silently rendered as a ghost town.
+  if (playerRes.error) console.error("[feed] player query error:", playerRes.error.message);
+  if (organizerRes.error) console.error("[feed] organizer query error:", organizerRes.error.message);
+  const playerMatches = playerRes.data;
+  const organizerMatches = organizerRes.data;
 
   const initialView: ViewMode =
     cookies().get("view")?.value === "organizer" ? "organizer" : "player";
