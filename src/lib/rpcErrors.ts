@@ -14,6 +14,8 @@ const MESSAGES: Record<string, string> = {
   NOT_ORGANIZER: "Only the organizer can do that.",
   NO_REQUEST: "That request is no longer pending.",
   MATCH_FULL: "The squad is already full.",
+  NOT_CANCELLABLE: "This match can no longer be cancelled.",
+  TOO_LATE: "Too close to kickoff to delete — message your players via the WhatsApp group instead.",
   // attendance
   TOO_EARLY: "Check-in opens at kickoff.",
   WINDOW_CLOSED: "Check-in has closed for this match.",

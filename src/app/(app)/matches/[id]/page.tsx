@@ -31,7 +31,6 @@ interface MatchRow {
   motm_winner_id: string | null;
   share_slug: string;
   location: { name: string; neighborhood: string | null; type: VenueType; latitude: number | null } | null;
-  organizer: { name: string } | null;
 }
 
 interface RawRosterRow {
@@ -42,8 +41,11 @@ interface RawRosterRow {
   profile: { name: string; skill_level: number; reliability_score: number } | null;
 }
 
+// NOTE: no `organizer:profiles(...)` embed here — matches has TWO FKs to
+// profiles (organizer_id + motm_winner_id), which makes that embed ambiguous
+// and errors out (→ null → 404). The organizer name is fetched separately.
 const MATCH_COLS =
-  "id, organizer_id, title, venue_type, kickoff_at, ends_at, duration_min, max_players, price_per_player_zar, join_mode, status, teams_assigned, motm_awarded, motm_winner_id, share_slug, location:locations(name, neighborhood, type, latitude), organizer:profiles!organizer_id(name)";
+  "id, organizer_id, title, venue_type, kickoff_at, ends_at, duration_min, max_players, price_per_player_zar, join_mode, status, teams_assigned, motm_awarded, motm_winner_id, share_slug, location:locations(name, neighborhood, type, latitude)";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://5sfindr.com";
 
@@ -84,7 +86,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   }
   if (!match) notFound();
 
-  const [{ data: rawRoster }, { count: availableTokens }, premium, { data: myVote }] =
+  const [{ data: rawRoster }, { count: availableTokens }, premium, { data: myVote }, { data: organizerRow }] =
     await Promise.all([
       supabase
         .from("match_players")
@@ -95,7 +97,10 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
         .eq("owner_id", uid).eq("status", "available"),
       isPremium(uid),
       supabase.from("match_votes").select("id").eq("match_id", params.id).eq("voter_id", uid).maybeSingle(),
+      supabase.from("profiles").select("name").eq("id", match.organizer_id).maybeSingle<{ name: string }>(),
     ]);
+
+  const organizerName = organizerRow?.name ?? "Your organizer";
 
   const roster: RosterEntry[] = (rawRoster ?? []).map((r) => ({
     user_id: r.user_id, status: r.status, team_color: r.team_color, position: r.position,
@@ -201,7 +206,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
                 siteUrl={SITE_URL}
               />
               <WhatsAppInvite
-                organizerName={match.organizer?.name ?? "Your organizer"}
+                organizerName={organizerName}
                 venue={match.location?.name ?? "the pitch"}
                 kickoffIso={match.kickoff_at}
                 shareSlug={match.share_slug}
@@ -210,7 +215,12 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
             </>
           )}
           {!completed && <MatchCodePanel matchId={match.id} />}
-          <OrganizerControls matchId={match.id} matchStatus={match.status} requests={requests} />
+          <OrganizerControls
+            matchId={match.id}
+            matchStatus={match.status}
+            kickoffIso={match.kickoff_at}
+            requests={requests}
+          />
           {!completed && ended && (
             <form action={async () => { "use server"; await settleMatch(match!.id); }}>
               <button className="w-full rounded-2xl border border-ink-600 py-3 font-semibold text-white/80 hover:border-pitch">

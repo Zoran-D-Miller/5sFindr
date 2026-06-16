@@ -1,6 +1,6 @@
 -- ════════════════════════════════════════════════════════════════════════
 --  5sFindr — CANONICAL SCHEMA (single source of truth)
---  Consolidated final state of migrations 0001–0011. Verified equivalent
+--  Consolidated final state of migrations 0001–0012. Verified equivalent
 --  to the migration chain via catalog signature diff.
 --
 --  Apply to a FRESH Supabase project's SQL Editor for a clean rebuild.
@@ -495,6 +495,32 @@ begin
 end;
 $$;
 
+-- Organizer cancels a match (>24h to kickoff) — soft-cancel + refund all RSVPs
+create or replace function public.cancel_match(p_match_id uuid)
+returns text language plpgsql security definer set search_path = public as $$
+declare v_uid uuid := auth.uid(); v_match public.matches%rowtype;
+begin
+  if v_uid is null then raise exception 'NOT_AUTHED'; end if;
+  select * into v_match from public.matches where id = p_match_id for update;
+  if not found then raise exception 'NO_MATCH'; end if;
+  if v_match.organizer_id <> v_uid then raise exception 'NOT_ORGANIZER'; end if;
+  if v_match.status in ('completed','cancelled') then raise exception 'NOT_CANCELLABLE'; end if;
+  if now() > (v_match.kickoff_at - interval '24 hours') then raise exception 'TOO_LATE'; end if;
+
+  insert into public.token_transactions (token_id, user_id, type, match_id, note)
+    select token_id, user_id, 'refund', p_match_id, 'Match cancelled by organizer — token refunded'
+    from public.match_players
+    where match_id = p_match_id and status in ('requested','accepted','attended') and token_id is not null;
+  update public.tokens set status = 'available', committed_match_id = null
+    where id in (select token_id from public.match_players
+                 where match_id = p_match_id and status in ('requested','accepted','attended'));
+  update public.match_players set status = 'cancelled_early', cancelled_at = now(), team_color = null
+    where match_id = p_match_id and status in ('requested','accepted','attended');
+  update public.matches set status = 'cancelled', teams_assigned = false where id = p_match_id;
+  return 'cancelled';
+end;
+$$;
+
 -- Organizer reveals (generates once) the 4-digit attendance code
 create or replace function public.ensure_match_code(p_match_id uuid)
 returns text language plpgsql security definer set search_path = public as $$
@@ -769,6 +795,7 @@ grant execute on function public.join_match(uuid)                     to authent
 grant execute on function public.cancel_participation(uuid)           to authenticated;
 grant execute on function public.manager_respond(uuid, uuid, boolean) to authenticated;
 grant execute on function public.lock_match(uuid)                     to authenticated;
+grant execute on function public.cancel_match(uuid)                   to authenticated;
 grant execute on function public.is_match_organizer(uuid)             to anon, authenticated;
 grant execute on function public.is_match_participant(uuid)           to anon, authenticated;
 grant execute on function public.ensure_match_code(uuid)              to authenticated;

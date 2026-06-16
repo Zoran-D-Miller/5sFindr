@@ -2,21 +2,27 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { respondToRequest, lockMatch } from "@/server/actions/participation";
+import { respondToRequest, lockMatch, cancelMatch } from "@/server/actions/participation";
 import type { MatchStatus, RosterEntry } from "@/lib/types";
 
 export function OrganizerControls({
   matchId,
   matchStatus,
+  kickoffIso,
   requests,
 }: {
   matchId: string;
   matchStatus: MatchStatus;
+  kickoffIso: string;
   requests: RosterEntry[];
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState("");
+
+  // Fair-play: deletion only allowed >24h before kickoff.
+  const hoursToKickoff = (new Date(kickoffIso).getTime() - Date.now()) / 3_600_000;
+  const canDelete = hoursToKickoff > 24 && matchStatus !== "completed" && matchStatus !== "cancelled";
 
   function run(fn: () => Promise<{ ok: boolean; error?: string }>) {
     setError("");
@@ -25,6 +31,12 @@ export function OrganizerControls({
       if (res.ok) router.refresh();
       else setError(res.error ?? "Something went wrong.");
     });
+  }
+
+  function onDelete() {
+    if (!window.confirm("Delete this match? All players will get their tokens back. This can't be undone."))
+      return;
+    run(() => cancelMatch(matchId));
   }
 
   return (
@@ -77,6 +89,24 @@ export function OrganizerControls({
         >
           Lock match & assign teams
         </button>
+      )}
+
+      {/* Fair-play deletion: only >24h before kickoff */}
+      {matchStatus !== "completed" && matchStatus !== "cancelled" && (
+        canDelete ? (
+          <button
+            type="button"
+            disabled={pending}
+            onClick={onDelete}
+            className="w-full rounded-2xl border border-red-500/40 py-3 font-semibold text-red-400 transition hover:bg-red-500/10 disabled:opacity-60"
+          >
+            Delete match (refunds all tokens)
+          </button>
+        ) : (
+          <p className="rounded-2xl border border-ink-700 bg-ink-800/60 p-3 text-center text-xs text-white/50">
+            Under 24h to kickoff — deletion is locked. Message your squad via the WhatsApp group above instead.
+          </p>
+        )
       )}
 
       {error && <p className="text-center text-sm text-red-400">{error}</p>}

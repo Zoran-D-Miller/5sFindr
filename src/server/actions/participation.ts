@@ -59,3 +59,14 @@ export async function lockMatch(
   refresh(matchId);
   return { ok: true };
 }
+
+// Organizer cancels the match (>24h to kickoff) — refunds all RSVP'd tokens.
+export async function cancelMatch(
+  matchId: string,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const supabase = createClient();
+  const { error } = await supabase.rpc("cancel_match", { p_match_id: matchId });
+  if (error) return { ok: false, error: friendly(error.message) };
+  refresh(matchId);
+  return { ok: true };
+}
