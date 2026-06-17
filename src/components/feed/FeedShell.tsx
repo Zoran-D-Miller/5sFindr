@@ -13,11 +13,13 @@ export function FeedShell({
   initialView,
   playerMatches,
   organizerMatches,
+  neighborhoods,
   isPremium,
 }: {
   initialView: ViewMode;
   playerMatches: MatchFeedItem[];
   organizerMatches: MatchFeedItem[];
+  neighborhoods?: string[];
   isPremium: boolean;
 }) {
   const [view, setView] = useState<ViewMode>(initialView);
@@ -28,12 +30,12 @@ export function FeedShell({
     void setViewPreference(next); // remember for next visit
   }
 
-  // Distinct neighborhoods present in the upcoming player feed (sorted).
-  const hoods = useMemo(
-    () =>
-      [...new Set(playerMatches.map((m) => m.neighborhood?.trim()).filter((n): n is string => !!n))].sort(),
-    [playerMatches],
-  );
+  // Dropdown options: prefer the server-provided list of all active
+  // neighborhoods (incl. custom areas like Malmesbury); else derive from feed.
+  const hoods = useMemo(() => {
+    if (neighborhoods && neighborhoods.length) return neighborhoods;
+    return [...new Set(playerMatches.map((m) => m.neighborhood?.trim()).filter((n): n is string => !!n))].sort();
+  }, [neighborhoods, playerMatches]);
 
   const filtered = useMemo(
     () => (hood === ALL ? playerMatches : playerMatches.filter((m) => m.neighborhood?.trim() === hood)),

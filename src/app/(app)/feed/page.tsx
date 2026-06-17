@@ -51,6 +51,18 @@ export default async function FeedPage() {
   const initialView: ViewMode =
     cookies().get("view")?.value === "organizer" ? "organizer" : "player";
 
+  // Dropdown options: every neighborhood with an upcoming open/full match
+  // (across ALL organizers, so your own custom areas like Malmesbury appear too).
+  const { data: hoodRows } = await supabase
+    .from("match_feed")
+    .select("neighborhood")
+    .in("status", ["open", "full"])
+    .gte("kickoff_at", now)
+    .returns<{ neighborhood: string | null }[]>();
+  const neighborhoods = [
+    ...new Set((hoodRows ?? []).map((r) => r.neighborhood?.trim()).filter((n): n is string => !!n)),
+  ].sort();
+
   // Region pings (Layer 1): active alerts for upcoming open matches in my hood.
   const { data: me } = await supabase.from("profiles").select("neighborhood").eq("id", uid).maybeSingle();
   let pings: PingRow[] = [];
@@ -100,6 +112,7 @@ export default async function FeedPage() {
         initialView={initialView}
         playerMatches={playerMatches ?? []}
         organizerMatches={organizerMatches ?? []}
+        neighborhoods={neighborhoods}
         isPremium={premium}
       />
     </>

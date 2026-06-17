@@ -60,11 +60,19 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   const { data: { user } } = await supabase.auth.getUser();
   const uid = user!.id;
 
-  const loadMatch = () =>
-    supabase.from("matches").select(MATCH_COLS).eq("id", params.id).maybeSingle<MatchRow>();
+  // Resolve by UUID id OR share_slug — bulletproof regardless of which the URL
+  // carries (a slug is not a valid uuid, so `.eq("id", slug)` would error → 404).
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const byId = UUID_RE.test(params.id);
+  const loadMatch = () => {
+    const base = supabase.from("matches").select(MATCH_COLS);
+    return (byId ? base.eq("id", params.id) : base.eq("share_slug", params.id)).maybeSingle<MatchRow>();
+  };
 
   let { data: match } = await loadMatch();
   if (!match) notFound();
+
+  const matchId = match.id; // resolved UUID — use for all downstream queries
 
   const now = Date.now();
   const ended = now >= new Date(match.ends_at).getTime();
@@ -91,12 +99,12 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
       supabase
         .from("match_players")
         .select("user_id, status, team_color, position, profile:profiles(name, skill_level, reliability_score)")
-        .eq("match_id", params.id)
+        .eq("match_id", matchId)
         .returns<RawRosterRow[]>(),
       supabase.from("tokens").select("id", { count: "exact", head: true })
         .eq("owner_id", uid).eq("status", "available"),
       isPremium(uid),
-      supabase.from("match_votes").select("id").eq("match_id", params.id).eq("voter_id", uid).maybeSingle(),
+      supabase.from("match_votes").select("id").eq("match_id", matchId).eq("voter_id", uid).maybeSingle(),
       supabase.from("profiles").select("name").eq("id", match.organizer_id).maybeSingle<{ name: string }>(),
     ]);
 
