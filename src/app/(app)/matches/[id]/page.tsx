@@ -58,7 +58,6 @@ function fmt(iso: string) {
 export default async function MatchLobbyPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  const uid = user!.id;
 
   // Resolve by UUID id OR share_slug — bulletproof regardless of which the URL
   // carries (a slug is not a valid uuid, so `.eq("id", slug)` would error → 404).
@@ -69,9 +68,40 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
     return (byId ? base.eq("id", params.id) : base.eq("share_slug", params.id)).maybeSingle<MatchRow>();
   };
 
-  let { data: match } = await loadMatch();
-  if (!match) notFound();
+  // ───────────── TEMP DIAGNOSTIC (remove after live readout) ─────────────
+  const probe = await loadMatch();
+  if (probe.error) {
+    return (
+      <div className="relative z-50 m-4 rounded-md border border-red-800 bg-red-950 p-6 font-mono text-sm text-red-200">
+        <h1 className="mb-2 text-lg font-bold">🚨 Hard Database Error</h1>
+        <p>Code: {probe.error.code}</p>
+        <p>Message: {probe.error.message}</p>
+        <p>Details: {probe.error.details}</p>
+        <p>Hint: {probe.error.hint}</p>
+        <p className="mt-2">Auth user: {user ? user.id : "NULL — no session on the server!"}</p>
+        <p>Lookup: {byId ? "by id (uuid)" : "by share_slug"} = {params.id}</p>
+      </div>
+    );
+  }
+  if (!probe.data) {
+    return (
+      <div className="relative z-50 m-4 rounded-md border border-yellow-800 bg-yellow-950 p-6 font-mono text-sm text-yellow-200">
+        <h1 className="mb-2 text-lg font-bold">⚠️ Silent RLS / Auth Block (0 rows)</h1>
+        <p>The query ran successfully but returned 0 rows.</p>
+        <p className="mt-2">Param passed: {params.id}</p>
+        <p>Lookup mode: {byId ? "id (uuid)" : "share_slug (text)"}</p>
+        <p>Auth user: {user ? user.id : "NULL — server lost the session cookie!"}</p>
+        <p className="mt-2">
+          If auth is present, this is RLS/status: only open/full/in_progress/completed
+          matches are public; cancelled/draft are visible to the organizer only.
+        </p>
+      </div>
+    );
+  }
+  // ─────────────────────── END DIAGNOSTIC ───────────────────────────────
 
+  const uid = user!.id;
+  let match: MatchRow = probe.data;
   const matchId = match.id; // resolved UUID — use for all downstream queries
 
   const now = Date.now();
@@ -83,16 +113,19 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   // action calls revalidatePath(), which is illegal during render. We re-fetch
   // below, so we don't need revalidation on this path.
   if (ended && match.status !== "completed" && match.status !== "cancelled") {
-    await supabase.rpc("settle_match", { p_match_id: match.id });
-    ({ data: match } = await loadMatch());
+    await supabase.rpc("settle_match", { p_match_id: matchId });
+    const re = await loadMatch();
+    if (!re.data) notFound();
+    match = re.data;
   }
   // Lazy MotM finalization once voting has closed (24h after full time).
-  if (match && match.status === "completed" && !match.motm_awarded &&
+  if (match.status === "completed" && !match.motm_awarded &&
       now >= new Date(match.ends_at).getTime() + 24 * 3_600_000) {
-    await supabase.rpc("finalize_motm", { p_match_id: match.id });
-    ({ data: match } = await loadMatch());
+    await supabase.rpc("finalize_motm", { p_match_id: matchId });
+    const re = await loadMatch();
+    if (!re.data) notFound();
+    match = re.data;
   }
-  if (!match) notFound();
 
   const [{ data: rawRoster }, { count: availableTokens }, premium, { data: myVote }, { data: organizerRow }] =
     await Promise.all([
