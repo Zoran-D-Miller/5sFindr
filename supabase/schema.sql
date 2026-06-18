@@ -296,7 +296,14 @@ returns boolean language sql stable security definer set search_path = public as
   );
 $$;
 
--- Roster-visibility helpers (SECURITY DEFINER → avoid RLS recursion)
+-- Roster-visibility helpers (SECURITY DEFINER → avoid RLS recursion).
+-- DROP first: an earlier hand-patched version may use a different parameter
+-- name (CREATE OR REPLACE can't rename params → error 42P13). DROP matches by
+-- argument TYPE regardless of name; CASCADE removes the dependent RLS policies,
+-- which §8 recreates. No-op on a fresh database.
+drop function if exists public.is_match_organizer(uuid)   cascade;
+drop function if exists public.is_match_participant(uuid) cascade;
+
 create or replace function public.is_match_organizer(p_match_id uuid)
 returns boolean language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.matches m where m.id = p_match_id and m.organizer_id = auth.uid());
