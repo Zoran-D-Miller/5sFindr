@@ -156,11 +156,11 @@ begin
     from public.locations where name = 'Fives Futbol Century City' limit 1;
   if v_lat is null then raise exception 'S3 FAIL: seeded venue missing coords'; end if;
 
-  -- Future kickoff so joins are allowed; 10 players each commit their token.
+  -- max_players 11 = Captain (organizer, auto-added by the 0014 trigger) + 10 joiners.
   insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
                               max_players, join_mode, status, share_slug)
     values (v_org, v_loc, 'official_court', now() + interval '2 hours', 60, now() + interval '3 hours',
-            10, 'instant', 'open', 's3-' || substr(md5(random()::text), 1, 8))
+            11, 'instant', 'open', 's3-' || substr(md5(random()::text), 1, 8))
     returning id into v_match;
 
   for i in 1..10 loop
@@ -187,6 +187,8 @@ begin
   perform set_config('request.jwt.claims', json_build_object('sub', v_org)::text, true);
   v_code := public.ensure_match_code(v_match);
   if v_code !~ '^\d{4}$' then raise exception 'S3 FAIL: bad match code %', v_code; end if;
+  -- The Captain (organizer) is also an accepted player → must check in too.
+  perform public.check_in(v_match, 'gps', v_lat, v_lng, null);
 
   -- Players 1–4 check in via GPS (at the venue), 5–8 via the code, 9–10 ghost.
   for i in 1..8 loop

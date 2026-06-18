@@ -5,11 +5,13 @@ function TeamCard({
   tone,
   players,
   meId,
+  captainId,
 }: {
   title: string;
   tone: "light" | "dark";
   players: RosterEntry[];
   meId: string;
+  captainId: string;
 }) {
   const isLight = tone === "light";
   return (
@@ -34,6 +36,7 @@ function TeamCard({
             }`}
           >
             <span className="truncate">
+              {p.user_id === captainId && <span title="Captain">ⓒ </span>}
               {p.name}
               {p.user_id === meId ? " (you)" : ""}
             </span>
@@ -46,13 +49,22 @@ function TeamCard({
 }
 
 // The auto-assigned Team Light vs Team Dark layout shown on filled/locked matches.
-export function TeamPanel({ roster, meId }: { roster: RosterEntry[]; meId: string }) {
+// Captain (organizer) is marked with ⓒ.
+export function TeamPanel({
+  roster,
+  meId,
+  captainId,
+}: {
+  roster: RosterEntry[];
+  meId: string;
+  captainId: string;
+}) {
   const light = roster.filter((r) => r.team_color === "light");
   const dark = roster.filter((r) => r.team_color === "dark");
   return (
     <div className="flex gap-3">
-      <TeamCard title="Team Light" tone="light" players={light} meId={meId} />
-      <TeamCard title="Team Dark" tone="dark" players={dark} meId={meId} />
+      <TeamCard title="Team Light" tone="light" players={light} meId={meId} captainId={captainId} />
+      <TeamCard title="Team Dark" tone="dark" players={dark} meId={meId} captainId={captainId} />
     </div>
   );
 }

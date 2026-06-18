@@ -116,8 +116,12 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   }));
 
   const isOrganizer = match.organizer_id === uid;
-  const attended = roster.filter((r) => r.status === "attended");
-  const confirmed = roster.filter((r) => r.status === "accepted" || r.status === "attended");
+  const captainId = match.organizer_id; // organizer holds Slot 1 as Captain
+  // Captain sorts to Slot 1, then by skill.
+  const slotOrder = (a: RosterEntry, b: RosterEntry) =>
+    a.user_id === captainId ? -1 : b.user_id === captainId ? 1 : b.skill_level - a.skill_level;
+  const attended = roster.filter((r) => r.status === "attended").sort(slotOrder);
+  const confirmed = roster.filter((r) => r.status === "accepted" || r.status === "attended").sort(slotOrder);
   const requests = roster.filter((r) => r.status === "requested");
   const mine = roster.find((r) => r.user_id === uid) ?? null;
   const completed = match.status === "completed";
@@ -159,7 +163,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
       {match.teams_assigned ? (
         <section>
           <h3 className="mb-2 px-1 text-sm font-bold uppercase tracking-wide text-white/50">Match tickets</h3>
-          <TeamPanel roster={completed ? attended : confirmed} meId={uid} />
+          <TeamPanel roster={completed ? attended : confirmed} meId={uid} captainId={captainId} />
         </section>
       ) : (
         confirmed.length > 0 && (
@@ -168,10 +172,18 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
               Squad ({confirmed.length}/{match.max_players})
             </h3>
             <ul className="space-y-2">
-              {confirmed.map((p) => (
-                <li key={p.user_id} className="flex items-center justify-between rounded-2xl border border-ink-700 bg-ink-800/60 p-3 text-sm">
-                  <PlayerChip userId={p.user_id} name={p.name} highlight={p.user_id === uid} />
-                  <span className="text-xs text-white/40">Skill {p.skill_level}</span>
+              {confirmed.map((p, i) => (
+                <li key={p.user_id} className="flex items-center gap-3 rounded-2xl border border-ink-700 bg-ink-800/60 p-3 text-sm">
+                  <span className="w-5 shrink-0 text-center text-xs font-bold text-white/30">{i + 1}</span>
+                  <span className="min-w-0 flex-1">
+                    <PlayerChip userId={p.user_id} name={p.name} highlight={p.user_id === uid} />
+                    {p.user_id === captainId && (
+                      <span className="ml-2 rounded-full bg-pitch/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-pitch">
+                        ⓒ Captain
+                      </span>
+                    )}
+                  </span>
+                  <span className="shrink-0 text-xs text-white/40">Skill {p.skill_level}</span>
                 </li>
               ))}
             </ul>
@@ -188,13 +200,13 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
         />
       )}
 
-      {/* Check-in (accepted players, during the window) */}
-      {!isOrganizer && inCheckInWindow && mine?.status === "accepted" && (
+      {/* Check-in (any accepted player incl. the Captain, during the window) */}
+      {inCheckInWindow && mine?.status === "accepted" && (
         <CheckInPanel matchId={match.id} hasGeo={match.location?.latitude != null} />
       )}
-      {!isOrganizer && mine?.status === "attended" && !completed && (
+      {mine?.status === "attended" && !completed && (
         <div className="rounded-2xl border border-pitch/40 bg-pitch/10 p-4 text-center font-bold text-pitch">
-          ✓ Checked in — token returns when the match settles.
+          ✓ Checked in{isOrganizer ? " (Captain)" : ""} — token returns when the match settles.
         </div>
       )}
 

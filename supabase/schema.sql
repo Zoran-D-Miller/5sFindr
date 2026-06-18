@@ -637,29 +637,33 @@ begin
   if v_match.status in ('completed','cancelled') then return 'noop'; end if;
   if now() < v_match.ends_at then raise exception 'NOT_ENDED'; end if;
 
+  -- Attendees → return token (token-less Captain skips the token ops but still
+  -- gets games_played credited).
   insert into public.token_transactions (token_id, user_id, type, match_id, note)
     select token_id, user_id, 'return', p_match_id, 'Match completed — token returned'
-    from public.match_players where match_id = p_match_id and status = 'attended';
+    from public.match_players where match_id = p_match_id and status = 'attended' and token_id is not null;
   update public.tokens set status = 'available', committed_match_id = null
-    where id in (select token_id from public.match_players where match_id = p_match_id and status = 'attended');
+    where id in (select token_id from public.match_players where match_id = p_match_id and status = 'attended' and token_id is not null);
   update public.profiles set games_played = games_played + 1
     where id in (select user_id from public.match_players where match_id = p_match_id and status = 'attended');
 
   insert into public.token_transactions (token_id, user_id, type, match_id, note)
     select token_id, user_id, 'refund', p_match_id, 'Match ended while pending — token refunded'
-    from public.match_players where match_id = p_match_id and status = 'requested';
+    from public.match_players where match_id = p_match_id and status = 'requested' and token_id is not null;
   update public.tokens set status = 'available', committed_match_id = null
-    where id in (select token_id from public.match_players where match_id = p_match_id and status = 'requested');
+    where id in (select token_id from public.match_players where match_id = p_match_id and status = 'requested' and token_id is not null);
   update public.match_players set status = 'rejected' where match_id = p_match_id and status = 'requested';
 
+  -- No-shows → forfeit token (token-less Captain skips forfeit but still gets
+  -- games_missed credited).
   insert into public.token_transactions (token_id, user_id, type, match_id, note)
     select token_id, user_id, 'forfeit', p_match_id, 'No-show — token forfeited'
-    from public.match_players where match_id = p_match_id and status = 'accepted';
+    from public.match_players where match_id = p_match_id and status = 'accepted' and token_id is not null;
   insert into public.platform_ledger (user_id, match_id, token_id, reason)
     select user_id, p_match_id, token_id, 'no_show'
-    from public.match_players where match_id = p_match_id and status = 'accepted';
+    from public.match_players where match_id = p_match_id and status = 'accepted' and token_id is not null;
   update public.tokens set status = 'forfeited'
-    where id in (select token_id from public.match_players where match_id = p_match_id and status = 'accepted');
+    where id in (select token_id from public.match_players where match_id = p_match_id and status = 'accepted' and token_id is not null);
   update public.profiles set games_missed = games_missed + 1
     where id in (select user_id from public.match_players where match_id = p_match_id and status = 'accepted');
   update public.match_players set status = 'no_show' where match_id = p_match_id and status = 'accepted';
@@ -737,6 +741,17 @@ begin
 end;
 $$;
 
+-- Organizer auto-joins their own match as the Captain (accepted, no token).
+create or replace function public.add_organizer_as_captain()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  insert into public.match_players (match_id, user_id, status, responded_at)
+  values (new.id, new.organizer_id, 'accepted', now())
+  on conflict (match_id, user_id) do nothing;
+  return new;
+end;
+$$;
+
 -- ─────────────────────────────────────────────────────────────────────────
 -- §6  VIEWS  (security_invoker → RLS of the caller applies)
 -- ─────────────────────────────────────────────────────────────────────────
@@ -770,6 +785,7 @@ create or replace trigger tokens_set_updated_at        before update on public.t
 create or replace trigger matches_set_updated_at       before update on public.matches       for each row execute function public.set_updated_at();
 
 create or replace trigger on_auth_user_created after insert on auth.users for each row execute function public.handle_new_user();
+create or replace trigger matches_add_captain after insert on public.matches for each row execute function public.add_organizer_as_captain();
 
 -- ─────────────────────────────────────────────────────────────────────────
 -- §8  ROW LEVEL SECURITY
