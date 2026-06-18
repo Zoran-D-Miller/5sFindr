@@ -1,29 +1,34 @@
 -- ════════════════════════════════════════════════════════════════════════
 --  5sFindr — CANONICAL SCHEMA (single source of truth)
---  Consolidated final state of migrations 0001–0012. Verified equivalent
---  to the migration chain via catalog signature diff.
+--  Consolidated final state of migrations 0001–0013. Verified equivalent to
+--  the migration chain via catalog signature diff.
 --
---  Apply to a FRESH Supabase project's SQL Editor for a clean rebuild.
+--  ✅ FULLY IDEMPOTENT — safe to run on a FRESH project OR re-run over an
+--  EXISTING production database to converge drift. Tables use IF NOT EXISTS,
+--  and §4b backfills any columns a partial migration left behind (e.g. a
+--  missing matches.motm_awarded). Types, policies, triggers and views are all
+--  guarded. Functions/grants are create-or-replace. The §10 storage / realtime
+--  / pg_cron blocks are environment-guarded for non-Supabase Postgres.
+--
 --  Assumes the Supabase platform provides: schema `auth` (auth.users,
---  auth.uid()), roles anon / authenticated / service_role, and the `storage`
---  schema. The §10 storage / realtime / pg_cron blocks are environment-guarded.
+--  auth.uid()) and roles anon / authenticated / service_role.
 -- ════════════════════════════════════════════════════════════════════════
 
 create extension if not exists pgcrypto;
 
 -- ─────────────────────────────────────────────────────────────────────────
--- §1  ENUMS
+-- §1  ENUMS  (guarded: create only if absent)
 -- ─────────────────────────────────────────────────────────────────────────
-create type position_enum     as enum ('GK','DEF','MID','FWD','ANY');
-create type venue_type         as enum ('official_court','open_area');
-create type join_mode          as enum ('instant','manual');
-create type subscription_state as enum ('trialing','active','past_due','cancelled','free');
-create type match_status       as enum ('draft','open','full','in_progress','completed','cancelled');
-create type participant_status as enum ('requested','accepted','rejected','cancelled_early','cancelled_late','no_show','attended');
-create type team_color         as enum ('light','dark');
-create type check_in_method    as enum ('gps','match_code');
-create type token_status       as enum ('available','committed','forfeited','consumed');
-create type token_txn_type     as enum ('purchase','signup_grant','commit','return','refund','forfeit');
+do $$ begin create type position_enum     as enum ('GK','DEF','MID','FWD','ANY'); exception when duplicate_object then null; end $$;
+do $$ begin create type venue_type         as enum ('official_court','open_area'); exception when duplicate_object then null; end $$;
+do $$ begin create type join_mode          as enum ('instant','manual'); exception when duplicate_object then null; end $$;
+do $$ begin create type subscription_state as enum ('trialing','active','past_due','cancelled','free'); exception when duplicate_object then null; end $$;
+do $$ begin create type match_status       as enum ('draft','open','full','in_progress','completed','cancelled'); exception when duplicate_object then null; end $$;
+do $$ begin create type participant_status as enum ('requested','accepted','rejected','cancelled_early','cancelled_late','no_show','attended'); exception when duplicate_object then null; end $$;
+do $$ begin create type team_color         as enum ('light','dark'); exception when duplicate_object then null; end $$;
+do $$ begin create type check_in_method    as enum ('gps','match_code'); exception when duplicate_object then null; end $$;
+do $$ begin create type token_status       as enum ('available','committed','forfeited','consumed'); exception when duplicate_object then null; end $$;
+do $$ begin create type token_txn_type     as enum ('purchase','signup_grant','commit','return','refund','forfeit'); exception when duplicate_object then null; end $$;
 
 -- ─────────────────────────────────────────────────────────────────────────
 -- §2  SEQUENCES
@@ -46,7 +51,7 @@ $$;
 -- ─────────────────────────────────────────────────────────────────────────
 
 -- profiles (1:1 with auth.users)
-create table public.profiles (
+create table if not exists public.profiles (
   id                  uuid primary key references auth.users(id) on delete cascade,
   name                text not null default 'New Baller',
   profile_picture_url text,
@@ -72,10 +77,10 @@ create table public.profiles (
   founding_bonus_awarded boolean not null default false,    -- 0007
   phone_number           text                               -- 0009
 );
-create index profiles_neighborhood_idx on public.profiles (neighborhood);
+create index if not exists profiles_neighborhood_idx on public.profiles (neighborhood);
 
 -- subscriptions (Paystack-backed, R20/mo)
-create table public.subscriptions (
+create table if not exists public.subscriptions (
   id                         uuid primary key default gen_random_uuid(),
   user_id                    uuid not null unique references public.profiles(id) on delete cascade,
   state                      subscription_state not null default 'trialing',
@@ -90,7 +95,7 @@ create table public.subscriptions (
 );
 
 -- tokens (R20 recyclable deposit) — committed_match_id FK added after matches
-create table public.tokens (
+create table if not exists public.tokens (
   id                 uuid primary key default gen_random_uuid(),
   owner_id           uuid not null references public.profiles(id) on delete cascade,
   status             token_status not null default 'available',
@@ -98,9 +103,9 @@ create table public.tokens (
   created_at         timestamptz not null default now(),
   updated_at         timestamptz not null default now()
 );
-create index tokens_owner_status_idx on public.tokens (owner_id, status);
+create index if not exists tokens_owner_status_idx on public.tokens (owner_id, status);
 
-create table public.token_transactions (
+create table if not exists public.token_transactions (
   id         uuid primary key default gen_random_uuid(),
   token_id   uuid not null references public.tokens(id) on delete cascade,
   user_id    uuid not null references public.profiles(id) on delete cascade,
@@ -110,10 +115,10 @@ create table public.token_transactions (
   note       text,
   created_at timestamptz not null default now()
 );
-create index token_txns_user_idx on public.token_transactions (user_id, created_at desc);
+create index if not exists token_txns_user_idx on public.token_transactions (user_id, created_at desc);
 
 -- locations (seeded venues + custom typed fields; lat/lng NULLABLE)
-create table public.locations (
+create table if not exists public.locations (
   id                uuid primary key default gen_random_uuid(),
   name              text not null,
   type              venue_type not null,
@@ -126,10 +131,10 @@ create table public.locations (
   created_by_id     uuid references public.profiles(id) on delete set null,
   created_at        timestamptz not null default now()
 );
-create index locations_neighborhood_idx on public.locations (neighborhood);
+create index if not exists locations_neighborhood_idx on public.locations (neighborhood);
 
 -- matches
-create table public.matches (
+create table if not exists public.matches (
   id                    uuid primary key default gen_random_uuid(),
   organizer_id          uuid not null references public.profiles(id) on delete cascade,
   location_id           uuid not null references public.locations(id) on delete restrict,
@@ -156,14 +161,43 @@ create table public.matches (
   motm_awarded          boolean not null default false,
   motm_winner_id        uuid references public.profiles(id) on delete set null
 );
-create index matches_status_kickoff_idx on public.matches (status, kickoff_at);
+create index if not exists matches_status_kickoff_idx on public.matches (status, kickoff_at);
 
-alter table public.tokens
-  add constraint tokens_committed_match_fk
-  foreign key (committed_match_id) references public.matches(id) on delete set null;
+do $$ begin
+  if not exists (select 1 from pg_constraint where conname = 'tokens_committed_match_fk') then
+    alter table public.tokens
+      add constraint tokens_committed_match_fk
+      foreign key (committed_match_id) references public.matches(id) on delete set null;
+  end if;
+end $$;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- §4b  COLUMN BACKFILL — fills columns that ALTERs added after a table's
+--      original CREATE, so a partial migration's drift is repaired on re-run.
+--      (CREATE TABLE IF NOT EXISTS skips existing tables, so these are needed.)
+-- ─────────────────────────────────────────────────────────────────────────
+alter table public.profiles add column if not exists bio                    text;                           -- 0007
+alter table public.profiles add column if not exists avatar_url             text;                           -- 0007
+alter table public.profiles add column if not exists founding_number        int;                            -- 0007
+alter table public.profiles add column if not exists founding_bonus_awarded boolean not null default false; -- 0007
+alter table public.profiles add column if not exists phone_number           text;                           -- 0009
+alter table public.matches  add column if not exists motm_awarded           boolean not null default false; -- 0005
+alter table public.matches  add column if not exists motm_winner_id         uuid references public.profiles(id) on delete set null; -- 0005
+alter table public.subscriptions add column if not exists paystack_email_token text;                        -- defensive
+
+-- 0003/0010: custom (typed) venues have no coordinates → lat/lng must be nullable.
+alter table public.locations alter column latitude  drop not null;
+alter table public.locations alter column longitude drop not null;
+
+-- Unique founding ordinal (guarded — column may have just been backfilled).
+do $$ begin
+  if not exists (select 1 from pg_constraint where conname = 'profiles_founding_number_key') then
+    alter table public.profiles add constraint profiles_founding_number_key unique (founding_number);
+  end if;
+end $$;
 
 -- match_players (join + attendance + token link)
-create table public.match_players (
+create table if not exists public.match_players (
   id              uuid primary key default gen_random_uuid(),
   match_id        uuid not null references public.matches(id) on delete cascade,
   user_id         uuid not null references public.profiles(id) on delete cascade,
@@ -180,9 +214,9 @@ create table public.match_players (
   check_in_lng    double precision,
   unique (match_id, user_id)
 );
-create index match_players_match_status_idx on public.match_players (match_id, status);
+create index if not exists match_players_match_status_idx on public.match_players (match_id, status);
 
-create table public.referrals (
+create table if not exists public.referrals (
   id             uuid primary key default gen_random_uuid(),
   referrer_id    uuid not null references public.profiles(id) on delete cascade,
   referred_id    uuid not null unique references public.profiles(id) on delete cascade,
@@ -190,7 +224,7 @@ create table public.referrals (
   created_at     timestamptz not null default now()
 );
 
-create table public.match_votes (
+create table if not exists public.match_votes (
   id          uuid primary key default gen_random_uuid(),
   match_id    uuid not null references public.matches(id) on delete cascade,
   voter_id    uuid not null references public.profiles(id) on delete cascade,
@@ -199,10 +233,10 @@ create table public.match_votes (
   unique (match_id, voter_id),
   check (voter_id <> votee_id)
 );
-create index match_votes_match_idx on public.match_votes (match_id);
+create index if not exists match_votes_match_idx on public.match_votes (match_id);
 
 -- platform ledger (forfeited deposits to 5sFindr)
-create table public.platform_ledger (
+create table if not exists public.platform_ledger (
   id         uuid primary key default gen_random_uuid(),
   user_id    uuid references public.profiles(id) on delete set null,
   match_id   uuid references public.matches(id) on delete set null,
@@ -213,7 +247,7 @@ create table public.platform_ledger (
 );
 
 -- match codes (organizer-only; hidden from players)
-create table public.match_codes (
+create table if not exists public.match_codes (
   match_id    uuid primary key references public.matches(id) on delete cascade,
   code        text not null,
   valid_until timestamptz not null,
@@ -221,7 +255,7 @@ create table public.match_codes (
 );
 
 -- follows (social graph)
-create table public.follows (
+create table if not exists public.follows (
   id           uuid primary key default gen_random_uuid(),
   follower_id  uuid not null references public.profiles(id) on delete cascade,
   following_id uuid not null references public.profiles(id) on delete cascade,
@@ -229,11 +263,11 @@ create table public.follows (
   unique (follower_id, following_id),
   check (follower_id <> following_id)
 );
-create index follows_following_idx on public.follows(following_id);
-create index follows_follower_idx  on public.follows(follower_id);
+create index if not exists follows_following_idx on public.follows(following_id);
+create index if not exists follows_follower_idx  on public.follows(follower_id);
 
 -- region match pings (Ping Nearby Ballers, Layer 1)
-create table public.match_pings (
+create table if not exists public.match_pings (
   id           uuid primary key default gen_random_uuid(),
   match_id     uuid not null references public.matches(id) on delete cascade,
   organizer_id uuid not null references public.profiles(id) on delete cascade,
@@ -241,7 +275,7 @@ create table public.match_pings (
   message      text not null,
   created_at   timestamptz not null default now()
 );
-create index match_pings_region_idx on public.match_pings(neighborhood, created_at desc);
+create index if not exists match_pings_region_idx on public.match_pings(neighborhood, created_at desc);
 
 -- ─────────────────────────────────────────────────────────────────────────
 -- §5  FUNCTIONS
@@ -699,7 +733,8 @@ $$;
 -- ─────────────────────────────────────────────────────────────────────────
 -- §6  VIEWS  (security_invoker → RLS of the caller applies)
 -- ─────────────────────────────────────────────────────────────────────────
-create or replace view public.match_feed with (security_invoker = true) as
+drop view if exists public.match_feed;
+create view public.match_feed with (security_invoker = true) as
   select m.id, m.title, m.kickoff_at, m.ends_at, m.venue_type, m.join_mode, m.status,
          m.max_players, m.price_per_player_zar, m.organizer_id,
          l.name as location_name, l.neighborhood, l.type as location_type, l.latitude, l.longitude,
@@ -711,7 +746,8 @@ create or replace view public.match_feed with (security_invoker = true) as
     where status in ('accepted','attended') group by match_id
   ) p on p.match_id = m.id;
 
-create or replace view public.leaderboard with (security_invoker = true) as
+drop view if exists public.leaderboard;
+create view public.leaderboard with (security_invoker = true) as
   select p.id, p.name, p.avatar_url, p.neighborhood, p.skill_level, p.preferred_positions,
          p.motm_count, p.reliability_score, p.games_played, p.founding_number,
          rank() over (order by p.motm_count desc, p.reliability_score desc, p.games_played desc) as position
@@ -721,12 +757,12 @@ create or replace view public.leaderboard with (security_invoker = true) as
 -- ─────────────────────────────────────────────────────────────────────────
 -- §7  TRIGGERS
 -- ─────────────────────────────────────────────────────────────────────────
-create trigger profiles_set_updated_at      before update on public.profiles      for each row execute function public.set_updated_at();
-create trigger subscriptions_set_updated_at before update on public.subscriptions for each row execute function public.set_updated_at();
-create trigger tokens_set_updated_at        before update on public.tokens        for each row execute function public.set_updated_at();
-create trigger matches_set_updated_at       before update on public.matches       for each row execute function public.set_updated_at();
+create or replace trigger profiles_set_updated_at      before update on public.profiles      for each row execute function public.set_updated_at();
+create or replace trigger subscriptions_set_updated_at before update on public.subscriptions for each row execute function public.set_updated_at();
+create or replace trigger tokens_set_updated_at        before update on public.tokens        for each row execute function public.set_updated_at();
+create or replace trigger matches_set_updated_at       before update on public.matches       for each row execute function public.set_updated_at();
 
-create trigger on_auth_user_created after insert on auth.users for each row execute function public.handle_new_user();
+create or replace trigger on_auth_user_created after insert on auth.users for each row execute function public.handle_new_user();
 
 -- ─────────────────────────────────────────────────────────────────────────
 -- §8  ROW LEVEL SECURITY
@@ -745,45 +781,69 @@ alter table public.match_codes        enable row level security;
 alter table public.follows            enable row level security;
 alter table public.match_pings        enable row level security;
 
+-- Drop-then-create so re-runs converge cleanly (policies have no IF NOT EXISTS).
+drop policy if exists "profiles are public"        on public.profiles;
 create policy "profiles are public"        on public.profiles for select using (true);
+drop policy if exists "owner updates own profile"  on public.profiles;
 create policy "owner updates own profile"  on public.profiles for update using (auth.uid() = id);
 
+drop policy if exists "owner reads own sub"        on public.subscriptions;
 create policy "owner reads own sub"        on public.subscriptions for select using (auth.uid() = user_id);
 
+drop policy if exists "owner reads own tokens"     on public.tokens;
 create policy "owner reads own tokens"     on public.tokens for select using (auth.uid() = owner_id);
+drop policy if exists "owner reads own token txns" on public.token_transactions;
 create policy "owner reads own token txns" on public.token_transactions for select using (auth.uid() = user_id);
 
+drop policy if exists "locations are public"       on public.locations;
 create policy "locations are public"       on public.locations for select using (true);
+drop policy if exists "premium adds locations"     on public.locations;
 create policy "premium adds locations"     on public.locations for insert
   with check (auth.uid() = created_by_id and public.is_premium(auth.uid()));
 
+drop policy if exists "live matches are public"    on public.matches;
 create policy "live matches are public"    on public.matches for select
   using (status in ('open','full','in_progress','completed'));
+drop policy if exists "organizer reads own drafts" on public.matches;
 create policy "organizer reads own drafts" on public.matches for select using (auth.uid() = organizer_id);
+drop policy if exists "premium creates matches"    on public.matches;
 create policy "premium creates matches"    on public.matches for insert
   with check (auth.uid() = organizer_id and public.is_premium(auth.uid()));
+drop policy if exists "organizer updates match"    on public.matches;
 create policy "organizer updates match"    on public.matches for update using (auth.uid() = organizer_id);
 
+drop policy if exists "roster visible to organizer and participants" on public.match_players;
+drop policy if exists "player or organizer reads roster" on public.match_players;  -- legacy name
 create policy "roster visible to organizer and participants" on public.match_players for select
   using (user_id = auth.uid() or public.is_match_organizer(match_id) or public.is_match_participant(match_id));
+drop policy if exists "premium requests to join"   on public.match_players;
 create policy "premium requests to join"   on public.match_players for insert
   with check (auth.uid() = user_id and public.is_premium(auth.uid()));
 
+drop policy if exists "referrer reads referrals"   on public.referrals;
 create policy "referrer reads referrals"   on public.referrals for select using (auth.uid() = referrer_id);
 
+drop policy if exists "votes are public"           on public.match_votes;
 create policy "votes are public"           on public.match_votes for select using (true);
+drop policy if exists "premium participant votes"  on public.match_votes;
 create policy "premium participant votes"  on public.match_votes for insert
   with check (auth.uid() = voter_id and public.is_premium(auth.uid())
     and exists (select 1 from public.match_players mp
       where mp.match_id = match_votes.match_id and mp.user_id = auth.uid() and mp.status = 'attended'));
 
+drop policy if exists "organizer reads own match code" on public.match_codes;
 create policy "organizer reads own match code" on public.match_codes for select using (public.is_match_organizer(match_id));
 
+drop policy if exists "follows are public"         on public.follows;
 create policy "follows are public"         on public.follows for select using (true);
+drop policy if exists "user manages own follows"   on public.follows;
 create policy "user manages own follows"   on public.follows for insert with check (auth.uid() = follower_id);
+drop policy if exists "user removes own follows"   on public.follows;
 create policy "user removes own follows"   on public.follows for delete using (auth.uid() = follower_id);
 
+drop policy if exists "pings are public"           on public.match_pings;
 create policy "pings are public"           on public.match_pings for select using (true);
+drop policy if exists "organizer creates pings"    on public.match_pings;
 create policy "organizer creates pings"    on public.match_pings for insert
   with check (auth.uid() = organizer_id and public.is_match_organizer(match_id));
 
