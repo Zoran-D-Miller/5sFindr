@@ -18,12 +18,17 @@ export function TokenBundles() {
     setError("");
     setBusyQty(qty);
     start(async () => {
-      const res = await purchaseTokens(qty);
-      if (res.ok) window.location.href = res.url;
-      else {
+      try {
+        const res = await purchaseTokens(qty);
+        if (res.ok) {
+          window.location.href = res.url;
+          return;
+        }
         setError(res.error);
-        setBusyQty(null);
+      } catch {
+        setError("Couldn’t start checkout — please try again.");
       }
+      setBusyQty(null);
     });
   }
 
@@ -51,7 +56,14 @@ export function TokenBundles() {
           </button>
         ))}
       </div>
-      {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
+      {error && (
+        <p
+          role="alert"
+          className="mt-3 rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-300"
+        >
+          {error}
+        </p>
+      )}
     </section>
   );
 }

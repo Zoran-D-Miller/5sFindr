@@ -18,10 +18,15 @@ export function SubscriptionCard({ subscription }: { subscription: Subscription 
   const isTrialing = subscription.state === "trialing" && trialDays > 0;
 
   function upgrade() {
+    setError("");
     startTransition(async () => {
-      const res = await startSubscription();
-      if (res.ok) window.location.href = res.url;
-      else setError(res.error);
+      try {
+        const res = await startSubscription();
+        if (res.ok) window.location.href = res.url;
+        else setError(res.error);
+      } catch {
+        setError("Couldn’t start checkout — please try again.");
+      }
     });
   }
 

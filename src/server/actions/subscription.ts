@@ -14,18 +14,20 @@ export type StartSubResult =
  * trial → paid transition is never trusted to the browser.
  */
 export async function startSubscription(): Promise<StartSubResult> {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user?.email) return { ok: false, error: "Not signed in." };
-
-  const plan = process.env.PAYSTACK_PLAN_CODE;
-  if (!plan) return { ok: false, error: "Subscription plan not configured." };
-
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
   try {
+    if (!process.env.PAYSTACK_SECRET_KEY) {
+      return { ok: false, error: "Payments aren’t configured yet. Please try again later." };
+    }
+    const plan = process.env.PAYSTACK_PLAN_CODE;
+    if (!plan) return { ok: false, error: "Subscription plan not configured." };
+
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user?.email) return { ok: false, error: "Please log in again." };
+
+    const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
     const { authorization_url } = await initializeTransaction({
       email: user.email,
       amount: 2000, // R20 in cents
@@ -35,7 +37,8 @@ export async function startSubscription(): Promise<StartSubResult> {
     });
     return { ok: true, url: authorization_url };
   } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : "Checkout failed." };
+    console.error("[startSubscription]", e);
+    return { ok: false, error: "Couldn’t start checkout — please try again." };
   }
 }
 
@@ -52,17 +55,23 @@ export const TOKEN_BUNDLES: Record<number, { cents: number; label: string }> = {
  * token_qty tokens on charge.success (idempotent by Paystack reference).
  */
 export async function purchaseTokens(qty: 1 | 5 | 10): Promise<StartSubResult> {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user?.email) return { ok: false, error: "Not signed in." };
-
-  const bundle = TOKEN_BUNDLES[qty];
-  if (!bundle) return { ok: false, error: "Invalid bundle." };
-
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  // Whole body wrapped: a missing env (requireEnv throws), a Supabase/Paystack
+  // network failure, etc. must return an error object — never throw and crash
+  // the client boundary with a 500.
   try {
+    if (!process.env.PAYSTACK_SECRET_KEY) {
+      return { ok: false, error: "Payments aren’t configured yet. Please try again later." };
+    }
+    const bundle = TOKEN_BUNDLES[qty];
+    if (!bundle) return { ok: false, error: "Invalid bundle." };
+
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user?.email) return { ok: false, error: "Please log in again." };
+
+    const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
     const { authorization_url } = await initializeTransaction({
       email: user.email,
       amount: bundle.cents,
@@ -71,6 +80,7 @@ export async function purchaseTokens(qty: 1 | 5 | 10): Promise<StartSubResult> {
     });
     return { ok: true, url: authorization_url };
   } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : "Checkout failed." };
+    console.error("[purchaseTokens]", e);
+    return { ok: false, error: "Couldn’t start checkout — please try again." };
   }
 }

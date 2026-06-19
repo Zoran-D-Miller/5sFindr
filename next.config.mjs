@@ -20,7 +20,11 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "*.supabase.co" },
+      // Supabase Storage public objects (covers any project ref). NOTE: our
+      // <Avatar> uses a plain <img>, so this only matters if/when we adopt
+      // next/image — it is not what gates the seed avatars rendering.
+      { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
+      { protocol: "https", hostname: "*.supabase.in", pathname: "/storage/v1/object/public/**" },
     ],
   },
 };

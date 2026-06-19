@@ -8,6 +8,7 @@ import { PositionPicker } from "./PositionPicker";
 import { AvailabilityGrid } from "./AvailabilityGrid";
 import { ReliabilityBadge } from "./ReliabilityBadge";
 import { AvatarUpload } from "./AvatarUpload";
+import { FollowStats } from "./FollowStats";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -87,10 +88,7 @@ export function ProfileEditor({
             gamesPlayed={profile.games_played}
             gamesMissed={profile.games_missed}
           />
-          <span className="text-sm text-white/60">
-            <span className="font-bold text-white">{followers}</span> Followers ·{" "}
-            <span className="font-bold text-white">{following}</span> Following
-          </span>
+          <FollowStats userId={profile.id} followers={followers} following={following} />
         </div>
       </div>
 
