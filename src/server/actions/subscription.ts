@@ -43,8 +43,9 @@ export async function startSubscription(): Promise<StartSubResult> {
 }
 
 // Token bundles — priced to absorb Paystack's fixed fee at volume.
-// qty → ZAR amount in cents.
-export const TOKEN_BUNDLES: Record<number, { cents: number; label: string }> = {
+// qty → ZAR amount in cents. NOT exported: a "use server" file may only export
+// async functions (a non-async export breaks the client-action boundary build).
+const TOKEN_BUNDLES: Record<number, { cents: number; label: string }> = {
   1: { cents: 2000, label: "R20" },
   5: { cents: 9000, label: "R90" },
   10: { cents: 17000, label: "R170" },
