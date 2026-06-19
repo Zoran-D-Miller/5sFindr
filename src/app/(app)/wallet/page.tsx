@@ -1,8 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { SubscriptionCard } from "@/components/wallet/SubscriptionCard";
 import { TokenWallet } from "@/components/wallet/TokenWallet";
+import { TokenBundles } from "@/components/wallet/TokenBundles";
 import { TokenLedger } from "@/components/wallet/TokenLedger";
 import { ReferralCard } from "@/components/wallet/ReferralCard";
+import { CommunityBanner } from "@/components/CommunityBanner";
 import type { Subscription, Token, TokenTransaction, Profile } from "@/lib/types";
 
 export default async function WalletPage() {
@@ -43,7 +45,9 @@ export default async function WalletPage() {
 
       {subscription && <SubscriptionCard subscription={subscription} />}
       <TokenWallet tokens={tokens ?? []} />
+      <TokenBundles />
       {profile && <ReferralCard code={profile.referral_code} siteUrl={siteUrl} />}
+      <CommunityBanner />
       <TokenLedger transactions={txns ?? []} />
     </div>
   );

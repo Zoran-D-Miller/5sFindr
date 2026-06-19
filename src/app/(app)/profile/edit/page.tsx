@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { ProfileEditor } from "@/components/profile/ProfileEditor";
+import { CommunityBanner } from "@/components/CommunityBanner";
 import type { Profile } from "@/lib/types";
 
 export default async function ProfileEditPage() {
@@ -22,6 +23,9 @@ export default async function ProfileEditPage() {
   return (
     <>
       <h1 className="mb-6 text-2xl font-black tracking-tight">Your profile</h1>
+      <div className="mb-6">
+        <CommunityBanner />
+      </div>
       <ProfileEditor profile={profile} followers={followers ?? 0} following={following ?? 0} />
     </>
   );

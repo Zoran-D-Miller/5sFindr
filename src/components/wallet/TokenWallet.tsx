@@ -30,15 +30,6 @@ export function TokenWallet({ tokens }: { tokens: Token[] }) {
         )}
       </div>
 
-      <button
-        type="button"
-        className="mt-6 w-full rounded-2xl border border-pitch/40 py-3 font-semibold text-pitch transition hover:bg-pitch/10"
-      >
-        Top up tokens — R20 each
-      </button>
-      <p className="mt-2 text-center text-xs text-white/40">
-        A token is a deposit. Play the game, get it back.
-      </p>
     </section>
   );
 }

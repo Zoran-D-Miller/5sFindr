@@ -70,8 +70,38 @@ export async function POST(req: Request) {
 
   try {
     switch (event.event) {
-      // First payment of a new subscription (carries our metadata.user_id).
+      // charge.success covers BOTH token-bundle purchases (metadata.token_qty)
+      // and subscription payments (no token_qty).
       case "charge.success": {
+        const qty = Number(data?.metadata?.token_qty ?? 0);
+
+        if (qty > 0) {
+          // ── Token bundle purchase → mint exactly `qty` tokens ──
+          const userId = await resolveUserId(supabase, data);
+          const ref: string | undefined = data?.reference;
+          if (userId && ref) {
+            // Idempotency: skip if this Paystack reference was already minted.
+            const tag = `paystack:${ref}`;
+            const { count } = await supabase
+              .from("token_transactions")
+              .select("id", { count: "exact", head: true })
+              .eq("note", tag);
+            if (!count) {
+              const { data: minted } = await supabase
+                .from("tokens")
+                .insert(Array.from({ length: Math.min(qty, 50) }, () => ({ owner_id: userId, status: "available" })))
+                .select("id");
+              if (minted?.length) {
+                await supabase.from("token_transactions").insert(
+                  minted.map((t) => ({ token_id: t.id, user_id: userId, type: "purchase", amount_zar: 20, note: tag })),
+                );
+              }
+            }
+          }
+          break;
+        }
+
+        // ── Subscription payment → activate ──
         const userId = await resolveUserId(supabase, data);
         if (userId) {
           const update: SubUpdate = { state: "active", free_until: null };
