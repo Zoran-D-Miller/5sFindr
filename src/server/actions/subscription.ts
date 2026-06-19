@@ -7,6 +7,21 @@ export type StartSubResult =
   | { ok: true; url: string }
   | { ok: false; error: string };
 
+// Build an absolute callback URL to the frontend /wallet page using ONLY the
+// origin of NEXT_PUBLIC_SITE_URL. This is defensive: if that env var ever holds
+// a path (e.g. the webhook URL was pasted in), naive `${site}/wallet` would
+// resolve to /api/webhooks/paystack/wallet → 404 after payment.
+function walletCallback(query: string): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  let origin: string;
+  try {
+    origin = new URL(raw).origin;
+  } catch {
+    origin = "http://localhost:3000";
+  }
+  return `${origin}/wallet${query}`;
+}
+
 /**
  * Begin the R20/mo Premium subscription via Paystack. Returns the hosted
  * checkout URL — the client redirects there. The subscription row is flipped
@@ -27,12 +42,11 @@ export async function startSubscription(): Promise<StartSubResult> {
     } = await supabase.auth.getUser();
     if (!user?.email) return { ok: false, error: "Please log in again." };
 
-    const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
     const { authorization_url } = await initializeTransaction({
       email: user.email,
       amount: 2000, // R20 in cents
       plan,
-      callbackUrl: `${site}/wallet?upgraded=1`,
+      callbackUrl: walletCallback("?upgraded=1"),
       metadata: { user_id: user.id },
     });
     return { ok: true, url: authorization_url };
@@ -72,11 +86,10 @@ export async function purchaseTokens(qty: 1 | 5 | 10): Promise<StartSubResult> {
     } = await supabase.auth.getUser();
     if (!user?.email) return { ok: false, error: "Please log in again." };
 
-    const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
     const { authorization_url } = await initializeTransaction({
       email: user.email,
       amount: bundle.cents,
-      callbackUrl: `${site}/wallet?topup=1`,
+      callbackUrl: walletCallback("?topup=1"),
       metadata: { user_id: user.id, token_qty: qty },
     });
     return { ok: true, url: authorization_url };
