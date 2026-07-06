@@ -30,7 +30,8 @@ export default async function LeaderboardPage() {
           <p className="mt-1 text-sm text-white/40">Play matches and earn MotM trophies to climb.</p>
         </div>
       ) : (
-        <LeaderboardList rows={rows} currentUserId={user!.id} />
+        // Public browsing: anonymous visitors get no "you" highlight.
+        <LeaderboardList rows={rows} currentUserId={user?.id ?? ""} />
       )}
     </div>
   );

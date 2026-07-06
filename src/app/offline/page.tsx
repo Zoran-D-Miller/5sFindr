@@ -22,10 +22,7 @@ export default function OfflinePage() {
         back on Wi-Fi.
       </p>
 
-      <Link
-        href="/feed"
-        className="mt-8 rounded-2xl bg-pitch px-6 py-3 font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark"
-      >
+      <Link href="/feed" className="btn-primary mt-8 px-6">
         Try again
       </Link>
     </main>

@@ -17,28 +17,33 @@ export default async function FeedPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const uid = user!.id;
+  // Public browsing: uid is null for anonymous visitors — they see the full
+  // open feed; per-user extras (own-match exclusion, organizer view, pings)
+  // simply don't apply.
+  const uid = user?.id ?? null;
 
   const now = new Date().toISOString();
 
+  const playerQuery = supabase
+    .from("match_feed")
+    .select("*")
+    .in("status", ["open", "full"])
+    .gte("kickoff_at", now)
+    .order("kickoff_at", { ascending: true });
+
   const [playerRes, organizerRes, premium] = await Promise.all([
-    // Player feed: open/full upcoming games, not your own, soonest first.
-    supabase
-      .from("match_feed")
-      .select("*")
-      .in("status", ["open", "full"])
-      .gte("kickoff_at", now)
-      .neq("organizer_id", uid)
-      .order("kickoff_at", { ascending: true })
-      .returns<MatchFeedItem[]>(),
+    // Player feed: open/full upcoming games (excluding your own when logged in).
+    (uid ? playerQuery.neq("organizer_id", uid) : playerQuery).returns<MatchFeedItem[]>(),
     // Organizer dashboard: everything you manage, soonest first.
-    supabase
-      .from("match_feed")
-      .select("*")
-      .eq("organizer_id", uid)
-      .order("kickoff_at", { ascending: true })
-      .returns<MatchFeedItem[]>(),
-    isPremium(uid),
+    uid
+      ? supabase
+          .from("match_feed")
+          .select("*")
+          .eq("organizer_id", uid)
+          .order("kickoff_at", { ascending: true })
+          .returns<MatchFeedItem[]>()
+      : Promise.resolve({ data: [] as MatchFeedItem[], error: null }),
+    uid ? isPremium(uid) : Promise.resolve(false),
   ]);
 
   // Surface (don't swallow) read errors — an empty feed from a permission/RLS
@@ -64,7 +69,10 @@ export default async function FeedPage() {
   ].sort();
 
   // Region pings (Layer 1): active alerts for upcoming open matches in my hood.
-  const { data: me } = await supabase.from("profiles").select("neighborhood").eq("id", uid).maybeSingle();
+  // Anonymous visitors have no neighborhood, so no pings.
+  const { data: me } = uid
+    ? await supabase.from("profiles").select("neighborhood").eq("id", uid).maybeSingle()
+    : { data: null };
   let pings: PingRow[] = [];
   if (me?.neighborhood) {
     const since = new Date(Date.now() - 6 * 3_600_000).toISOString();

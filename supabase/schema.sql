@@ -837,8 +837,19 @@ create policy "organizer updates match"    on public.matches for update using (a
 
 drop policy if exists "roster visible to organizer and participants" on public.match_players;
 drop policy if exists "player or organizer reads roster" on public.match_players;  -- legacy name
-create policy "roster visible to organizer and participants" on public.match_players for select
-  using (user_id = auth.uid() or public.is_match_organizer(match_id) or public.is_match_participant(match_id));
+drop policy if exists "roster is public for live matches" on public.match_players;
+-- Public browsing (0016): the roster of a LIVE match is public-read; drafts
+-- stay hidden because the parent match row is organizer-only.
+create policy "roster is public for live matches" on public.match_players for select
+  using (
+    user_id = auth.uid()
+    or public.is_match_organizer(match_id)
+    or exists (
+      select 1 from public.matches m
+      where m.id = match_id
+        and m.status in ('open','full','in_progress','completed')
+    )
+  );
 drop policy if exists "premium requests to join"   on public.match_players;
 create policy "premium requests to join"   on public.match_players for insert
   with check (auth.uid() = user_id and public.is_premium(auth.uid()));

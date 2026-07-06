@@ -58,7 +58,9 @@ function fmt(iso: string) {
 export default async function MatchLobbyPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  const uid = user!.id;
+  // Public browsing: match details are viewable anonymously. uid === null →
+  // spectator mode (no wallet/vote/check-in reads, join CTA routes to signup).
+  const uid = user?.id ?? null;
 
   // Resolve by UUID id OR share_slug — bulletproof regardless of which the URL
   // carries (a slug is not a valid uuid, so `.eq("id", slug)` would error → 404).
@@ -79,13 +81,15 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   // Lazy automated closure: once a match has ended, settle it (returns tokens
   // to attendees, forfeits no-shows). Call the RPC directly — NOT settleMatch()
   // — because that action calls revalidatePath(), illegal during render. We
-  // re-fetch below, so revalidation isn't needed here.
-  if (ended && match.status !== "completed" && match.status !== "cancelled") {
+  // re-fetch below, so revalidation isn't needed here. Skipped for anonymous
+  // visitors (RPC execute is granted to authenticated only); the pg_cron sweep
+  // and any logged-in viewer still settle it.
+  if (uid && ended && match.status !== "completed" && match.status !== "cancelled") {
     await supabase.rpc("settle_match", { p_match_id: matchId });
     ({ data: match } = await loadMatch());
   }
   // Lazy MotM finalization once voting has closed (24h after full time).
-  if (match && match.status === "completed" && !match.motm_awarded &&
+  if (uid && match && match.status === "completed" && !match.motm_awarded &&
       now >= new Date(match.ends_at).getTime() + 24 * 3_600_000) {
     await supabase.rpc("finalize_motm", { p_match_id: matchId });
     ({ data: match } = await loadMatch());
@@ -99,10 +103,14 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
         .select("user_id, status, team_color, position, profile:profiles(name, skill_level, reliability_score)")
         .eq("match_id", matchId)
         .returns<RawRosterRow[]>(),
-      supabase.from("tokens").select("id", { count: "exact", head: true })
-        .eq("owner_id", uid).eq("status", "available"),
-      isPremium(uid),
-      supabase.from("match_votes").select("id").eq("match_id", matchId).eq("voter_id", uid).maybeSingle(),
+      uid
+        ? supabase.from("tokens").select("id", { count: "exact", head: true })
+            .eq("owner_id", uid).eq("status", "available")
+        : Promise.resolve({ count: 0 }),
+      uid ? isPremium(uid) : Promise.resolve(false),
+      uid
+        ? supabase.from("match_votes").select("id").eq("match_id", matchId).eq("voter_id", uid).maybeSingle()
+        : Promise.resolve({ data: null }),
       supabase.from("profiles").select("name").eq("id", match.organizer_id).maybeSingle<{ name: string }>(),
     ]);
 
@@ -163,7 +171,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
       {match.teams_assigned ? (
         <section>
           <h3 className="mb-2 px-1 text-sm font-bold uppercase tracking-wide text-white/50">Match tickets</h3>
-          <TeamPanel roster={completed ? attended : confirmed} meId={uid} captainId={captainId} />
+          <TeamPanel roster={completed ? attended : confirmed} meId={uid ?? ""} captainId={captainId} />
         </section>
       ) : (
         confirmed.length > 0 && (
@@ -255,6 +263,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
             joinMode={match.join_mode}
             kickoffIso={match.kickoff_at}
             myStatus={mine?.status ?? null}
+            isAuthed={!!uid}
             isPremium={premium}
             availableTokens={availableTokens ?? 0}
           />

@@ -14,6 +14,7 @@ export function PlayerActions({
   joinMode,
   kickoffIso,
   myStatus,
+  isAuthed = true,
   isPremium,
   availableTokens,
 }: {
@@ -22,6 +23,7 @@ export function PlayerActions({
   joinMode: JoinMode;
   kickoffIso: string;
   myStatus: ParticipantStatus | null;
+  isAuthed?: boolean;
   isPremium: boolean;
   availableTokens: number;
 }) {
@@ -99,6 +101,23 @@ export function PlayerActions({
       <p className="rounded-2xl border border-ink-700 bg-ink-800/60 p-4 text-center text-sm text-white/50">
         This match is {matchStatus === "full" ? "full" : "closed"}.
       </p>
+    );
+  }
+
+  // Anonymous spectator → the auth wall triggers HERE, on the join intent.
+  if (!isAuthed) {
+    return (
+      <div className="space-y-2">
+        <Link
+          href={`/signup?next=${encodeURIComponent(`/matches/${matchId}`)}`}
+          className="block w-full rounded-2xl bg-pitch py-3.5 text-center font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark"
+        >
+          Claim your spot — first month free
+        </Link>
+        <p className="text-center text-xs text-white/40">
+          Sign up in seconds: 30-day Premium trial + 1 free token.
+        </p>
+      </div>
     );
   }
 

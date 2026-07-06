@@ -5,17 +5,12 @@ import { useFormState, useFormStatus } from "react-dom";
 import { signIn, signUp } from "@/server/actions/auth";
 import { PasswordInput } from "./PasswordInput";
 
-const inputCls =
-  "w-full rounded-xl border border-ink-600 bg-ink-800 px-3.5 py-3 text-white placeholder:text-white/30 outline-none focus:border-pitch";
+const inputCls = "input-field";
 
 function SubmitButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="w-full rounded-2xl bg-pitch py-3.5 font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark disabled:opacity-60"
-    >
+    <button type="submit" disabled={pending} className="btn-primary w-full">
       {pending ? "One sec…" : label}
     </button>
   );

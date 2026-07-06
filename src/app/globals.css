@@ -23,3 +23,55 @@ body {
   background: linear-gradient(90deg, transparent, #0AE98A, transparent);
   height: 1px;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Design-system component classes. One canonical look per pattern — use
+   these instead of re-composing utilities per component.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer components {
+  /* Surfaces — three elevations only */
+  .card {
+    @apply rounded-card border border-ink-700 bg-ink-800/60;
+  }
+  .card-hero {
+    @apply rounded-sheet border border-ink-700 bg-ink-800/60;
+  }
+  .surface-sunken {
+    @apply rounded-card border border-ink-700 bg-ink-900;
+  }
+  .drawer-sheet {
+    @apply rounded-t-sheet border-t border-ink-600 bg-ink-800;
+  }
+
+  /* Buttons — identical rounding/weight; variants change color only */
+  .btn {
+    @apply rounded-card py-3.5 text-center font-bold transition disabled:opacity-60;
+  }
+  .btn-primary {
+    @apply btn bg-pitch text-ink-900 shadow-glow hover:bg-pitch-dark;
+  }
+  .btn-electric {
+    @apply btn bg-electric text-white hover:bg-electric-dark;
+  }
+  .btn-outline {
+    @apply btn border border-ink-600 font-semibold text-white/80 hover:border-pitch hover:text-white;
+  }
+  .btn-danger {
+    @apply btn border border-red-500/40 font-semibold text-red-400 hover:bg-red-500/10;
+  }
+
+  /* Form field */
+  .input-field {
+    @apply w-full rounded-card border border-ink-600 bg-ink-800 px-3.5 py-3 text-white outline-none placeholder:text-white/30 focus:border-pitch;
+  }
+
+  /* Status chip / badge */
+  .chip {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-micro font-medium;
+  }
+
+  /* Section label above lists/cards */
+  .section-label {
+    @apply text-body font-bold uppercase tracking-wide text-white/50;
+  }
+}

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -36,9 +37,22 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const umamiId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
   return (
     <html lang="en" className="dark">
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Umami (free/open-source analytics) — only injected when configured.
+            Page views are tracked automatically; funnel events can be added
+            later via data-umami-event attributes on buttons/links. */}
+        {umamiId && (
+          <Script
+            src="https://cloud.umami.is/script.js"
+            data-website-id={umamiId}
+            strategy="afterInteractive"
+          />
+        )}
+      </body>
     </html>
   );
 }

@@ -3,9 +3,11 @@ import { NextResponse, type NextRequest } from "next/server";
 
 type CookieToSet = { name: string; value: string; options: CookieOptions };
 
-// Routes that require a session. Everything else (/, /login, /signup,
-// /m/* invites, /p/* public profiles) stays open.
-const PROTECTED = ["/feed", "/wallet", "/profile"];
+// Routes that require a session — only private/mutative surfaces. Browsing
+// (/feed, /matches/[id], /leaderboard, /m/* invites) is public; the auth wall
+// triggers on Wallet, Profile, and Post-a-Match. Join-a-match is guarded
+// in-page (login CTA) and by RLS.
+const PROTECTED = ["/wallet", "/profile", "/matches/new"];
 const AUTH_PAGES = ["/login", "/signup"];
 
 // Refreshes the Supabase session cookie on every request AND enforces

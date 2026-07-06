@@ -57,6 +57,7 @@ run "$ROOT/supabase/migrations/0012_match_deletion_rules.sql"
 run "$ROOT/supabase/migrations/0013_repair_matches_motm.sql"
 run "$ROOT/supabase/migrations/0014_organizer_captain.sql"
 run "$ROOT/supabase/migrations/0015_settle_null_token.sql"
+run "$ROOT/supabase/migrations/0016_public_browse.sql"
 run "$ROOT/supabase/seed.sql"
 
 echo "▸ running economy_test.sql …"
