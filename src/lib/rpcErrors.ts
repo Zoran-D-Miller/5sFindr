@@ -9,6 +9,7 @@ const MESSAGES: Record<string, string> = {
   NOT_OPEN: "This match isn’t open for joining.",
   STARTED: "This match has already kicked off.",
   ALREADY_IN: "You’re already in this match.",
+  DECLINED: "The organizer declined your request for this match.",
   NO_TOKEN: "You need an available token. Top up in your wallet.",
   NOT_IN: "You’re not in this match.",
   NOT_ORGANIZER: "Only the organizer can do that.",
