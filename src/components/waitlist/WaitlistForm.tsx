@@ -32,11 +32,37 @@ function Check({ name, children, required }: { name: string; children: React.Rea
 // (POPIA — nothing pre-ticked), plus what we need to hit the launch gate.
 export function WaitlistForm({ refCode, source, siteUrl }: { refCode?: string; source?: string; siteUrl: string }) {
   const [state, formAction] = useFormState<WaitlistState, FormData>(joinWaitlist, {});
+  // Areas in the order they were tapped; the first one is home until they pick.
+  const [areas, setAreas] = useState<string[]>([]);
+  const [home, setHome] = useState("");
+  const [localError, setLocalError] = useState("");
+  const homeArea = areas.includes(home) ? home : (areas[0] ?? "");
 
   if (state.joined) return <Joined {...state.joined} siteUrl={siteUrl} />;
 
+  function toggleArea(n: string) {
+    setAreas((prev) => (prev.includes(n) ? prev.filter((a) => a !== n) : [...prev, n]));
+    if (n === home) setHome("");
+    setLocalError("");
+  }
+
+  // Checkbox groups can't use `required`, so catch empty picks before the round trip.
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    const data = new FormData(e.currentTarget);
+    const error =
+      data.getAll("roles").length === 0
+        ? "Tell us if you play, run a game, or are a venue (pick all that apply)."
+        : areas.length === 0
+          ? "Pick the areas you usually play in."
+          : "";
+    setLocalError(error);
+    if (error) e.preventDefault();
+  }
+
+  const error = localError || state.error;
+
   return (
-    <form action={formAction} className="card-hero space-y-4 p-5 text-left sm:p-6">
+    <form action={formAction} onSubmit={onSubmit} className="card-hero space-y-4 p-5 text-left sm:p-6">
       <input name="name" placeholder="Your name" autoComplete="name" className="input-field" required maxLength={80} />
       <input
         name="email"
@@ -47,36 +73,45 @@ export function WaitlistForm({ refCode, source, siteUrl }: { refCode?: string; s
         className="input-field"
         required
       />
+      {/* South Africa only at launch: +27 is fixed, people type their number as
+          they know it (082 123 4567) and the server turns it into +27821234567. */}
       <div>
-        <input
-          name="whatsapp"
-          type="tel"
-          placeholder="WhatsApp number, e.g. 082 123 4567"
-          autoComplete="tel"
-          inputMode="tel"
-          className="input-field"
-          required
-        />
-        <p className="mt-1.5 px-1 text-meta text-white/40">Visiting? Add your country code, e.g. +44…</p>
+        <div className="relative">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 left-0 flex items-center gap-1.5 border-r border-ink-600 pl-3.5 pr-3 text-white/60"
+          >
+            <span>🇿🇦</span>+27
+          </span>
+          <input
+            name="whatsapp"
+            type="tel"
+            aria-label="South African WhatsApp number"
+            aria-describedby="whatsapp-hint"
+            placeholder="WhatsApp number"
+            autoComplete="tel-national"
+            inputMode="tel"
+            className="input-field pl-[5.75rem]"
+            required
+          />
+        </div>
+        <p id="whatsapp-hint" className="mt-1.5 px-1 text-meta text-white/40">
+          Type it as usual, e.g. 082 123 4567
+        </p>
       </div>
 
-      <select name="neighbourhood" className="input-field" required defaultValue="">
-        <option value="" disabled>
-          Where do you usually play?
-        </option>
-        {NEIGHBOURHOODS.map((n) => (
-          <option key={n} value={n}>
-            {n}
-          </option>
-        ))}
-      </select>
-
       <fieldset>
-        <legend className="mb-2 px-1 text-meta font-medium text-white/50">I’m joining as…</legend>
+        <legend className="mb-2 px-1 text-meta font-medium text-white/50">I’m joining as… (pick all that apply)</legend>
         <div className="flex flex-wrap gap-2">
           {ROLES.map((r) => (
             <label key={r.value} className="cursor-pointer">
-              <input type="radio" name="role" value={r.value} required className="peer sr-only" />
+              <input
+                type="checkbox"
+                name="roles"
+                value={r.value}
+                onChange={() => setLocalError("")}
+                className="peer sr-only"
+              />
               <span className="inline-block rounded-full border border-ink-600 px-4 py-2 text-body font-semibold text-white/70 transition peer-checked:border-pitch peer-checked:bg-pitch/10 peer-checked:text-pitch peer-focus-visible:ring-2 peer-focus-visible:ring-pitch">
                 {r.label}
               </span>
@@ -84,6 +119,55 @@ export function WaitlistForm({ refCode, source, siteUrl }: { refCode?: string; s
           ))}
         </div>
       </fieldset>
+
+      <fieldset>
+        <legend className="mb-2 px-1 text-meta font-medium text-white/50">
+          Where do you usually play? (pick all that apply)
+        </legend>
+        <div className="flex flex-wrap gap-2">
+          {NEIGHBOURHOODS.map((n) => (
+            <label key={n} className="cursor-pointer">
+              <input
+                type="checkbox"
+                name="neighbourhoods"
+                value={n}
+                checked={areas.includes(n)}
+                onChange={() => toggleArea(n)}
+                className="peer sr-only"
+              />
+              <span className="inline-block rounded-full border border-ink-600 px-3 py-1.5 text-meta font-medium text-white/60 transition peer-checked:border-pitch peer-checked:bg-pitch/10 peer-checked:text-pitch peer-focus-visible:ring-2 peer-focus-visible:ring-pitch">
+                {n}
+              </span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <input type="hidden" name="home_neighbourhood" value={homeArea} />
+      {areas.length > 1 && (
+        <fieldset className="surface-sunken p-3">
+          <legend className="sr-only">Your home area</legend>
+          <p className="mb-2 text-meta font-medium text-white/70">Which one’s home? (where you play most)</p>
+          <div className="flex flex-wrap gap-2">
+            {areas.map((n) => (
+              <label key={n} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="home_pick"
+                  value={n}
+                  checked={homeArea === n}
+                  onChange={() => setHome(n)}
+                  className="peer sr-only"
+                />
+                <span className="inline-block rounded-full border border-ink-600 px-3 py-1.5 text-meta font-medium text-white/60 transition peer-checked:border-pitch peer-checked:bg-pitch peer-checked:text-ink-900 peer-focus-visible:ring-2 peer-focus-visible:ring-pitch">
+                  {homeArea === n && "🏠 "}
+                  {n}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
 
       <fieldset>
         <legend className="mb-2 px-1 text-meta font-medium text-white/50">When do you usually play? (optional)</legend>
@@ -112,7 +196,11 @@ export function WaitlistForm({ refCode, source, siteUrl }: { refCode?: string; s
       {refCode && <input type="hidden" name="ref" value={refCode} />}
       {source && <input type="hidden" name="source" value={source} />}
 
-      {state.error && <p className="text-body text-red-400">{state.error}</p>}
+      {error && (
+        <p role="alert" className="text-body text-red-400">
+          {error}
+        </p>
+      )}
 
       <SubmitButton />
       <p className="text-center text-meta text-white/35">

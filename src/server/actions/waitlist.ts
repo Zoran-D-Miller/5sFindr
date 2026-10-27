@@ -26,8 +26,12 @@ export async function joinWaitlist(
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const whatsapp = toE164(String(formData.get("whatsapp") ?? ""));
-  const neighbourhood = String(formData.get("neighbourhood") ?? "");
-  const role = String(formData.get("role") ?? "");
+  const roles = ROLES.map((r) => r.value).filter((v) => formData.getAll("roles").includes(v));
+  const picked = formData.getAll("neighbourhoods").map(String);
+  const neighbourhoods = NEIGHBOURHOODS.filter((n) => picked.includes(n));
+  // One area is home by default; with several, the form asks which.
+  const home =
+    neighbourhoods.length === 1 ? neighbourhoods[0] : String(formData.get("home_neighbourhood") ?? "");
   const availability = formData
     .getAll("availability")
     .map(String)
@@ -35,13 +39,10 @@ export async function joinWaitlist(
 
   if (!name || name.length > 80) return { error: "What should we call you?" };
   if (!EMAIL_RE.test(email) || email.length > 254) return { error: "Enter a valid email address." };
-  if (!whatsapp) {
-    return { error: "Enter a valid WhatsApp number, e.g. 082 123 4567 (or +44… if you’re visiting)." };
-  }
-  if (!(NEIGHBOURHOODS as readonly string[]).includes(neighbourhood)) {
-    return { error: "Pick the area you’d usually play in." };
-  }
-  if (!ROLES.some((r) => r.value === role)) return { error: "Tell us if you play, run a game, or are a venue." };
+  if (!whatsapp) return { error: "Enter a valid WhatsApp number, e.g. 082 123 4567." };
+  if (roles.length === 0) return { error: "Tell us if you play, run a game, or are a venue (pick all that apply)." };
+  if (neighbourhoods.length === 0) return { error: "Pick the areas you usually play in." };
+  if (!(neighbourhoods as string[]).includes(home)) return { error: "Tap the area you play in most." };
   if (formData.get("consent_profile") !== "on") {
     return { error: "Please tick the first box so we can save your details." };
   }
@@ -53,8 +54,9 @@ export async function joinWaitlist(
         p_name: name,
         p_email: email,
         p_whatsapp: whatsapp,
-        p_neighbourhood: neighbourhood,
-        p_role: role,
+        p_roles: roles,
+        p_neighbourhoods: neighbourhoods,
+        p_home_neighbourhood: home,
         p_availability: availability,
         p_consent_profile: true,
         p_consent_email: formData.get("consent_email") === "on",
