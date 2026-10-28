@@ -1,5 +1,6 @@
 // Waitlist options shared by the form and the server action. Values must stay
-// in sync with the CHECK constraints in supabase/migrations/0017_waitlist.sql.
+// in sync with the CHECK constraints in supabase/migrations/0017_waitlist.sql
+// and 0022_waitlist_multi.sql (several roles, several areas + one home area).
 
 // Bump when the consent wording below changes — stored per signup (POPIA).
 export const CONSENT_VERSION = "2026-10-24";
