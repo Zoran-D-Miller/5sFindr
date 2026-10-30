@@ -1,6 +1,8 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { createHmac } from "node:crypto";
+import { headers } from "next/headers";
+import { createServiceClient } from "@/lib/supabase/server";
 import { toE164 } from "@/lib/phone";
 import {
   AVAILABILITY,
@@ -15,6 +17,17 @@ import {
 const COMMUNITY_URL = "https://chat.whatsapp.com/BGUOFLNzLcGDauQtAiJo1I";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+// Rate-limit key for join_waitlist: a keyed hash of the caller's IP, so the
+// database never stores raw IPs. Vercel sets x-real-ip / x-forwarded-for
+// itself (clients can't spoof them there). No IP (local dev) → no limit.
+function clientKey(): string | null {
+  const h = headers();
+  const ip = h.get("x-real-ip") ?? h.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const secret = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!ip || !secret) return null;
+  return createHmac("sha256", secret).update(`waitlist:${ip}`).digest("hex");
+}
 
 export async function joinWaitlist(
   _prev: WaitlistState,
@@ -48,7 +61,9 @@ export async function joinWaitlist(
   }
 
   try {
-    const supabase = createClient();
+    // Service role: anon can't call join_waitlist directly (0023/0024), so
+    // the honeypot and checks above can't be skipped.
+    const supabase = createServiceClient();
     const { data, error } = await supabase
       .rpc("join_waitlist", {
         p_name: name,
@@ -64,9 +79,25 @@ export async function joinWaitlist(
         p_consent_version: CONSENT_VERSION,
         p_ref: String(formData.get("ref") ?? "").slice(0, 12) || null,
         p_source: String(formData.get("source") ?? "").slice(0, 120) || null,
+        p_client: clientKey(),
       })
-      .single<{ referral_code: string; list_position: number; referrals: number }>();
+      .single<{
+        status: "joined" | "exists";
+        referral_code: string | null;
+        list_position: number | null;
+        referrals: number | null;
+      }>();
+    if (error?.message.includes("rate_limited")) {
+      return { error: "Too many sign-ups from this connection. Please try again in a few minutes." };
+    }
     if (error || !data) throw new Error(error?.message ?? "no data");
+    // Email already on the list with a different WhatsApp number: the row is
+    // left alone and its code isn't revealed.
+    if (data.status !== "joined" || !data.referral_code) {
+      return {
+        error: "That email is already on the list. Use the WhatsApp number you signed up with to see your spot.",
+      };
+    }
 
     return {
       joined: {
