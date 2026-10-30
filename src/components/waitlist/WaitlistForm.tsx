@@ -189,6 +189,13 @@ export function WaitlistForm({ refCode, source, siteUrl }: { refCode?: string; s
         </Check>
         <Check name="consent_email">{CONSENT_COPY.email}</Check>
         <Check name="consent_whatsapp">{CONSENT_COPY.whatsapp}</Check>
+        {/* New tab, so a half-filled form isn't lost. */}
+        <p className="pl-8 text-meta text-white/40">
+          How we use your details:{" "}
+          <a href="/privacy" target="_blank" rel="noopener" className="underline hover:text-white/70">
+            privacy policy
+          </a>
+        </p>
       </div>
 
       {/* Honeypot — hidden from people, tempting to bots. */}

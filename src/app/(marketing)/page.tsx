@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import Link from "next/link";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 
 const POINTS = [
@@ -75,7 +76,10 @@ export default function LandingPage({
       </section>
 
       <footer className="mt-16 text-center text-xs text-white/30">
-        © {new Date().getFullYear()} 5sFindr · Cape Town, South Africa
+        © {new Date().getFullYear()} 5sFindr · Cape Town, South Africa ·{" "}
+        <Link href="/privacy" className="underline hover:text-white/60">
+          Privacy
+        </Link>
       </footer>
     </main>
   );
