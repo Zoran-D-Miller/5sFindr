@@ -3,8 +3,8 @@ import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 
 const POINTS = [
   {
-    title: "Find a game tonight",
-    body: "Every 5-a-side in Cape Town, grouped by neighbourhood. Open fields and courts, all skill levels.",
+    title: "Find a game near you",
+    body: "Browse games across Cape Town by neighbourhood. Open fields and courts, all skill levels.",
     accent: "pitch",
   },
   {

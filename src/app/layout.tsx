@@ -3,9 +3,10 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://5sfindr.com"),
   title: "5sFindr — Find your next 5-a-side",
   description:
-    "Tinder meets Strava for 5-a-side football. Find games across Cape Town, build your reliability score, and get on the pitch.",
+    "Find or fill a 5-a-side game in Cape Town, and meet people who play. Launching soon and free at launch. Join the waitlist.",
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -20,11 +21,23 @@ export const metadata: Metadata = {
     title: "5sFindr",
   },
   openGraph: {
-    title: "5sFindr",
-    description: "Find your next 5-a-side. Launching in Cape Town.",
+    title: "5sFindr — Find your next 5-a-side",
+    description: "Find or fill a game in Cape Town, and meet people who play. Join the waitlist.",
     url: "https://5sfindr.com",
     siteName: "5sFindr",
     type: "website",
+    images: [
+      {
+        url: "https://5sfindr.com/og.png",
+        width: 1200,
+        height: 630,
+        alt: "5sFindr: Find your next 5-a-side. Launching soon in Cape Town.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["https://5sfindr.com/og.png"],
   },
 };
 
@@ -32,8 +45,6 @@ export const viewport: Viewport = {
   themeColor: "#070A09",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
