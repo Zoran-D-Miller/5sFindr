@@ -1,0 +1,107 @@
+{
+  "type": "short",
+  "id": "w47-03-short-2-at-1700",
+  "coord": "33.902° S, 18.409° E · TUE 17:00",
+  "hook": {
+    "text": "SHORT *2*\nAT 17:00",
+    "sub": "Kickoff 18:30. Watch it fill.",
+    "vo": "vo/03-hook.wav",
+    "minSec": 2.2
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "GREEN POINT · TUE 17:00",
+        "screen": "chat",
+        "group": "Tuesday 5s ⚽",
+        "messages": [
+          {
+            "from": "Kyle",
+            "text": "Sorry boys, can't make it tonight 🙏"
+          },
+          {
+            "from": "Pieter",
+            "text": "Also out, work 😩"
+          },
+          {
+            "from": "Thabo",
+            "text": "Ahh no. Anyone got a mate?",
+            "me": true
+          },
+          {
+            "from": "Sam",
+            "text": "I'll ask around"
+          },
+          {
+            "from": "Luca",
+            "text": "Cancel?"
+          }
+        ]
+      },
+      "caption": "Two pull out at five o'clock. Old way: beg the group chat.",
+      "vo": "vo/03-b1.wav",
+      "minSec": 3.4
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "ONE LINK",
+        "screen": "invite",
+        "organiser": "Thabo",
+        "venue": "Green Point Urban Park",
+        "area": "Green Point",
+        "kickoff": "Tuesday 18:30",
+        "court": false,
+        "claimAt": 0.6
+      },
+      "caption": "New way: drop one link. Anyone nearby can claim a spot.",
+      "vo": "vo/03-b2.wav",
+      "minSec": 3.4
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "17:00 → 17:12",
+        "screen": "fill",
+        "title": "Tuesday 5s",
+        "kickoff": "Tue · 18:30 · Green Point Urban Park",
+        "max": 10,
+        "startTaken": 8,
+        "names": [
+          "Thabo",
+          "Lerato",
+          "Sam",
+          "Aisha",
+          "Luca",
+          "Nandi",
+          "Ama",
+          "Zoe",
+          "Jonas",
+          "Sipho"
+        ]
+      },
+      "caption": "Two strangers in. Game on. Nobody cancels.",
+      "vo": "vo/03-b3.wav",
+      "minSec": 4.2
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "FREE FOR",
+          "*ORGANISERS*"
+        ],
+        "small": "OPEN FIELDS OR PAID COURTS"
+      },
+      "caption": "Free for organisers. Founding spots open now.",
+      "vo": "vo/03-b4.wav",
+      "minSec": 2.6
+    }
+  ],
+  "end": {
+    "line": "Free 5-a-side games in Cape Town · 5sfindr.com",
+    "cta": "Run a game? 5sfindr.com",
+    "vo": "vo/03-end.wav"
+  }
+}

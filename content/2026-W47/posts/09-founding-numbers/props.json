@@ -1,0 +1,53 @@
+{
+  "type": "short",
+  "id": "w47-09-founding-numbers",
+  "coord": "CAPE TOWN · SAT 18:00",
+  "hook": {
+    "text": "FOUNDING\nNUMBERS\nARE *OUT*",
+    "vo": "vo/09-hook.wav",
+    "minSec": 2.2
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "500",
+        "label": "Founding spots",
+        "small": "CAPE TOWN. THAT'S ALL."
+      },
+      "caption": "Five hundred founding numbers for Cape Town. That's it.",
+      "vo": "vo/09-b1.wav",
+      "minSec": 3.0
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "NUMBERED.",
+          "NOT FOR SALE.",
+          "*EARNED EARLY.*"
+        ]
+      },
+      "caption": "You can't buy one. You get one by joining before your area opens.",
+      "vo": "vo/09-b2.wav",
+      "minSec": 3.4
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "YOUR AREA",
+          "UNLOCKS AT *50*"
+        ],
+        "small": "50 PLAYERS + 3 WEEKLY GAMES"
+      },
+      "caption": "Every area opens at fifty players and three weekly games.",
+      "vo": "vo/09-b3.wav",
+      "minSec": 3.0
+    }
+  ],
+  "end": {
+    "cta": "Claim yours · 5sfindr.com",
+    "vo": "vo/09-end.wav"
+  }
+}

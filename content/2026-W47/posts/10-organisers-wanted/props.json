@@ -1,0 +1,68 @@
+{
+  "type": "short",
+  "id": "w47-10-organisers-wanted",
+  "coord": "CAPE TOWN · SUN 18:00",
+  "hook": {
+    "text": "RUN A WEEKLY\n5s IN\n*CAPE TOWN*?",
+    "vo": "vo/10-hook.wav",
+    "minSec": 2.2
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "WE'LL HELP",
+          "YOU FILL IT.",
+          "*FREE.*"
+        ]
+      },
+      "caption": "Open field or paid court, we'll help you fill it. Free.",
+      "vo": "vo/10-b1.wav",
+      "minSec": 2.8
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "YOUR GAME · EVERY SUNDAY",
+        "screen": "fill",
+        "title": "Sunday 5s",
+        "kickoff": "Sun · 17:00 · Sea Point Promenade",
+        "max": 10,
+        "startTaken": 7,
+        "names": [
+          "Thabo",
+          "Lerato",
+          "Sam",
+          "Aisha",
+          "Luca",
+          "Nandi",
+          "Ama",
+          "Zoe",
+          "Jonas",
+          "Sipho"
+        ]
+      },
+      "caption": "Your list, your link, your regulars. The gaps fill themselves.",
+      "vo": "vo/10-b2.wav",
+      "minSec": 4.0
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "COMMENT",
+          "*“LINK”*"
+        ],
+        "small": "FOUNDING ORGANISER SPOTS"
+      },
+      "caption": "Comment LINK and I'll send you a founding organiser spot.",
+      "vo": "vo/10-b3.wav",
+      "minSec": 2.8
+    }
+  ],
+  "end": {
+    "cta": "Organisers · 5sfindr.com",
+    "vo": "vo/10-end.wav"
+  }
+}

@@ -40,5 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# local tooling / preview config
-.claude/
+# local tooling / preview config (shared slash commands are tracked)
+.claude/*
+!.claude/commands/

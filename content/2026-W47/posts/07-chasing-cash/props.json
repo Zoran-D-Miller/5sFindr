@@ -1,0 +1,84 @@
+{
+  "type": "short",
+  "id": "w47-07-chasing-cash",
+  "coord": "STADIUM ON MAIN · FRI 19:00",
+  "hook": {
+    "text": "CHASING *R60*\nAFTER EVERY\nGAME?",
+    "vo": "vo/07-hook.wav",
+    "minSec": 2.2
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "MONDAY, 3 DAYS LATER",
+        "screen": "chat",
+        "group": "Friday 5s ⚽",
+        "messages": [
+          {
+            "from": "Thabo",
+            "text": "Lads, 4 of you still owe for Friday 🙏",
+            "me": true
+          },
+          {
+            "from": "Pieter",
+            "text": "sending now"
+          },
+          {
+            "from": "Kyle",
+            "text": "what's the account again?"
+          },
+          {
+            "from": "Thabo",
+            "text": "Same as always…",
+            "me": true
+          },
+          {
+            "from": "Luca",
+            "text": "paid! (I think)"
+          },
+          {
+            "from": "Thabo",
+            "text": "Still R180 short",
+            "me": true
+          }
+        ]
+      },
+      "caption": "You booked the court. You paid it. Now you're chasing four people for sixty bucks.",
+      "vo": "vo/07-b1.wav",
+      "minSec": 4.2
+    },
+    {
+      "visual": {
+        "kind": "list",
+        "title": "WHAT WE'RE *BUILDING*",
+        "items": [
+          "Court share shown up front",
+          "Pay the organiser directly",
+          "Tap a name: paid ✓",
+          "No money goes through us"
+        ]
+      },
+      "caption": "So we're building this: share shown up front, pay the organiser directly, tap a name, marked paid.",
+      "vo": "vo/07-b2.wav",
+      "minSec": 6.0
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "ORGANISERS:",
+          "WHAT WOULD",
+          "YOU *ADD*?"
+        ]
+      },
+      "caption": "Organisers, what would you add? Tell me in the comments.",
+      "vo": "vo/07-b3.wav",
+      "minSec": 2.8
+    }
+  ],
+  "end": {
+    "cta": "Free for organisers · 5sfindr.com",
+    "vo": "vo/07-end.wav"
+  }
+}

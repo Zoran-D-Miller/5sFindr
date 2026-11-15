@@ -1,0 +1,36 @@
+{
+  "type": "cinematic",
+  "id": "c3-lights-on",
+  "aspect": "9:16",
+  "coord": "SOUTHERN SUBURBS · 33.98° S, 18.47° E",
+  "vo": "vo/c3-vo.wav",
+  "shots": [
+    { "label": "S01 · empty dark pitch, mountain", "sec": 2.6, "src": "clips/s01.mp4", "title": "IT STARTS\nDARK." },
+    { "label": "S02 · first floodlight bank, two arrive", "sec": 2.4, "src": "clips/s02.mp4" },
+    {
+      "label": "S03 · REAL UI insert: roster fills",
+      "sec": 3.0,
+      "insert": { "screen": "fill", "title": "Thursday 5s", "kickoff": "Thu · 19:00 · Rondebosch Common", "max": 10, "startTaken": 6, "names": ["Thabo", "Lerato", "Sam", "Aisha", "Luca", "Nandi", "Ama", "Zoe", "Jonas", "Sipho"] },
+      "caption": "One player. Then two. Then a game."
+    },
+    { "label": "S04 · second bank on, balls tipped out", "sec": 2.4, "src": "clips/s04.mp4", "title": "EVERY PLAYER\nTURNS ONE ON." },
+    {
+      "label": "S05 · over the shoulder, all lights on",
+      "sec": 2.8,
+      "src": "clips/s05.mp4",
+      "pin": {
+        "keys": [{ "t": 0, "corners": [[380, 900], [640, 880], [664, 1430], [402, 1452]] }],
+        "screen": {
+          "screen": "feed",
+          "heading": "Southern Suburbs",
+          "games": [
+            { "day": "Thu", "time": "19:00", "title": "Rondebosch Common", "court": false, "taken": 10, "max": 10 },
+            { "day": "Thu", "time": "19:30", "title": "Stadium on Main", "court": true, "price": 60, "taken": 8, "max": 10 },
+            { "day": "Fri", "time": "18:00", "title": "Wynberg Park", "court": false, "taken": 5, "max": 10 }
+          ]
+        }
+      }
+    },
+    { "label": "S06 · full lights, goal, camera rises", "sec": 2.8, "src": "clips/s06.mp4", "title": "SOUTHERN SUBURBS\nUNLOCKS AT 50." }
+  ]
+}

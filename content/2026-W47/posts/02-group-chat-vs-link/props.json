@@ -1,0 +1,59 @@
+{
+  "type": "carousel",
+  "id": "w47-02-group-chat-vs-link",
+  "coord": "33.902° S, 18.409° E · THU 19:00",
+  "slides": [
+    {
+      "kind": "cover",
+      "kicker": "FOR ORGANISERS",
+      "headline": "Your group chat\nis not a\n*booking system*",
+      "sub": "A free tool for people who run 5-a-side in Cape Town."
+    },
+    {
+      "kind": "compare",
+      "title": "Same game. *Less admin.*",
+      "left": {
+        "label": "The group chat",
+        "items": [
+          "Who's in? Scroll 80 messages",
+          "2 drop out at 17:00",
+          "Beg for a ringer",
+          "Chase R60s for a week"
+        ]
+      },
+      "right": {
+        "label": "5sFindr",
+        "items": [
+          "A live list that builds itself",
+          "Waiting list moves up",
+          "One link fills the gap",
+          "Who's paid, at a glance"
+        ]
+      }
+    },
+    {
+      "kind": "point",
+      "n": "01",
+      "title": "The list *builds itself*",
+      "body": "Players tap “I'm in”. No more copying names into a numbered list."
+    },
+    {
+      "kind": "point",
+      "n": "02",
+      "title": "Short 2? *One link.*",
+      "body": "Share it in your group or anywhere. Anyone nearby can claim the spot."
+    },
+    {
+      "kind": "point",
+      "n": "03",
+      "title": "Who's paid, *in one place*",
+      "body": "Court share shown up front. Players pay you directly, you tick them off. (Building now.)"
+    },
+    {
+      "kind": "cta",
+      "headline": "Never cancel\nfor being *2 short*",
+      "body": "Free for organisers. Open fields or paid courts.",
+      "cta": "Get early access · 5sfindr.com"
+    }
+  ]
+}

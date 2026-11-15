@@ -1,0 +1,97 @@
+{
+  "type": "short",
+  "id": "w47-04-new-in-cape-town",
+  "coord": "33.902° S, 18.409° E · WED 19:00",
+  "hook": {
+    "text": "MOVED TO\nCAPE TOWN.\nKNOW *NOBODY*.",
+    "vo": "vo/04-hook.wav",
+    "minSec": 2.4
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "NO SQUAD.",
+          "NO GROUP CHAT.",
+          "*BOOTS STILL*",
+          "*IN THE BAG.*"
+        ]
+      },
+      "caption": "New city. No mates yet. Boots still in the bag.",
+      "vo": "vo/04-b1.wav",
+      "minSec": 3.0
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "TONIGHT NEAR YOU",
+        "screen": "feed",
+        "heading": "Tonight near you",
+        "games": [
+          {
+            "day": "Wed 18 Nov",
+            "time": "18:30",
+            "title": "Green Point Urban Park",
+            "court": false,
+            "taken": 7,
+            "max": 10
+          },
+          {
+            "day": "Wed 18 Nov",
+            "time": "19:00",
+            "title": "Stadium on Main",
+            "court": true,
+            "price": 60,
+            "taken": 8,
+            "max": 10
+          },
+          {
+            "day": "Wed 18 Nov",
+            "time": "19:30",
+            "title": "Rondebosch Common",
+            "court": false,
+            "taken": 10,
+            "max": 10
+          }
+        ]
+      },
+      "caption": "Open the app. See games near you tonight, and who's playing.",
+      "vo": "vo/04-b2.wav",
+      "minSec": 3.6
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "CLAIM A SPOT",
+        "screen": "invite",
+        "organiser": "Lerato",
+        "venue": "Green Point Urban Park",
+        "area": "Green Point",
+        "kickoff": "Wednesday 18:30",
+        "court": false,
+        "claimAt": 0.55
+      },
+      "caption": "Claim a spot. Rock up alone. Everyone did, once.",
+      "vo": "vo/04-b3.wav",
+      "minSec": 3.4
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "COME ALONE.",
+          "LEAVE WITH",
+          "A *CREW*."
+        ]
+      },
+      "caption": "Come alone. Leave with a crew.",
+      "vo": "vo/04-b4.wav",
+      "minSec": 2.6
+    }
+  ],
+  "end": {
+    "cta": "Join the list · 5sfindr.com",
+    "vo": "vo/04-end.wav"
+  }
+}

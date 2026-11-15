@@ -1,0 +1,17 @@
+# Studio dependencies and caches
+studio/node_modules/
+studio/.remotion/
+studio/out/
+
+# Rendered videos are rebuilt from props.json + vo/ (PNG slides and covers are small and kept)
+*.mp4
+*.mov
+**/preview/
+
+# Raw phone recordings (the converted vo/*.wav are kept)
+**/vo-raw/*
+!**/vo-raw/.gitkeep
+
+# Generated AI clips are large: keep them in cloud storage / on disk, not in git
+cinematic/**/clips/*
+!cinematic/**/clips/.gitkeep

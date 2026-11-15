@@ -1,0 +1,94 @@
+{
+  "type": "cinematic",
+  "id": "c1-coordinates",
+  "aspect": "9:16",
+  "coord": "CAPE TOWN · TONIGHT",
+  "vo": "vo/c1-vo.wav",
+  "shots": [
+    {
+      "label": "S01 · phone glows face-down",
+      "sec": 2.2,
+      "src": "clips/s01.mp4",
+      "title": "SOMEONE'S SHORT\nA PLAYER."
+    },
+    {
+      "label": "S02 · REAL UI insert: invite + claim",
+      "sec": 3.0,
+      "insert": {
+        "screen": "invite",
+        "organiser": "Thabo",
+        "venue": "Green Point Urban Park",
+        "area": "Green Point",
+        "kickoff": "Wednesday 19:00",
+        "court": false,
+        "claimAt": 0.6
+      },
+      "caption": "One link. One spot."
+    },
+    {
+      "label": "S03 · lacing boots, blue hour",
+      "sec": 2.5,
+      "src": "clips/s03.mp4"
+    },
+    {
+      "label": "S04 · walking the fence, phone to camera",
+      "sec": 2.6,
+      "src": "clips/s04.mp4",
+      "pin": {
+        "keys": [
+          {
+            "t": 1.6,
+            "corners": [
+              [
+                612,
+                980
+              ],
+              [
+                742,
+                992
+              ],
+              [
+                728,
+                1262
+              ],
+              [
+                598,
+                1250
+              ]
+            ]
+          }
+        ],
+        "screen": {
+          "screen": "fill",
+          "title": "Wednesday 5s",
+          "kickoff": "Wed · 19:00 · Green Point Urban Park",
+          "max": 10,
+          "startTaken": 9,
+          "names": [
+            "Thabo",
+            "Lerato",
+            "Sam",
+            "Aisha",
+            "Luca",
+            "Nandi",
+            "Ama",
+            "Zoe",
+            "Jonas",
+            "You"
+          ]
+        }
+      }
+    },
+    {
+      "label": "S05 · they turn, a hand goes up",
+      "sec": 2.4,
+      "src": "clips/s05.mp4",
+      "title": "33.902° S, 18.409° E\nWED 19:00"
+    },
+    {
+      "label": "S06 · ball stops at the green lace",
+      "sec": 2.3,
+      "src": "clips/s06.mp4"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "cinematic",
+  "id": "c2-numbered",
+  "aspect": "9:16",
+  "coord": "CAPE TOWN · FOUNDING",
+  "vo": "vo/c2-vo.wav",
+  "shots": [
+    { "label": "S01 · stencil + green spray mist", "sec": 2.4, "src": "clips/s01.mp4", "title": "NUMBERED." },
+    { "label": "S02 · the Captain hangs bibs", "sec": 2.4, "src": "clips/s02.mp4", "title": "NOT FOR SALE." },
+    {
+      "label": "S03 · REAL UI (stand-in until the 5sfindr.com screen recording)",
+      "sec": 2.6,
+      "insert": { "screen": "invite", "organiser": "Thabo", "venue": "Sea Point Promenade", "area": "Sea Point", "kickoff": "Thursday 19:00", "court": false, "claimAt": 0.55 },
+      "title": "#047"
+    },
+    { "label": "S04 · bib on, step into the light", "sec": 2.4, "src": "clips/s04.mp4" },
+    { "label": "S05 · six walk out under the lights", "sec": 2.6, "src": "clips/s05.mp4", "title": "500 FOUNDING\nNUMBERS\nCAPE TOWN" },
+    { "label": "S06 · wet green paint", "sec": 2.0, "src": "clips/s06.mp4" }
+  ]
+}
