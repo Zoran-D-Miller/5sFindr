@@ -3,10 +3,15 @@ studio/node_modules/
 studio/.remotion/
 studio/out/
 
-# Rendered videos are rebuilt from props.json + vo/ (PNG slides and covers are small and kept)
+# Renders are rebuilt from props.json + vo/ (npm run render:week). Film grain makes the PNGs
+# 1-2 MB each, so they stay out of git too. (2026-W47's were committed before this rule;
+# files already in git stay tracked.)
 *.mp4
 *.mov
 **/preview/
+**/slides/*.png
+**/cover.png
+cinematic/**/exports/
 
 # Raw phone recordings (the converted vo/*.wav are kept)
 **/vo-raw/*
