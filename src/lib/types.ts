@@ -20,7 +20,8 @@ export interface Profile {
   name: string;
   profile_picture_url: string | null;
   avatar_url: string | null;
-  phone_number: string | null;
+  // phone_number is deliberately absent: it's stored, but not readable by
+  // anon/authenticated (migration 0025).
   bio: string | null;
   neighborhood: string | null;
   skill_level: number; // 1–5

@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Avatar } from "@/components/ui/Avatar";
 
+const AVATAR_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/heic", "image/heif"];
+
 // Direct authenticated upload to the `avatars` bucket. Files live under the
 // user's <uid>/ folder (enforced by the storage RLS policy). On success it
 // hands the public URL back so the editor persists it on save.
@@ -28,6 +30,8 @@ export function AvatarUpload({
   async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    // Same limits the avatars bucket enforces (migration 0025).
+    if (!AVATAR_TYPES.includes(file.type)) return setError("Use a JPG, PNG, WebP, GIF or HEIC photo.");
     if (file.size > 5_000_000) return setError("Image must be under 5MB.");
     setError("");
     setBusy(true);
@@ -62,7 +66,7 @@ export function AvatarUpload({
         </button>
         {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
       </div>
-      <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={onPick} />
+      <input ref={inputRef} type="file" accept={AVATAR_TYPES.join(",")} className="hidden" onChange={onPick} />
     </div>
   );
 }
