@@ -87,7 +87,7 @@ for (const dir of postDirs) {
       composition,
       serveUrl,
       codec: "h264",
-      crf: 18,
+      crf: 20, // platforms re-encode anyway; keeps a short well under Supabase Free's 50 MB per file
       outputLocation: out,
       inputProps: props,
       onProgress: ({ progress }) => {

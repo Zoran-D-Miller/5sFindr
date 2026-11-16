@@ -17,29 +17,34 @@ Open each post folder, watch the MP4 (or flip through `slides/`), read `post.md`
 | No fake scarcity or made-up numbers | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
 | Plain line visible (free 5-a-side in Cape Town, 5sfindr.com) | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
 | Hook readable on the cover / first second | ☐ | – | ☐ | ☐ | – | ☐ | ☐ | – | ☐ | ☐ |
-| Voice lines recorded → `vo-raw/` | ☐ | – | ☐ | ☐ | – | ☐ | ☐ | – | ☐ | ☐ |
-| Captions match what you actually said | ☐ | – | ☐ | ☐ | – | ☐ | ☐ | – | ☐ | ☐ |
-| Caption, hashtags, alt text OK | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
-| Scheduled (TikTok / Business Suite) | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+| AI voice sounds right (pronunciation, pace) | ☐ | – | ☐ | ☐ | – | ☐ | ☐ | – | ☐ | ☐ |
+| Burned-in captions match the voice | ☐ | – | ☐ | ☐ | – | ☐ | ☐ | – | ☐ | ☐ |
+| Caption, hashtags, alt text OK (`queue.json`) | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
 
-## After recording
+The shorts are voiced by the Kokoro AI voice (`bm_george`) and carry the AI VOICE chip. Their captions end with
+"AI voiceover." No recording needed. Watch 2–3 videos with sound on, and one muted (captions only).
 
-```bash
-npm run vo 2026-W47
-```
+## Approve
 
-```bash
-npm run render:week 2026-W47
-```
-
-Run both in `content/studio/`. Then watch 2–3 videos with sound on, and one muted (captions only).
+When you're happy, say **"approve 2026-W47"** in Claude Code (or "approve 2026-W47 except 09", or "07 not on
+TikTok"). Nothing posts before that, and nothing posts at all until `content/AUTOPOST-SETUP.md` is done.
+(W47's dates are already passing: treat this week as the test run, and approve W48.)
 
 ## Fixing text
 
-Edit the text in that post's `props.json` (on-screen) or `post.md` (captions), then:
+Edit the on-screen text or a spoken line (`voText`) in that post's `props.json`, or the captions in `post.md`, then
+(in `content/studio/`):
+
+```bash
+npm run voice 2026-W47 -- --only 04
+```
 
 ```bash
 npm run render:week 2026-W47 -- --only 04
+```
+
+```bash
+npm run queue 2026-W47
 ```
 
 Or ask Claude: "change 04's hook to …".

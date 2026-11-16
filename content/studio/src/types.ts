@@ -47,6 +47,7 @@ export type Beat = {
   visual: Visual;
   caption?: string; // burned-in caption = the voice line. Empty = no caption.
   vo?: string; // path inside the week folder, e.g. "vo/p01-b1.wav"
+  voText?: string; // what the AI voice says (scripts/voice.mjs turns it into the vo file)
   minSec?: number; // beat length when there is no voice line yet
 };
 
@@ -54,10 +55,12 @@ export type ShortProps = {
   type?: "short";
   id?: string;
   coord?: string;
-  hook: { text: string; sub?: string; vo?: string; minSec?: number }; // on screen from frame 0
+  hook: { text: string; sub?: string; vo?: string; voText?: string; minSec?: number }; // on screen from frame 0
   beats: Beat[];
-  end?: { line?: string; cta?: string; vo?: string };
+  end?: { line?: string; cta?: string; vo?: string; voText?: string };
   bed?: string; // optional ambience file in the week folder (TikTok sounds are added in-app instead)
+  aiVoice?: boolean; // voice lines are AI (Kokoro): shows the "AI voice" chip; queue.mjs sets the AI label
+  voice?: string; // which voice made them, e.g. "Kokoro bm_george" (set by scripts/voice.mjs)
 };
 
 // ---------- Cinematic edit (AI clips + real UI composites) ----------

@@ -7,6 +7,11 @@
     "studio": "remotion studio src/index.ts",
     "render:week": "node scripts/render-week.mjs",
     "vo": "node scripts/vo.mjs",
+    "voice": "node scripts/voice.mjs",
+    "voice:setup": "bash scripts/voice-setup.sh",
+    "queue": "node scripts/queue.mjs",
+    "approve": "node scripts/approve.mjs",
+    "publish:dry": "node ../publisher/publish.mjs --dry-run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

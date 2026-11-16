@@ -13,9 +13,24 @@ studio/out/
 **/cover.png
 cinematic/**/exports/
 
-# Raw phone recordings (the converted vo/*.wav are kept)
+# Voice lines: AI lines are rebuilt from props.json voText (npm run voice), so the WAVs stay out of git
+**/vo/*.wav
+**/vo/.voice-manifest.json
+**/vo/.tmp/
 **/vo-raw/*
 !**/vo-raw/.gitkeep
+
+# Kokoro AI voice: Python venv + ~350 MB of model files (npm run voice:setup), and the voice samples
+studio/.kokoro/
+studio/.kokoro-venv/
+voice-samples/
+
+# JPEGs made by approve.mjs for upload (Instagram only takes JPEG)
+**/publish/
+
+# Keys for approve.mjs / connect.mjs (Supabase service key, Meta + TikTok app secrets): never commit
+.env.local
+.env*.local
 
 # Generated AI clips are large: keep them in cloud storage / on disk, not in git
 cinematic/**/clips/*

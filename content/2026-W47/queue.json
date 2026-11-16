@@ -1,0 +1,1082 @@
+{
+  "week": "2026-W47",
+  "timezone": "Africa/Johannesburg",
+  "generated_at": "2026-11-16T14:19:17.237Z",
+  "approved": false,
+  "approved_at": null,
+  "approved_by": null,
+  "approval_hash": null,
+  "items": [
+    {
+      "id": "2026-W47/02/facebook",
+      "post": "02-group-chat-vs-link",
+      "platform": "facebook",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-16T12:30:00+02:00",
+      "run_at": "2026-11-16T12:30:00+02:00",
+      "caption": "Your group chat is not a booking system. 📋\n\nIf you run a weekly 5s, you know: the list, the drop-outs, the begging, the chasing cash.\n\n5sFindr does the list, fills the gaps with one link, and (coming soon) tracks who's paid. Free for organisers. Open fields or paid courts.\n\nRun a game in Cape Town? Link in bio for early access.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: Your group chat is not a booking system. A free tool for people who run 5-a-side in Cape Town.",
+        "Comparison. The group chat: scroll 80 messages to see who's in, 2 drop out at 17:00, beg for a ringer, chase R60s for a week. 5sFindr: a live list that builds itself, waiting list moves up, one link fills the gap, who's paid at a glance.",
+        "01. The list builds itself. Players tap I'm in. No more copying names into a numbered list.",
+        "02. Short 2? One link. Share it in your group or anywhere. Anyone nearby can claim the spot.",
+        "03. Who's paid, in one place. Court share shown up front. Players pay you directly, you tick them off. Building now.",
+        "Never cancel for being 2 short. Free for organisers. Open fields or paid courts. Get early access at 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/02-group-chat-vs-link/slides/01.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/02.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/03.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/04.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/05.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/06.png",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/02/instagram",
+      "post": "02-group-chat-vs-link",
+      "platform": "instagram",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-16T12:30:00+02:00",
+      "run_at": "2026-11-16T12:30:00+02:00",
+      "caption": "Your group chat is not a booking system. 📋\n\nIf you run a weekly 5s, you know: the list, the drop-outs, the begging, the chasing cash.\n\n5sFindr does the list, fills the gaps with one link, and (coming soon) tracks who's paid. Free for organisers. Open fields or paid courts.\n\nRun a game in Cape Town? Link in bio for early access.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: Your group chat is not a booking system. A free tool for people who run 5-a-side in Cape Town.",
+        "Comparison. The group chat: scroll 80 messages to see who's in, 2 drop out at 17:00, beg for a ringer, chase R60s for a week. 5sFindr: a live list that builds itself, waiting list moves up, one link fills the gap, who's paid at a glance.",
+        "01. The list builds itself. Players tap I'm in. No more copying names into a numbered list.",
+        "02. Short 2? One link. Share it in your group or anywhere. Anyone nearby can claim the spot.",
+        "03. Who's paid, in one place. Court share shown up front. Players pay you directly, you tick them off. Building now.",
+        "Never cancel for being 2 short. Free for organisers. Open fields or paid courts. Get early access at 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/02-group-chat-vs-link/slides/01.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/02.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/03.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/04.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/05.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/02-group-chat-vs-link/slides/06.png",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/01/tiktok",
+      "post": "01-every-5s-group-chat",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-16T18:00:00+02:00",
+      "run_at": "2026-11-16T17:30:00+02:00",
+      "caption": "Which one are you? Be honest 👀 Tag your organiser.\n\nWe're building 5sFindr (said Fives Finder): a free tool so organisers stop begging the group chat. Cape Town first.\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Every 5s group chat has these 5. A phone shows a messy football group chat: 'maybe', 'what time again?', 'I'll EFT you later'. A numbered list: the forever maybe, the 17:00 drop-out, I'll EFT you later, what time again, the organiser holding it together. Ends: Tag your organiser. 5sFindr logo, free 5-a-side games in Cape Town, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/01-every-5s-group-chat/w47-01-every-5s-group-chat.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/01-every-5s-group-chat/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/01/facebook",
+      "post": "01-every-5s-group-chat",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-16T18:30:00+02:00",
+      "run_at": "2026-11-16T18:30:00+02:00",
+      "caption": "Every 5s group chat has these five. Which one are you? 👀\n\nTag the organiser who holds yours together.\n\n5sFindr (said “Fives Finder”) is a free organiser tool + player finder for 5-a-side in Cape Town. Organisers can get in now: link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Every 5s group chat has these 5. A phone shows a messy football group chat: 'maybe', 'what time again?', 'I'll EFT you later'. A numbered list: the forever maybe, the 17:00 drop-out, I'll EFT you later, what time again, the organiser holding it together. Ends: Tag your organiser. 5sFindr logo, free 5-a-side games in Cape Town, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/01-every-5s-group-chat/w47-01-every-5s-group-chat.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/01-every-5s-group-chat/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/01/instagram",
+      "post": "01-every-5s-group-chat",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-16T18:30:00+02:00",
+      "run_at": "2026-11-16T18:30:00+02:00",
+      "caption": "Every 5s group chat has these five. Which one are you? 👀\n\nTag the organiser who holds yours together.\n\n5sFindr (said “Fives Finder”) is a free organiser tool + player finder for 5-a-side in Cape Town. Organisers can get in now: link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Every 5s group chat has these 5. A phone shows a messy football group chat: 'maybe', 'what time again?', 'I'll EFT you later'. A numbered list: the forever maybe, the 17:00 drop-out, I'll EFT you later, what time again, the organiser holding it together. Ends: Tag your organiser. 5sFindr logo, free 5-a-side games in Cape Town, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/01-every-5s-group-chat/w47-01-every-5s-group-chat.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/01-every-5s-group-chat/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/03/tiktok",
+      "post": "03-short-2-at-1700",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-17T18:00:00+02:00",
+      "run_at": "2026-11-17T17:30:00+02:00",
+      "caption": "17:00. Two drop out. Kickoff 18:30. 😮‍💨\n\nOne link and the spots fill. That's 5sFindr (said Fives Finder), free for organisers in Cape Town.\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Short 2 at 17:00. A phone shows a group chat where two players drop out. Then a 5sFindr invite page, 'Thabo needs players' at Green Point Urban Park, and the Claim your spot button is tapped. Then the roster fills from 8 to 10 and shows Game on. Text: Free for organisers. End card with the 5sFindr logo and 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/03-short-2-at-1700/w47-03-short-2-at-1700.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/03-short-2-at-1700/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/03/facebook",
+      "post": "03-short-2-at-1700",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-17T18:30:00+02:00",
+      "run_at": "2026-11-17T18:30:00+02:00",
+      "caption": "17:00. Two drop out. Kickoff is 18:30.\n\nOld way: beg the group chat. New way: drop one 5sFindr link and let anyone nearby claim the spot.\n\nFree for organisers, open fields or paid courts. Founding organiser spots are open now: link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Short 2 at 17:00. A phone shows a group chat where two players drop out. Then a 5sFindr invite page, 'Thabo needs players' at Green Point Urban Park, and the Claim your spot button is tapped. Then the roster fills from 8 to 10 and shows Game on. Text: Free for organisers. End card with the 5sFindr logo and 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/03-short-2-at-1700/w47-03-short-2-at-1700.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/03-short-2-at-1700/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/03/instagram",
+      "post": "03-short-2-at-1700",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-17T18:30:00+02:00",
+      "run_at": "2026-11-17T18:30:00+02:00",
+      "caption": "17:00. Two drop out. Kickoff is 18:30.\n\nOld way: beg the group chat. New way: drop one 5sFindr link and let anyone nearby claim the spot.\n\nFree for organisers, open fields or paid courts. Founding organiser spots are open now: link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Short 2 at 17:00. A phone shows a group chat where two players drop out. Then a 5sFindr invite page, 'Thabo needs players' at Green Point Urban Park, and the Claim your spot button is tapped. Then the roster fills from 8 to 10 and shows Game on. Text: Free for organisers. End card with the 5sFindr logo and 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/03-short-2-at-1700/w47-03-short-2-at-1700.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/03-short-2-at-1700/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/05/facebook",
+      "post": "05-how-areas-unlock",
+      "platform": "facebook",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-18T12:30:00+02:00",
+      "run_at": "2026-11-18T12:30:00+02:00",
+      "caption": "How 5sFindr opens: one Cape Town area at a time. 🔓\n\nEach area unlocks at 50 players + 3 weekly games. Join before yours opens and you get a numbered founding spot.\n\nOrganisers don't wait: run a weekly game and you can start now, anywhere in Cape Town.\n\nWhich area should open first? Tell us below 👇\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: Your area unlocks at 50. 5sFindr opens Cape Town one area at a time.",
+        "Three areas: City Bowl plus Atlantic Seaboard, Southern Suburbs, Northern Suburbs.",
+        "50 plus 3: to unlock an area. 50 players on the list and 3 weekly games, then the area opens to everyone.",
+        "01. Why wait? A game app with no games is useless. Opening when an area has enough players means real games from day one.",
+        "02. Founding numbers. Join before your area opens and you get a numbered founding spot, with founding perks free for your first year.",
+        "03. Organisers skip the queue. Run a weekly game and you can start now in any area.",
+        "Move your area closer. Invite the people you play with. Join the list at 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/05-how-areas-unlock/slides/01.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/02.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/03.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/04.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/05.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/06.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/07.png",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/05/instagram",
+      "post": "05-how-areas-unlock",
+      "platform": "instagram",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-18T12:30:00+02:00",
+      "run_at": "2026-11-18T12:30:00+02:00",
+      "caption": "How 5sFindr opens: one Cape Town area at a time. 🔓\n\nEach area unlocks at 50 players + 3 weekly games. Join before yours opens and you get a numbered founding spot.\n\nOrganisers don't wait: run a weekly game and you can start now, anywhere in Cape Town.\n\nWhich area should open first? Tell us below 👇\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: Your area unlocks at 50. 5sFindr opens Cape Town one area at a time.",
+        "Three areas: City Bowl plus Atlantic Seaboard, Southern Suburbs, Northern Suburbs.",
+        "50 plus 3: to unlock an area. 50 players on the list and 3 weekly games, then the area opens to everyone.",
+        "01. Why wait? A game app with no games is useless. Opening when an area has enough players means real games from day one.",
+        "02. Founding numbers. Join before your area opens and you get a numbered founding spot, with founding perks free for your first year.",
+        "03. Organisers skip the queue. Run a weekly game and you can start now in any area.",
+        "Move your area closer. Invite the people you play with. Join the list at 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/05-how-areas-unlock/slides/01.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/02.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/03.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/04.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/05.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/06.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/05-how-areas-unlock/slides/07.png",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/04/tiktok",
+      "post": "04-new-in-cape-town",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-18T18:00:00+02:00",
+      "run_at": "2026-11-18T17:30:00+02:00",
+      "caption": "New in Cape Town? Football is the fastest way to make mates here. ⚽🏔️\n\n5sFindr (Fives Finder) opens area by area. Get on the list: 5sfindr.com\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Moved to Cape Town. Know nobody. Then: No squad. No group chat. Boots still in the bag. A phone shows 5sFindr's 'Tonight near you' list with games at Green Point Urban Park, Stadium on Main and Rondebosch Common. Then an invite page, Lerato needs players, and the claim button is tapped. Text: Come alone. Leave with a crew. End card with 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/04-new-in-cape-town/w47-04-new-in-cape-town.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/04-new-in-cape-town/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/04/facebook",
+      "post": "04-new-in-cape-town",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-18T18:30:00+02:00",
+      "run_at": "2026-11-18T18:30:00+02:00",
+      "caption": "Moved to Cape Town and don't know anyone yet? Football is the fastest way to make friends here.\n\n5sFindr shows 5-a-side games near you, who's playing, and lets you claim a spot alone. Free open-field games, or your share of a court.\n\nWe're opening Cape Town area by area (City Bowl + Atlantic Seaboard, Southern Suburbs, Northern Suburbs). Join the list: link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Moved to Cape Town. Know nobody. Then: No squad. No group chat. Boots still in the bag. A phone shows 5sFindr's 'Tonight near you' list with games at Green Point Urban Park, Stadium on Main and Rondebosch Common. Then an invite page, Lerato needs players, and the claim button is tapped. Text: Come alone. Leave with a crew. End card with 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/04-new-in-cape-town/w47-04-new-in-cape-town.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/04-new-in-cape-town/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/04/instagram",
+      "post": "04-new-in-cape-town",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-18T18:30:00+02:00",
+      "run_at": "2026-11-18T18:30:00+02:00",
+      "caption": "Moved to Cape Town and don't know anyone yet? Football is the fastest way to make friends here.\n\n5sFindr shows 5-a-side games near you, who's playing, and lets you claim a spot alone. Free open-field games, or your share of a court.\n\nWe're opening Cape Town area by area (City Bowl + Atlantic Seaboard, Southern Suburbs, Northern Suburbs). Join the list: link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Moved to Cape Town. Know nobody. Then: No squad. No group chat. Boots still in the bag. A phone shows 5sFindr's 'Tonight near you' list with games at Green Point Urban Park, Stadium on Main and Rondebosch Common. Then an invite page, Lerato needs players, and the claim button is tapped. Text: Come alone. Leave with a crew. End card with 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/04-new-in-cape-town/w47-04-new-in-cape-town.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/04-new-in-cape-town/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/06/tiktok",
+      "post": "06-things-ct-5s-players-say",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-19T18:00:00+02:00",
+      "run_at": "2026-11-19T17:30:00+02:00",
+      "caption": "“Ja, I'm coming… now now.” 😂 Which one have you said this week?\n\nCape Town 5s, we see you. 5sFindr (Fives Finder) is coming.\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video with big quotes, one per beat: Ja, I'm coming… now now. Who's bringing the bibs? Next goal wins. That's not a foul, bru. I'll EFT you later. Lekker game, same time next week? Ends with the 5sFindr logo and 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/06-things-ct-5s-players-say/w47-06-things-ct-5s-players-say.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/06-things-ct-5s-players-say/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/06/facebook",
+      "post": "06-things-ct-5s-players-say",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-19T18:30:00+02:00",
+      "run_at": "2026-11-19T18:30:00+02:00",
+      "caption": "Things every Cape Town 5s player has said. 😂 Which one's you?\n\nAdd the one we missed 👇\n\n5sFindr: free 5-a-side games and a free organiser tool, built in Cape Town.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video with big quotes, one per beat: Ja, I'm coming… now now. Who's bringing the bibs? Next goal wins. That's not a foul, bru. I'll EFT you later. Lekker game, same time next week? Ends with the 5sFindr logo and 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/06-things-ct-5s-players-say/w47-06-things-ct-5s-players-say.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/06-things-ct-5s-players-say/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/06/instagram",
+      "post": "06-things-ct-5s-players-say",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-19T18:30:00+02:00",
+      "run_at": "2026-11-19T18:30:00+02:00",
+      "caption": "Things every Cape Town 5s player has said. 😂 Which one's you?\n\nAdd the one we missed 👇\n\n5sFindr: free 5-a-side games and a free organiser tool, built in Cape Town.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video with big quotes, one per beat: Ja, I'm coming… now now. Who's bringing the bibs? Next goal wins. That's not a foul, bru. I'll EFT you later. Lekker game, same time next week? Ends with the 5sFindr logo and 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/06-things-ct-5s-players-say/w47-06-things-ct-5s-players-say.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/06-things-ct-5s-players-say/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/07/tiktok",
+      "post": "07-chasing-cash",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-20T18:00:00+02:00",
+      "run_at": "2026-11-20T17:30:00+02:00",
+      "caption": "Organisers: how many people owe you for last week? 😅\n\nWe're building a 'who's paid' list into 5sFindr (Fives Finder). No money goes through us. What would you add?\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Chasing R60 after every game? A phone shows a group chat where the organiser is still R180 short. A list: what we're building: court share shown up front, pay the organiser directly, tap a name: paid, no money goes through us. Text: Organisers, what would you add? End card 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/07-chasing-cash/w47-07-chasing-cash.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/07-chasing-cash/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/08/facebook",
+      "post": "08-first-game-alone",
+      "platform": "facebook",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-21T10:00:00+02:00",
+      "run_at": "2026-11-21T10:00:00+02:00",
+      "caption": "Going to your first 5-a-side in Cape Town alone? Save this. 📌\n\n1. Message the organiser\n2. Arrive 10 minutes early\n3. Bring a light and a dark shirt\n4. Pass early, talk loud\n5. Stay for the after-chat\n\nSend it to a mate who just moved here. 5sFindr is opening Cape Town area by area: link in bio.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: Going to your first 5s alone? 5 things that make it easy.",
+        "01. Message the organiser: first time, happy to fill in anywhere.",
+        "02. Arrive 10 minutes early. Say your name twice. By kick-off you'll know three people.",
+        "03. Bring a light and a dark shirt. No bibs? You're sorted.",
+        "04. Pass early, talk loud. Nobody remembers your touch, they remember you called for it.",
+        "05. Stay for the after-chat. That's where the crew forms.",
+        "Come alone. Leave with a crew. Free 5-a-side games in Cape Town, area by area. 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/08-first-game-alone/slides/01.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/02.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/03.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/04.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/05.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/06.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/07.png",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/08/instagram",
+      "post": "08-first-game-alone",
+      "platform": "instagram",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-21T10:00:00+02:00",
+      "run_at": "2026-11-21T10:00:00+02:00",
+      "caption": "Going to your first 5-a-side in Cape Town alone? Save this. 📌\n\n1. Message the organiser\n2. Arrive 10 minutes early\n3. Bring a light and a dark shirt\n4. Pass early, talk loud\n5. Stay for the after-chat\n\nSend it to a mate who just moved here. 5sFindr is opening Cape Town area by area: link in bio.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: Going to your first 5s alone? 5 things that make it easy.",
+        "01. Message the organiser: first time, happy to fill in anywhere.",
+        "02. Arrive 10 minutes early. Say your name twice. By kick-off you'll know three people.",
+        "03. Bring a light and a dark shirt. No bibs? You're sorted.",
+        "04. Pass early, talk loud. Nobody remembers your touch, they remember you called for it.",
+        "05. Stay for the after-chat. That's where the crew forms.",
+        "Come alone. Leave with a crew. Free 5-a-side games in Cape Town, area by area. 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/08-first-game-alone/slides/01.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/02.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/03.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/04.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/05.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/06.png",
+          "url": null,
+          "sha256": null
+        },
+        {
+          "path": "posts/08-first-game-alone/slides/07.png",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/09/tiktok",
+      "post": "09-founding-numbers",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-21T18:00:00+02:00",
+      "run_at": "2026-11-21T17:30:00+02:00",
+      "caption": "500 founding numbers for Cape Town. Not for sale. 🔢\n\nJoin before your area opens: 5sfindr.com (said Fives Finder). Free.\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Founding numbers are out. A giant stencil 500: founding spots. Text: Numbered. Not for sale. Earned early. Then: Your area unlocks at 50, 50 players plus 3 weekly games. End card: Claim yours, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/09-founding-numbers/w47-09-founding-numbers.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/09-founding-numbers/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/09/facebook",
+      "post": "09-founding-numbers",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-21T18:30:00+02:00",
+      "run_at": "2026-11-21T18:30:00+02:00",
+      "caption": "Founding numbers are out. 500 for Cape Town, numbered, and not for sale.\n\nJoin 5sFindr before your area opens and you get one, with founding perks free for your first year. Each area opens at 50 players + 3 weekly games.\n\nFree 5-a-side games and a free organiser tool. Link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Founding numbers are out. A giant stencil 500: founding spots. Text: Numbered. Not for sale. Earned early. Then: Your area unlocks at 50, 50 players plus 3 weekly games. End card: Claim yours, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/09-founding-numbers/w47-09-founding-numbers.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/09-founding-numbers/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/09/instagram",
+      "post": "09-founding-numbers",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-21T18:30:00+02:00",
+      "run_at": "2026-11-21T18:30:00+02:00",
+      "caption": "Founding numbers are out. 500 for Cape Town, numbered, and not for sale.\n\nJoin 5sFindr before your area opens and you get one, with founding perks free for your first year. Each area opens at 50 players + 3 weekly games.\n\nFree 5-a-side games and a free organiser tool. Link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Founding numbers are out. A giant stencil 500: founding spots. Text: Numbered. Not for sale. Earned early. Then: Your area unlocks at 50, 50 players plus 3 weekly games. End card: Claim yours, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/09-founding-numbers/w47-09-founding-numbers.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/09-founding-numbers/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/10/tiktok",
+      "post": "10-organisers-wanted",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-22T18:00:00+02:00",
+      "run_at": "2026-11-22T17:30:00+02:00",
+      "caption": "Organisers 👋 Comment LINK and I'll DM you a founding organiser spot. Free. Cape Town only.\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Run a weekly 5s in Cape Town? Then: We'll help you fill it. Free. A phone shows a Sunday 5s game at Sea Point Promenade filling from 7 to 10 players. Text: Comment LINK, founding organiser spots. End card 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/10-organisers-wanted/w47-10-organisers-wanted.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/10-organisers-wanted/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/10/facebook",
+      "post": "10-organisers-wanted",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-22T19:00:00+02:00",
+      "run_at": "2026-11-22T19:00:00+02:00",
+      "caption": "Run a weekly 5s in Cape Town? 👋\n\n5sFindr is a free tool for organisers: your list, one link to fill the gaps, and your regulars in one place. Open fields or paid courts.\n\nComment LINK and I'll send you a founding organiser spot.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Run a weekly 5s in Cape Town? Then: We'll help you fill it. Free. A phone shows a Sunday 5s game at Sea Point Promenade filling from 7 to 10 players. Text: Comment LINK, founding organiser spots. End card 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/10-organisers-wanted/w47-10-organisers-wanted.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/10-organisers-wanted/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/10/instagram",
+      "post": "10-organisers-wanted",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-22T19:00:00+02:00",
+      "run_at": "2026-11-22T19:00:00+02:00",
+      "caption": "Run a weekly 5s in Cape Town? 👋\n\n5sFindr is a free tool for organisers: your list, one link to fill the gaps, and your regulars in one place. Open fields or paid courts.\n\nComment LINK and I'll send you a founding organiser spot.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Run a weekly 5s in Cape Town? Then: We'll help you fill it. Free. A phone shows a Sunday 5s game at Sea Point Promenade filling from 7 to 10 players. Text: Comment LINK, founding organiser spots. End card 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/10-organisers-wanted/w47-10-organisers-wanted.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/10-organisers-wanted/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    }
+  ]
+}

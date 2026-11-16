@@ -5,7 +5,8 @@
   "hook": {
     "text": "FOUNDING\nNUMBERS\nARE *OUT*",
     "vo": "vo/09-hook.wav",
-    "minSec": 2.2
+    "minSec": 2.2,
+    "voText": "Founding numbers are out."
   },
   "beats": [
     {
@@ -17,7 +18,8 @@
       },
       "caption": "Five hundred founding numbers for Cape Town. That's it.",
       "vo": "vo/09-b1.wav",
-      "minSec": 3.0
+      "minSec": 3,
+      "voText": "Five hundred founding numbers for Cape Town. That's it."
     },
     {
       "visual": {
@@ -30,7 +32,8 @@
       },
       "caption": "You can't buy one. You get one by joining before your area opens.",
       "vo": "vo/09-b2.wav",
-      "minSec": 3.4
+      "minSec": 3.4,
+      "voText": "You can't buy one. You get one by joining before your area opens."
     },
     {
       "visual": {
@@ -43,11 +46,15 @@
       },
       "caption": "Every area opens at fifty players and three weekly games.",
       "vo": "vo/09-b3.wav",
-      "minSec": 3.0
+      "minSec": 3,
+      "voText": "Every area opens at fifty players and three weekly games."
     }
   ],
   "end": {
     "cta": "Claim yours · 5sfindr.com",
-    "vo": "vo/09-end.wav"
-  }
+    "vo": "vo/09-end.wav",
+    "voText": "Fives Finder. Claim yours."
+  },
+  "aiVoice": true,
+  "voice": "Kokoro bm_george"
 }

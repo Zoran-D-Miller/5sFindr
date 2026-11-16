@@ -5,7 +5,8 @@
   "hook": {
     "text": "EVERY 5s GROUP\nCHAT HAS\nTHESE *5*",
     "vo": "vo/01-hook.wav",
-    "minSec": 2.2
+    "minSec": 2.2,
+    "voText": "Every five-a-side group chat has these five people."
   },
   "beats": [
     {
@@ -48,7 +49,8 @@
       },
       "caption": "You know this chat. Everyone's in it.",
       "vo": "vo/01-b1.wav",
-      "minSec": 3.4
+      "minSec": 3.4,
+      "voText": "You know this chat. Everyone's in it."
     },
     {
       "visual": {
@@ -64,7 +66,8 @@
       },
       "caption": "The maybe. The five o'clock drop-out. The I'll-pay-you-later. The what-time-again. And the organiser, holding it all together.",
       "vo": "vo/01-b2.wav",
-      "minSec": 7.5
+      "minSec": 7.5,
+      "voText": "The maybe. The five o'clock drop-out. The I'll-pay-you-later. The what-time-again. And the organiser, holding it all together."
     },
     {
       "visual": {
@@ -77,11 +80,15 @@
       },
       "caption": "Tag your organiser. They deserve a break.",
       "vo": "vo/01-b3.wav",
-      "minSec": 2.6
+      "minSec": 2.6,
+      "voText": "Tag your organiser. They deserve a break."
     }
   ],
   "end": {
     "cta": "Free for organisers · 5sfindr.com",
-    "vo": "vo/01-end.wav"
-  }
+    "vo": "vo/01-end.wav",
+    "voText": "Fives Finder. Free for organisers."
+  },
+  "aiVoice": true,
+  "voice": "Kokoro bm_george"
 }

@@ -6,7 +6,8 @@
     "text": "SHORT *2*\nAT 17:00",
     "sub": "Kickoff 18:30. Watch it fill.",
     "vo": "vo/03-hook.wav",
-    "minSec": 2.2
+    "minSec": 2.2,
+    "voText": "Short two at five o'clock. Kickoff's half six."
   },
   "beats": [
     {
@@ -41,7 +42,8 @@
       },
       "caption": "Two pull out at five o'clock. Old way: beg the group chat.",
       "vo": "vo/03-b1.wav",
-      "minSec": 3.4
+      "minSec": 3.4,
+      "voText": "Two pull out at five o'clock. Old way: beg the group chat."
     },
     {
       "visual": {
@@ -57,7 +59,8 @@
       },
       "caption": "New way: drop one link. Anyone nearby can claim a spot.",
       "vo": "vo/03-b2.wav",
-      "minSec": 3.4
+      "minSec": 3.4,
+      "voText": "New way: drop one link. Anyone nearby can claim a spot."
     },
     {
       "visual": {
@@ -83,7 +86,8 @@
       },
       "caption": "Two strangers in. Game on. Nobody cancels.",
       "vo": "vo/03-b3.wav",
-      "minSec": 4.2
+      "minSec": 4.2,
+      "voText": "Two strangers in. Game on. Nobody cancels."
     },
     {
       "visual": {
@@ -96,12 +100,16 @@
       },
       "caption": "Free for organisers. Founding spots open now.",
       "vo": "vo/03-b4.wav",
-      "minSec": 2.6
+      "minSec": 2.6,
+      "voText": "Free for organisers. Founding spots open now."
     }
   ],
   "end": {
     "line": "Free 5-a-side games in Cape Town · 5sfindr.com",
     "cta": "Run a game? 5sfindr.com",
-    "vo": "vo/03-end.wav"
-  }
+    "vo": "vo/03-end.wav",
+    "voText": "Fives Finder."
+  },
+  "aiVoice": true,
+  "voice": "Kokoro bm_george"
 }

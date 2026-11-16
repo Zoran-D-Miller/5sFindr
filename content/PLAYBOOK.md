@@ -22,7 +22,7 @@ The rules every week's posts follow. Source: GROWTH-STRATEGY.md §4, §6/§6a, �
 ## Cadence
 
 - **TikTok:** 1 a day (7 a week).
-- **IG Reels:** 4–5 a week, from the same shorts, cross-posted to FB Reels by Business Suite.
+- **IG Reels:** 4–5 a week, from the same shorts, also posted as FB Page Reels by the publisher.
 - **Carousels:** 2–3 a week (IG + FB; optionally TikTok photo mode).
 - **Stories:** daily, made by Zoran on his phone.
 - So a week = **7 shorts + 3 carousels = 10 posts**, with 2–3 being the same short on several platforms.
@@ -53,9 +53,12 @@ Keep it to 2–4 words per line and 3 lines at most. One word in pitch green.
 
 ## Voice
 
-- Zoran's own voice and Cape Town accent: local, warm, a bit cheeky. "Bru", "lekker", "now now" are welcome where natural.
-- Say **"5sFindr" as "Fives Finder"** every time, and write "(said Fives Finder)" in captions while the name is new.
+- Voiceover is the **Kokoro AI voice** (`VOICE.md`), so Zoran never records. It's British or American, so the *words*
+  carry the Cape Town feel: local places, local slang where natural ("bru", "lekker", "now now"), warm and a bit cheeky.
+- Write voice lines (`voText`) for the ear: short sentences, "Fives Finder" for 5sFindr, numbers as words. Write
+  "(said Fives Finder)" in captions while the name is new.
 - Short sentences. Show, don't explain. One idea per post.
+- Zoran's real voice and face live in **stories** and replies, where the "inner circle" feeling comes from.
 
 ## Honesty rules (non-negotiable)
 
@@ -67,6 +70,11 @@ Keep it to 2–4 words per line and 3 lines at most. One word in pitch green.
 6. **AI people are never presented as real users,** and AI shorts always carry a disclosure (see `cinematic/README.md`).
 7. **No one else's footage** without permission (copyright strikes kill new accounts). Use Stitch/Duet or ask creators and credit them.
 8. **Name the competition never**, in posts. Battlecards stay internal.
+9. **AI voice is labelled, always:** the on-screen AI VOICE chip, an "AI voiceover." caption line, Meta's AI info flag
+   on Instagram, and TikTok's "AI-generated content" toggle when Zoran posts the draft. The AI voice never pretends to
+   be Zoran or a user ("I'm Zoran…", testimonials): it narrates.
+10. **Nothing posts without Zoran's approval** of that exact week (`approve <week>` → hash-checked `queue.json`).
+    Replies, comments and DMs are always written by hand.
 
 ## Hashtags
 

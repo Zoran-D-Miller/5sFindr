@@ -79,7 +79,34 @@ export const Short: React.FC<ShortRenderProps> = (props) => {
         {props.end?.vo && props._vo?.[props.beats.length + 1] && <Audio src={staticFile(props.end.vo)} />}
       </Sequence>
       {props.bed && <Audio src={staticFile(props.bed)} volume={0.22} loop />}
+      {props.aiVoice && props._vo?.some(Boolean) && <AiVoiceChip />}
     </AbsoluteFill>
+  );
+};
+
+// Disclosure: the voiceover is synthetic (Kokoro). Top-right, inside the safe zone, on every frame
+// except the hook's first 8 frames so the cover/thumbnail stays clean.
+const AiVoiceChip: React.FC = () => {
+  const frame = useCurrentFrame();
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: SAFE_9x16.top + 18,
+        right: SAFE_9x16.right,
+        opacity: frame < 8 ? 0 : 0.8,
+        fontFamily: F.mono,
+        fontSize: 24,
+        letterSpacing: "0.1em",
+        color: C.dim,
+        border: `1.5px solid ${C.dim}`,
+        borderRadius: 8,
+        padding: "6px 12px",
+        textTransform: "uppercase",
+      }}
+    >
+      AI voice
+    </div>
   );
 };
 
