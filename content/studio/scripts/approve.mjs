@@ -163,7 +163,9 @@ function pushQueue() {
     const tree = git(["write-tree"], E);
     const msg = `Approve ${week}: ${live.length} item(s)${excludes.length ? `, excluding ${excludes.join(", ")}` : ""}`;
     const commit = git(["commit-tree", tree, ...(parent ? ["-p", parent] : []), "-m", msg]);
-    const p = spawnSync("git", ["-C", repo, "push", "-q", "origin", `${commit}:refs/heads/content-queue`], { encoding: "utf8" });
+    // Use the GitHub CLI's login when available: the macOS keychain helper can hang on an invisible prompt.
+    const viaGh = spawnSync("gh", ["auth", "status"], { encoding: "utf8" }).status === 0 ? ["-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential"] : [];
+    const p = spawnSync("git", ["-C", repo, ...viaGh, "push", "-q", "origin", `${commit}:refs/heads/content-queue`], { encoding: "utf8" });
     fs.rmSync(idx, { force: true });
     if (p.status === 0) return commit;
     console.log(`  push rejected (attempt ${attempt}): ${p.stderr.trim()}`);
