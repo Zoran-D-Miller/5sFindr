@@ -285,6 +285,10 @@ export default function PrivacyPage() {
         <Link href="/" className="underline">
           Back to 5sFindr
         </Link>{" "}
+        ·{" "}
+        <Link href="/terms" className="underline">
+          Terms
+        </Link>{" "}
         · © {new Date().getFullYear()} 5sFindr · Cape Town, South Africa
       </footer>
     </main>

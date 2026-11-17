@@ -194,6 +194,10 @@ export function WaitlistForm({ refCode, source, siteUrl }: { refCode?: string; s
           How we use your details:{" "}
           <a href="/privacy" target="_blank" rel="noopener" className="underline hover:text-white/70">
             privacy policy
+          </a>{" "}
+          ·{" "}
+          <a href="/terms" target="_blank" rel="noopener" className="underline hover:text-white/70">
+            terms
           </a>
         </p>
       </div>
