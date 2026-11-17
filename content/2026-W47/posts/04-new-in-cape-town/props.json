@@ -32,7 +32,7 @@
         "heading": "Tonight near you",
         "games": [
           {
-            "day": "Wed 18 Nov",
+            "day": "Sat 21 Nov",
             "time": "18:30",
             "title": "Green Point Urban Park",
             "court": false,
@@ -40,7 +40,7 @@
             "max": 10
           },
           {
-            "day": "Wed 18 Nov",
+            "day": "Sat 21 Nov",
             "time": "19:00",
             "title": "Stadium on Main",
             "court": true,
@@ -49,7 +49,7 @@
             "max": 10
           },
           {
-            "day": "Wed 18 Nov",
+            "day": "Sat 21 Nov",
             "time": "19:30",
             "title": "Rondebosch Common",
             "court": false,
@@ -71,7 +71,7 @@
         "organiser": "Lerato",
         "venue": "Green Point Urban Park",
         "area": "Green Point",
-        "kickoff": "Wednesday 18:30",
+        "kickoff": "Saturday 18:30",
         "court": false,
         "claimAt": 0.55
       },

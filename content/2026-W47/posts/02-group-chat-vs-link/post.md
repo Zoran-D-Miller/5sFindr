@@ -1,6 +1,6 @@
 # 02 · Your group chat is not a booking system
 
-- **Day:** Mon 16 Nov
+- **Day:** Thu 19 Nov
 - **Pillar:** Organiser pain (WhatsApp chaos, chasing cash)
 - **Format:** Carousel
 - **Where and when (SAST):** IG 12:30 · FB 12:30 (Business Suite)

@@ -1,6 +1,6 @@
 # 07 · Chasing R60 after every game
 
-- **Day:** Fri 20 Nov
+- **Day:** Mon 23 Nov
 - **Pillar:** Organiser pain (chasing cash) + building in public
 - **Format:** Short
 - **Where and when (SAST):** TikTok 18:00 (TikTok only)

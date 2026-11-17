@@ -1,6 +1,6 @@
 # 03 · Short 2 at 17:00, watch it fill
 
-- **Day:** Tue 17 Nov
+- **Day:** Fri 20 Nov
 - **Pillar:** Product demo
 - **Format:** Short
 - **Where and when (SAST):** TikTok 18:00 · IG Reel 18:30 · FB Reel

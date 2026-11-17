@@ -1,6 +1,6 @@
 # 08 · Going to your first 5s alone
 
-- **Day:** Sat 21 Nov
+- **Day:** Tue 24 Nov
 - **Pillar:** New to Cape Town / making friends
 - **Format:** Carousel
 - **Where and when (SAST):** IG 10:00 · FB 10:00

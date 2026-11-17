@@ -1,6 +1,6 @@
 # 01 · Every 5s group chat has these 5 people
 
-- **Day:** Mon 16 Nov
+- **Day:** Thu 19 Nov
 - **Pillar:** Organiser pain (WhatsApp chaos)
 - **Format:** Short
 - **Where and when (SAST):** TikTok 18:00 · IG Reel 18:30 · FB Reel (Business Suite)

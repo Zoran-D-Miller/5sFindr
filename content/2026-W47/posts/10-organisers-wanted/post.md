@@ -1,6 +1,6 @@
 # 10 · Run a weekly 5s? Comment LINK
 
-- **Day:** Sun 22 Nov
+- **Day:** Wed 25 Nov
 - **Pillar:** Organiser recruitment (pain → product)
 - **Format:** Short
 - **Where and when (SAST):** TikTok 18:00 · IG Reel 19:00 · FB Reel

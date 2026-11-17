@@ -1,6 +1,6 @@
 # 09 · Founding numbers are out
 
-- **Day:** Sat 21 Nov
+- **Day:** Tue 24 Nov
 - **Pillar:** The inner circle (founding numbers)
 - **Format:** Short
 - **Where and when (SAST):** TikTok 18:00 · IG Reel 18:30 · FB Reel

@@ -1,5 +1,7 @@
 # Review checklist: week 2026-W47 (Zoran, ~30 min)
 
+**Moved:** the week now runs Thu 19 – Wed 25 Nov (3 days later, same order and times; see PLAN.md). Approve by Wed 18 Nov evening so post 02 can go out on Thu 19 at 12:30. Anything more than 3 h late is skipped, never posted late. Video 04 was re-rendered so its game list shows Sat 21 Nov.
+
 Open each post folder, watch the MP4 (or flip through `slides/`), read `post.md`. Tick or fix.
 
 ## Decisions only you can make this week

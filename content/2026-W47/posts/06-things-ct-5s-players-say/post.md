@@ -1,6 +1,6 @@
 # 06 · Things every Cape Town 5s player has said
 
-- **Day:** Thu 19 Nov
+- **Day:** Sun 22 Nov
 - **Pillar:** Cape Town 5s culture
 - **Format:** Short
 - **Where and when (SAST):** TikTok 18:00 · IG Reel 18:30 · FB Reel

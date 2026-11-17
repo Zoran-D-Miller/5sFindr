@@ -1,6 +1,6 @@
 # 04 · Moved to Cape Town, know nobody
 
-- **Day:** Wed 18 Nov
+- **Day:** Sat 21 Nov
 - **Pillar:** New to Cape Town / making friends
 - **Format:** Short
 - **Where and when (SAST):** TikTok 18:00 · IG Reel 18:30 · FB Reel
