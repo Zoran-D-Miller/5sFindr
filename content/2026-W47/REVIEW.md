@@ -6,10 +6,10 @@ Open each post folder, watch the MP4 (or flip through `slides/`), read `post.md`
 
 ## Decisions only you can make this week
 
-- [ ] **09 founding numbers:** OK to promise "500 founding numbers for Cape Town, given to people who join before their area opens"? The waitlist doesn't show numbers yet (S5). If not, use the spare in PLAN.md.
-- [ ] **05 + 09 wording:** "founding perks free for your first year" (the founding free-Premium decision, without saying "Premium" while Premium is hidden). OK?
-- [ ] **02 slide 01** says players tap "I'm in" (S2 work). Keep it, or change it to "Players claim a spot from your link"?
-- [ ] **07** is TikTok only (building in public). Also post as a Reel?
+- [x] **09 founding numbers:** NO, swapped for the spare (re-cut of 03). Was: OK to promise "500 founding numbers for Cape Town, given to people who join before their area opens"? The waitlist doesn't show numbers yet (S5). If not, use the spare in PLAN.md.
+- [x] **05 + 09 wording:** YES, keep (05 only now). "founding perks free for your first year" (the founding free-Premium decision, without saying "Premium" while Premium is hidden). OK?
+- [x] **02 slide 01** changed to "Players claim a spot from your link". Was: says players tap "I'm in" (S2 work). Keep it, or change it to "Players claim a spot from your link"?
+- [x] **07** now also an IG + FB Reel. Was: TikTok only (building in public). Also post as a Reel?
 
 ## Every post
 

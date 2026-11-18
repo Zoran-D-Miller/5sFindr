@@ -33,11 +33,11 @@ Hashtags (IG, end of caption): #capetown #capetownfootball #5aside #fivesfootbal
 
 1. Cover: Your group chat is not a booking system. A free tool for people who run 5-a-side in Cape Town.
 2. Comparison. The group chat: scroll 80 messages to see who's in, 2 drop out at 17:00, beg for a ringer, chase R60s for a week. 5sFindr: a live list that builds itself, waiting list moves up, one link fills the gap, who's paid at a glance.
-3. 01. The list builds itself. Players tap I'm in. No more copying names into a numbered list.
+3. 01. The list builds itself. Players claim a spot from your link. No more copying names into a numbered list.
 4. 02. Short 2? One link. Share it in your group or anywhere. Anyone nearby can claim the spot.
 5. 03. Who's paid, in one place. Court share shown up front. Players pay you directly, you tick them off. Building now.
 6. Never cancel for being 2 short. Free for organisers. Open fields or paid courts. Get early access at 5sfindr.com.
 
 ## Notes and honesty check
 
-Slide 03 describes the 'who's paid' checklist, which is S3 work, so it's labelled 'Building now'. Don't drop that label until S3 ships. The 'I'm in' button is S2 work: if S2 hasn't shipped when this posts, change slide 01 body to 'Players claim a spot from your link.'
+Slide 03 describes the 'who's paid' checklist, which is S3 work, so it's labelled 'Building now'. Don't drop that label until S3 ships. Slide 01 says 'Players claim a spot from your link' (true today; Zoran chose this over 'I'm in', which is S2 work).

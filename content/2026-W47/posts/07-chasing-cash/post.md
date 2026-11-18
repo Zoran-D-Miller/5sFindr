@@ -3,7 +3,7 @@
 - **Day:** Mon 23 Nov
 - **Pillar:** Organiser pain (chasing cash) + building in public
 - **Format:** Short
-- **Where and when (SAST):** TikTok 18:00 (TikTok only)
+- **Where and when (SAST):** TikTok 18:00 · IG Reel 18:30 · FB Reel
 - **Footage:** mocked screens built from the app's real components (no AI, no real people)
 - **Status:** draft, waiting for Zoran's review
 
@@ -31,7 +31,11 @@ Hashtags: #capetown #5aside #capetownfootball #fivesfootball #5sfindr
 
 ## Caption: Instagram + Facebook
 
-(TikTok only this week.)
+Organisers: how many people still owe you for last week's game?
+
+We're building a 'who's paid' list into 5sFindr: the court share shown up front, players pay you directly, tap a name and it's marked paid. No money goes through us.
+
+What would you add? Tell us in the comments.
 
 Hashtags (IG, end of caption): #capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr
 

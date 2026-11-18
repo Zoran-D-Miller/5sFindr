@@ -16,12 +16,12 @@ _Moved 3 days later on Tue 17 Nov: nothing was approved in time for Mon 16. Same
 | 04 | Sat 21 | New to Cape Town | Short | 18:00 | Reel 18:30 | Reel | MOVED TO CAPE TOWN. KNOW NOBODY. |
 | 05 | Sat 21 | Inner circle | Carousel (7) | (optional) | 12:30 | 12:30 | Your area unlocks at 50 |
 | 06 | Sun 22 | CT 5s culture | Short | 18:00 | Reel 18:30 | Reel | THINGS EVERY CAPE TOWN 5s PLAYER HAS SAID |
-| 07 | Mon 23 | Organiser pain / building in public | Short | 18:00 | – | – | CHASING R60 AFTER EVERY GAME? |
+| 07 | Mon 23 | Organiser pain / building in public | Short | 18:00 | Reel 18:30 | Reel | CHASING R60 AFTER EVERY GAME? |
 | 08 | Tue 24 | New to Cape Town | Carousel (7) | (optional) | 10:00 | 10:00 | Going to your first 5s alone? |
-| 09 | Tue 24 | Inner circle | Short | 18:00 | Reel 18:30 | Reel | FOUNDING NUMBERS ARE OUT ⚠️ needs your OK |
+| 09 | Tue 24 | Product demo (re-cut of 03) | Short | 18:00 | Reel 18:30 | Reel | ONE LINK. TWO STRANGERS. GAME ON. (spare: Zoran passed on founding numbers) |
 | 10 | Wed 25 | Organiser recruitment | Short | 18:00 | Reel 19:00 | Reel | RUN A WEEKLY 5s IN CAPE TOWN? |
 
-TikTok 7 ✓ · IG Reels 6 (01, 03, 04, 06, 09, 10; drop one if it's too much) · carousels 3 ✓.
+TikTok 7 ✓ · IG Reels 7 (01, 03, 04, 06, 07, 09, 10) · carousels 3 ✓.
 
 **Spare** (if 09 isn't approved): re-cut 03 with the hook "ONE LINK. TWO STRANGERS. GAME ON." Change `hook.text` in a copy of 03's props.json.
 

@@ -1,7 +1,7 @@
 {
   "week": "2026-W47",
   "timezone": "Africa/Johannesburg",
-  "generated_at": "2026-11-17T09:50:58.871Z",
+  "generated_at": "2026-11-18T14:55:54.803Z",
   "approved": false,
   "approved_at": null,
   "approved_by": null,
@@ -29,7 +29,7 @@
       "alt_text": [
         "Cover: Your group chat is not a booking system. A free tool for people who run 5-a-side in Cape Town.",
         "Comparison. The group chat: scroll 80 messages to see who's in, 2 drop out at 17:00, beg for a ringer, chase R60s for a week. 5sFindr: a live list that builds itself, waiting list moves up, one link fills the gap, who's paid at a glance.",
-        "01. The list builds itself. Players tap I'm in. No more copying names into a numbered list.",
+        "01. The list builds itself. Players claim a spot from your link. No more copying names into a numbered list.",
         "02. Short 2? One link. Share it in your group or anywhere. Anyone nearby can claim the spot.",
         "03. Who's paid, in one place. Court share shown up front. Players pay you directly, you tick them off. Building now.",
         "Never cancel for being 2 short. Free for organisers. Open fields or paid courts. Get early access at 5sfindr.com."
@@ -93,7 +93,7 @@
       "alt_text": [
         "Cover: Your group chat is not a booking system. A free tool for people who run 5-a-side in Cape Town.",
         "Comparison. The group chat: scroll 80 messages to see who's in, 2 drop out at 17:00, beg for a ringer, chase R60s for a week. 5sFindr: a live list that builds itself, waiting list moves up, one link fills the gap, who's paid at a glance.",
-        "01. The list builds itself. Players tap I'm in. No more copying names into a numbered list.",
+        "01. The list builds itself. Players claim a spot from your link. No more copying names into a numbered list.",
         "02. Short 2? One link. Share it in your group or anywhere. Anyone nearby can claim the spot.",
         "03. Who's paid, in one place. Court share shown up front. Players pay you directly, you tick them off. Building now.",
         "Never cancel for being 2 short. Free for organisers. Open fields or paid courts. Get early access at 5sfindr.com."
@@ -729,6 +729,78 @@
       "excluded": false
     },
     {
+      "id": "2026-W47/07/facebook",
+      "post": "07-chasing-cash",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-23T18:30:00+02:00",
+      "run_at": "2026-11-23T18:30:00+02:00",
+      "caption": "Organisers: how many people still owe you for last week's game?\n\nWe're building a 'who's paid' list into 5sFindr: the court share shown up front, players pay you directly, tap a name and it's marked paid. No money goes through us.\n\nWhat would you add? Tell us in the comments.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Chasing R60 after every game? A phone shows a group chat where the organiser is still R180 short. A list: what we're building: court share shown up front, pay the organiser directly, tap a name: paid, no money goes through us. Text: Organisers, what would you add? End card 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/07-chasing-cash/w47-07-chasing-cash.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/07-chasing-cash/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
+      "id": "2026-W47/07/instagram",
+      "post": "07-chasing-cash",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-23T18:30:00+02:00",
+      "run_at": "2026-11-23T18:30:00+02:00",
+      "caption": "Organisers: how many people still owe you for last week's game?\n\nWe're building a 'who's paid' list into 5sFindr: the court share shown up front, players pay you directly, tap a name and it's marked paid. No money goes through us.\n\nWhat would you add? Tell us in the comments.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Chasing R60 after every game? A phone shows a group chat where the organiser is still R180 short. A list: what we're building: court share shown up front, pay the organiser directly, tap a name: paid, no money goes through us. Text: Organisers, what would you add? End card 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/07-chasing-cash/w47-07-chasing-cash.mp4",
+          "url": null,
+          "sha256": null
+        }
+      ],
+      "cover": {
+        "path": "posts/07-chasing-cash/cover.png",
+        "url": null,
+        "sha256": null
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Kokoro bm_george)",
+      "excluded": false
+    },
+    {
       "id": "2026-W47/08/facebook",
       "post": "08-first-game-alone",
       "platform": "facebook",
@@ -870,13 +942,13 @@
     },
     {
       "id": "2026-W47/09/tiktok",
-      "post": "09-founding-numbers",
+      "post": "09-one-link-two-strangers",
       "platform": "tiktok",
       "kind": "reel",
       "mode": "draft",
       "at": "2026-11-24T18:00:00+02:00",
       "run_at": "2026-11-24T17:30:00+02:00",
-      "caption": "500 founding numbers for Cape Town. Not for sale. 🔢\n\nJoin before your area opens: 5sfindr.com (said Fives Finder). Free.\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "caption": "One link. Two strangers. Game on. ⚽\n\nShort at 17:00? Drop a 5sFindr (said Fives Finder) link and anyone nearby can claim the spot. Free for organisers in Cape Town.\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
       "hashtags": [
         "#capetown",
         "#5aside",
@@ -884,16 +956,16 @@
         "#fivesfootball",
         "#5sfindr"
       ],
-      "alt_text": "Vertical video. Big text: Founding numbers are out. A giant stencil 500: founding spots. Text: Numbered. Not for sale. Earned early. Then: Your area unlocks at 50, 50 players plus 3 weekly games. End card: Claim yours, 5sfindr.com.",
+      "alt_text": "Vertical video. Big text: One link. Two strangers. Game on. A phone shows a group chat where two players drop out. Then a 5sFindr invite page, 'Thabo needs players' at Green Point Urban Park, and the Claim your spot button is tapped. Then the roster fills from 8 to 10 and shows Game on. Text: Free for organisers. End card with the 5sFindr logo and 5sfindr.com.",
       "media": [
         {
-          "path": "posts/09-founding-numbers/w47-09-founding-numbers.mp4",
+          "path": "posts/09-one-link-two-strangers/w47-09-one-link-two-strangers.mp4",
           "url": null,
           "sha256": null
         }
       ],
       "cover": {
-        "path": "posts/09-founding-numbers/cover.png",
+        "path": "posts/09-one-link-two-strangers/cover.png",
         "url": null,
         "sha256": null
       },
@@ -903,13 +975,13 @@
     },
     {
       "id": "2026-W47/09/facebook",
-      "post": "09-founding-numbers",
+      "post": "09-one-link-two-strangers",
       "platform": "facebook",
       "kind": "reel",
       "mode": "publish",
       "at": "2026-11-24T18:30:00+02:00",
       "run_at": "2026-11-24T18:30:00+02:00",
-      "caption": "Founding numbers are out. 500 for Cape Town, numbered, and not for sale.\n\nJoin 5sFindr before your area opens and you get one, with founding perks free for your first year. Each area opens at 50 players + 3 weekly games.\n\nFree 5-a-side games and a free organiser tool. Link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "caption": "One link. Two strangers. Game on.\n\nWhen two drop out at 17:00, you don't cancel. Share one 5sFindr link and players nearby claim the spots.\n\nFree for organisers, open fields or paid courts. Link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
       "hashtags": [
         "#capetown",
         "#capetownfootball",
@@ -920,16 +992,16 @@
         "#newincapetown",
         "#5sfindr"
       ],
-      "alt_text": "Vertical video. Big text: Founding numbers are out. A giant stencil 500: founding spots. Text: Numbered. Not for sale. Earned early. Then: Your area unlocks at 50, 50 players plus 3 weekly games. End card: Claim yours, 5sfindr.com.",
+      "alt_text": "Vertical video. Big text: One link. Two strangers. Game on. A phone shows a group chat where two players drop out. Then a 5sFindr invite page, 'Thabo needs players' at Green Point Urban Park, and the Claim your spot button is tapped. Then the roster fills from 8 to 10 and shows Game on. Text: Free for organisers. End card with the 5sFindr logo and 5sfindr.com.",
       "media": [
         {
-          "path": "posts/09-founding-numbers/w47-09-founding-numbers.mp4",
+          "path": "posts/09-one-link-two-strangers/w47-09-one-link-two-strangers.mp4",
           "url": null,
           "sha256": null
         }
       ],
       "cover": {
-        "path": "posts/09-founding-numbers/cover.png",
+        "path": "posts/09-one-link-two-strangers/cover.png",
         "url": null,
         "sha256": null
       },
@@ -939,13 +1011,13 @@
     },
     {
       "id": "2026-W47/09/instagram",
-      "post": "09-founding-numbers",
+      "post": "09-one-link-two-strangers",
       "platform": "instagram",
       "kind": "reel",
       "mode": "publish",
       "at": "2026-11-24T18:30:00+02:00",
       "run_at": "2026-11-24T18:30:00+02:00",
-      "caption": "Founding numbers are out. 500 for Cape Town, numbered, and not for sale.\n\nJoin 5sFindr before your area opens and you get one, with founding perks free for your first year. Each area opens at 50 players + 3 weekly games.\n\nFree 5-a-side games and a free organiser tool. Link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "caption": "One link. Two strangers. Game on.\n\nWhen two drop out at 17:00, you don't cancel. Share one 5sFindr link and players nearby claim the spots.\n\nFree for organisers, open fields or paid courts. Link in bio.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
       "hashtags": [
         "#capetown",
         "#capetownfootball",
@@ -956,16 +1028,16 @@
         "#newincapetown",
         "#5sfindr"
       ],
-      "alt_text": "Vertical video. Big text: Founding numbers are out. A giant stencil 500: founding spots. Text: Numbered. Not for sale. Earned early. Then: Your area unlocks at 50, 50 players plus 3 weekly games. End card: Claim yours, 5sfindr.com.",
+      "alt_text": "Vertical video. Big text: One link. Two strangers. Game on. A phone shows a group chat where two players drop out. Then a 5sFindr invite page, 'Thabo needs players' at Green Point Urban Park, and the Claim your spot button is tapped. Then the roster fills from 8 to 10 and shows Game on. Text: Free for organisers. End card with the 5sFindr logo and 5sfindr.com.",
       "media": [
         {
-          "path": "posts/09-founding-numbers/w47-09-founding-numbers.mp4",
+          "path": "posts/09-one-link-two-strangers/w47-09-one-link-two-strangers.mp4",
           "url": null,
           "sha256": null
         }
       ],
       "cover": {
-        "path": "posts/09-founding-numbers/cover.png",
+        "path": "posts/09-one-link-two-strangers/cover.png",
         "url": null,
         "sha256": null
       },
