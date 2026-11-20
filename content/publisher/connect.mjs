@@ -32,12 +32,16 @@ if (fs.existsSync(envFile)) {
 function ask(question, { hidden = false } = {}) {
   return new Promise((resolve) => {
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout, terminal: true });
-    if (hidden) rl._writeToOutput = (s) => rl.output.write(s.startsWith(question) ? s : "");
+    // Hidden: print the prompt, then mute every later write. (Checking "does it start with the
+    // prompt?" is not enough: on a paste readline redraws prompt + line, which echoed the secret.)
+    let muted = false;
+    if (hidden) rl._writeToOutput = (s) => { if (!muted) rl.output.write(s); };
     rl.question(question, (a) => {
       rl.close();
       if (hidden) process.stdout.write("\n");
       resolve(a.trim());
     });
+    if (hidden) muted = true; // question() wrote the prompt synchronously above
   });
 }
 function need(...keys) {
