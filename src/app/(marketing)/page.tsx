@@ -79,6 +79,10 @@ export default function LandingPage({
         © {new Date().getFullYear()} 5sFindr · Cape Town, South Africa ·{" "}
         <Link href="/privacy" className="underline hover:text-white/60">
           Privacy
+        </Link>{" "}
+        ·{" "}
+        <Link href="/terms" className="underline hover:text-white/60">
+          Terms
         </Link>
       </footer>
     </main>
