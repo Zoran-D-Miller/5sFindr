@@ -1,5 +1,12 @@
 {
+  "engine": "chatterbox",
   "voice": "bm_george",
-  "speed": 1.05,
-  "lang": "en-gb"
+  "lang": "en-gb",
+  "speed": 1.12,
+  "stretch": 1.12,
+  "polish": true,
+  "gapSec": 0.12,
+  "robot": { "amount": 0.65, "glitch": 0.7 },
+  "bed": "machine",
+  "sfx": true
 }

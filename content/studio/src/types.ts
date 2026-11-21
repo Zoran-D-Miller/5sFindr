@@ -43,24 +43,31 @@ export type Visual =
   | { kind: "clip"; src: string; startFrom?: number; label?: string } // stock or AI clip in the week folder
   | { kind: "map"; areas: { name: string; now: number; goal: number }[]; title?: string };
 
+// A sound-design cue: a name from the week's sfx library ("crt-on", "dialup", "im-alert" … see VOICE.md) or a path
+// in the week folder, played `at` seconds after its segment starts (default 0; negative = before the segment ends)
+// at `vol` (default 0.7). No music.
+export type Sfx = string | { src: string; at?: number; vol?: number };
+
 export type Beat = {
   visual: Visual;
   caption?: string; // burned-in caption = the voice line. Empty = no caption.
   vo?: string; // path inside the week folder, e.g. "vo/p01-b1.wav"
-  voText?: string; // what the AI voice says (scripts/voice.mjs turns it into the vo file)
+  voText?: string; // what the AI voice says (scripts/voice.mjs turns it into the vo file); ~word~ forces a glitch
   minSec?: number; // beat length when there is no voice line yet
+  sfx?: Sfx[];
 };
 
 export type ShortProps = {
   type?: "short";
   id?: string;
   coord?: string;
-  hook: { text: string; sub?: string; vo?: string; voText?: string; minSec?: number }; // on screen from frame 0
+  hook: { text: string; sub?: string; vo?: string; voText?: string; minSec?: number; sfx?: Sfx[] }; // on screen from frame 0
   beats: Beat[];
-  end?: { line?: string; cta?: string; vo?: string; voText?: string };
-  bed?: string; // optional ambience file in the week folder (TikTok sounds are added in-app instead)
-  aiVoice?: boolean; // voice lines are AI (Kokoro): shows the "AI voice" chip; queue.mjs sets the AI label
-  voice?: string; // which voice made them, e.g. "Kokoro bm_george" (set by scripts/voice.mjs)
+  end?: { line?: string; cta?: string; vo?: string; voText?: string; sfx?: Sfx[] };
+  bed?: string; // optional room-tone file in the week folder, dipped under the voice (voice.json "bed": "machine")
+  gapSec?: number; // pause after each voice line before the next beat (default 0.35; voice.mjs sets the week's value)
+  aiVoice?: boolean; // voice lines are AI: shows the "AI voice" chip; queue.mjs sets the AI label
+  voice?: string; // which voice made them, e.g. "Chatterbox (bm_george timbre)" (set by scripts/voice.mjs)
 };
 
 // ---------- Cinematic edit (AI clips + real UI composites) ----------
