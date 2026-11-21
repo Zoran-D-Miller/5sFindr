@@ -53,7 +53,7 @@ The A/B samples (same script, 10 versions) are in `content/voice-samples/ab-2026
   - `glitch` (0–1): how often it breaks down. About 1 glitch per line at 0.7, always at least one in the hook, none on
     the end card. Glitches: **stutter** (a word's first syllable repeats, crushed), **pitch** (one word jumps up or
     down 5–9 semitones), **wow** (a word slows and sags like a dying tape), **dropout** (the signal cuts out with a
-    click), and **tapestop** (a word winds down about 13.5 semitones and rings out, kept as loud as the rest of the line so it stays
+    click), and **tapestop** (a word winds down about 13.5 semitones, held twice as long and ringing out, kept as loud as the rest of the line so it stays
     audible). At 1.1 key words got lost in testing, so don't go much above 0.8.
   - Picked automatically, glitches never land on the first word of a line, on "Fives Finder", "dot com" or "free", or
     on the end card.

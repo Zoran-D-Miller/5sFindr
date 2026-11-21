@@ -265,10 +265,14 @@ def g_wow(y, s, e, r, rng):
 def g_tapestop(y, s, e, r, rng):
     # Winds down to about 13.5 semitones lower (Zoran, 21 Nov: ~18 was inaudible, ~9 cut off too quickly), and lets
     # the end of the word ring out over 0.12 s instead of stopping dead.
+    from pedalboard import time_stretch
+
     seg = _varispeed(y[s:e], lambda u: max(0.46, 1 - 0.54 * u**1.5))
+    # Then held twice as long without changing that pitch, so the whole word can be caught (Zoran, 21 Nov).
+    seg = time_stretch(seg[None], r, 0.5)[0].astype(np.float32)
     rms = lambda x: np.sqrt((x**2).mean()) + 1e-9
     seg = seg * (rms(y[:s]) / rms(seg)) * 1.12  # as loud as the rest of the line (+1 dB): lower pitch sounds quieter
-    return np.concatenate([y[:s], _fade(seg, r, 0.002, 0.12)])
+    return np.concatenate([y[:s], _fade(seg, r, 0.002, 0.2)])
 
 
 def g_dropout(y, s, e, r, rng):
