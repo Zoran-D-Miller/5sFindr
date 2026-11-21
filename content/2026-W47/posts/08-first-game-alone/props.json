@@ -1,0 +1,49 @@
+{
+  "type": "carousel",
+  "id": "w47-08-first-game-alone",
+  "coord": "33.902° S, 18.409° E · SAT 10:00",
+  "slides": [
+    {
+      "kind": "cover",
+      "kicker": "NEW IN CAPE TOWN",
+      "headline": "Going to your\nfirst 5s\n*alone*?",
+      "sub": "5 things that make it easy. Save this for later."
+    },
+    {
+      "kind": "point",
+      "n": "01",
+      "title": "Message the *organiser*",
+      "body": "“First time, happy to fill in anywhere.” Organisers love that player."
+    },
+    {
+      "kind": "point",
+      "n": "02",
+      "title": "Arrive *10 min early*",
+      "body": "Say your name twice. By kick-off you'll know three people."
+    },
+    {
+      "kind": "point",
+      "n": "03",
+      "title": "Bring a *light and a dark* shirt",
+      "body": "No bibs? You're sorted. Instant friend."
+    },
+    {
+      "kind": "point",
+      "n": "04",
+      "title": "Pass early, *talk loud*",
+      "body": "Nobody remembers your touch. They remember you called for it."
+    },
+    {
+      "kind": "point",
+      "n": "05",
+      "title": "Stay for the *after-chat*",
+      "body": "That's where the crew forms. Same time next week?"
+    },
+    {
+      "kind": "cta",
+      "headline": "Come alone.\nLeave with\na *crew*.",
+      "body": "Free 5-a-side games in Cape Town, area by area.",
+      "cta": "Join the list · 5sfindr.com"
+    }
+  ]
+}

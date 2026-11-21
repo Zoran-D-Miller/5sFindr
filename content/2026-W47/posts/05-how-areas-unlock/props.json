@@ -1,0 +1,52 @@
+{
+  "type": "carousel",
+  "id": "w47-05-how-areas-unlock",
+  "coord": "CAPE TOWN · 3 AREAS · 1 AT A TIME",
+  "slides": [
+    {
+      "kind": "cover",
+      "kicker": "HOW IT OPENS",
+      "headline": "Your area\n*unlocks*\nat 50",
+      "sub": "5sFindr opens Cape Town one area at a time. Here's how."
+    },
+    {
+      "kind": "list",
+      "title": "Three *areas*",
+      "items": [
+        "City Bowl + Atlantic Seaboard",
+        "Southern Suburbs",
+        "Northern Suburbs"
+      ]
+    },
+    {
+      "kind": "stat",
+      "big": "50+3",
+      "label": "To unlock an area",
+      "body": "50 players on the list and 3 weekly games. Then the area opens to everyone."
+    },
+    {
+      "kind": "point",
+      "n": "01",
+      "title": "Why *wait*?",
+      "body": "A game app with no games is useless. Opening when an area has enough players means real games from day one."
+    },
+    {
+      "kind": "point",
+      "n": "02",
+      "title": "Founding *numbers*",
+      "body": "Join before your area opens and you get a numbered founding spot, with founding perks free for your first year."
+    },
+    {
+      "kind": "point",
+      "n": "03",
+      "title": "Organisers *skip the queue*",
+      "body": "Run a weekly game? You can start now in any area. Your own group plays from day one."
+    },
+    {
+      "kind": "cta",
+      "headline": "Move your\narea *closer*",
+      "body": "Invite the people you play with. Every signup counts toward your area.",
+      "cta": "Join the list · 5sfindr.com"
+    }
+  ]
+}

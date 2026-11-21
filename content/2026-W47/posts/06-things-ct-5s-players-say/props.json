@@ -1,0 +1,107 @@
+{
+  "type": "short",
+  "id": "w47-06-things-ct-5s-players-say",
+  "coord": "CAPE TOWN · THU 19:00",
+  "hook": {
+    "text": "THINGS EVERY\nCAPE TOWN 5s\nPLAYER HAS *SAID*",
+    "vo": "vo/06-hook.wav",
+    "minSec": 2.4,
+    "voText": "Things every Cape Town five-a-side player has said."
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "“JA, I'M COMING.”",
+          "…NOW NOW."
+        ],
+        "small": "01/06"
+      },
+      "caption": "Ja, I'm coming. Now now.",
+      "vo": "vo/06-b1.wav",
+      "minSec": 2,
+      "voText": "Ja, I'm coming. Now now."
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "“WHO'S",
+          "BRINGING",
+          "THE *BIBS*?”"
+        ],
+        "small": "02/06"
+      },
+      "caption": "Who's bringing the bibs?",
+      "vo": "vo/06-b2.wav",
+      "minSec": 2,
+      "voText": "Who's bringing the bibs?"
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "“NEXT GOAL",
+          "*WINS*.”"
+        ],
+        "small": "03/06"
+      },
+      "caption": "Next goal wins. Third time.",
+      "vo": "vo/06-b3.wav",
+      "minSec": 2,
+      "voText": "Next goal wins. Third time."
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "“THAT'S NOT",
+          "A FOUL, *BRU*.”"
+        ],
+        "small": "04/06"
+      },
+      "caption": "That's not a foul, bru.",
+      "vo": "vo/06-b4.wav",
+      "minSec": 2,
+      "voText": "That's not a foul, bru."
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "“I'LL EFT",
+          "YOU *LATER*.”"
+        ],
+        "small": "05/06"
+      },
+      "caption": "I'll EFT you later. Famous last words.",
+      "vo": "vo/06-b5.wav",
+      "minSec": 2,
+      "voText": "I'll EFT you later. Famous last words."
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "“LEKKER GAME.",
+          "SAME TIME",
+          "*NEXT WEEK*?”"
+        ],
+        "small": "06/06"
+      },
+      "caption": "Lekker game. Same time next week?",
+      "vo": "vo/06-b6.wav",
+      "minSec": 2,
+      "voText": "Lekker game. Same time next week?"
+    }
+  ],
+  "end": {
+    "line": "Free 5-a-side games in Cape Town · 5sfindr.com",
+    "cta": "Which one's you? 5sfindr.com",
+    "vo": "vo/06-end.wav",
+    "voText": "Fives Finder. Which one's you?"
+  },
+  "aiVoice": true,
+  "voice": "Kokoro bm_george"
+}

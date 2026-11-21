@@ -1,0 +1,37 @@
+# Studio dependencies and caches
+studio/node_modules/
+studio/.remotion/
+studio/out/
+
+# Renders are rebuilt from props.json + vo/ (npm run render:week). Film grain makes the PNGs
+# 1-2 MB each, so they stay out of git too. (2026-W47's were committed before this rule;
+# files already in git stay tracked.)
+*.mp4
+*.mov
+**/preview/
+**/slides/*.png
+**/cover.png
+cinematic/**/exports/
+
+# Voice lines: AI lines are rebuilt from props.json voText (npm run voice), so the WAVs stay out of git
+**/vo/*.wav
+**/vo/.voice-manifest.json
+**/vo/.tmp/
+**/vo-raw/*
+!**/vo-raw/.gitkeep
+
+# Kokoro AI voice: Python venv + ~350 MB of model files (npm run voice:setup), and the voice samples
+studio/.kokoro/
+studio/.kokoro-venv/
+voice-samples/
+
+# JPEGs made by approve.mjs for upload (Instagram only takes JPEG)
+**/publish/
+
+# Keys for approve.mjs / connect.mjs (Supabase service key, Meta + TikTok app secrets): never commit
+.env.local
+.env*.local
+
+# Generated AI clips are large: keep them in cloud storage / on disk, not in git
+cinematic/**/clips/*
+!cinematic/**/clips/.gitkeep

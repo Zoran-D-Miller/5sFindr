@@ -1,0 +1,84 @@
+# 5sFindr content publisher (free: public repo → unlimited Actions minutes).
+# Every ~15 minutes: publish due, APPROVED items from the `content-queue` branch to Instagram + the Facebook Page,
+# and upload TikTok videos to Zoran's TikTok inbox as drafts. Never replies, comments or DMs.
+#
+# Safety: nothing posts unless ALL of these hold (see content/publisher/publish.mjs):
+#   - repo variable CONTENT_PUBLISH_ENABLED is "true" (Settings → Secrets and variables → Actions → Variables);
+#     without it every run is a dry run that only prints;
+#   - the week's queue.json on content-queue is approved and unchanged since approval (hash check);
+#   - the item isn't excluded and isn't already in published.json.
+# Setup: content/AUTOPOST-SETUP.md. Scheduled workflows only run from the default branch (main).
+name: Content publisher
+
+on:
+  schedule:
+    - cron: "7,22,37,52 * * * *" # off the hour: GitHub delays :00 runs the most
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (print only, post nothing)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write # commit published.json to content-queue
+  issues: write # TikTok draft captions + alerts go to one issue
+
+concurrency:
+  group: content-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out the publisher (main)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: content/publisher
+          path: app
+
+      - name: Is there a queue yet?
+        id: queue
+        run: |
+          if git -C app ls-remote --exit-code --heads origin content-queue >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No content-queue branch yet: nothing has been approved. Done."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check out the approved queues (content-queue)
+        if: steps.queue.outputs.exists == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: content-queue
+          path: queue
+
+      - uses: actions/setup-node@v4
+        if: steps.queue.outputs.exists == 'true'
+        with:
+          node-version: 20
+
+      - name: Publish due items
+        if: steps.queue.outputs.exists == 'true'
+        env:
+          # Live only when the repo variable says so AND this isn't a manual dry run.
+          PUBLISH_ENABLED: ${{ vars.CONTENT_PUBLISH_ENABLED == 'true' && !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && 'true' || 'false' }}
+          META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
+          META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+          META_GRAPH_VERSION: ${{ vars.META_GRAPH_VERSION }}
+          META_AI_FLAG: ${{ vars.META_AI_FLAG }}
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+          GH_ADMIN_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git -C queue config user.name "5sfindr-publisher"
+          git -C queue config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node app/content/publisher/publish.mjs --queue-root queue/content --commit-dir queue
