@@ -87,7 +87,11 @@ for (const dir of postDirs) {
       composition,
       serveUrl,
       codec: "h264",
-      crf: 20, // platforms re-encode anyway; keeps a short well under Supabase Free's 50 MB per file
+      // Platforms re-encode anyway. 23 roughly halves the file vs 20 (≈25 MB → ≈12 MB for 20 s), which keeps
+      // 17–20 posts a week inside Supabase Free's 5 GB/month egress (each file is fetched ~3 times).
+      crf: 23,
+      // RENDER_CONCURRENCY=2 when the Mac is short of memory (Chrome crashed mid-render at the default of 4 tabs).
+      concurrency: Number(process.env.RENDER_CONCURRENCY) || null,
       outputLocation: out,
       inputProps: props,
       onProgress: ({ progress }) => {

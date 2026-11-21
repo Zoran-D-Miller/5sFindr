@@ -206,6 +206,31 @@ if (jobs.length) {
   const robotChecks = robot
     ? py("audio_tools.py", ["robot"], jobs.map((j) => ({ in: j.out, out: j.out, text: j.text, role: j.role, marks: j.marks, ...robot })))
     : [];
+  // Chatterbox sometimes fluffs a line: a misread brand name ("Fife's Finder"), or an almost empty take that leaks
+  // the reference clip. Those lines are re-made with Kokoro in the same voice and effects, and whichever take matches
+  // the script better is kept, so a week can be made without anyone listening for these.
+  if (robot && cfg.engine === "chatterbox") {
+    const retry = jobs.filter((j, i) => robotChecks[i].score !== null && !robotChecks[i].ok);
+    if (retry.length) {
+      console.log(`↻ ${retry.length} line(s) didn't match their script; trying Kokoro ${cfg.voice} for them …`);
+      const alt = (j) => j.out.replace(/\.wav$/, ".kokoro.wav");
+      runKokoro(retry.map((j) => ({ text: j.text, out: alt(j), voice: cfg.voice, speed: cfg.speed, lang: cfg.lang })));
+      if (cfg.polish) py("audio_tools.py", ["polish"], retry.map((j) => ({ in: alt(j), out: alt(j), stretch: 1 })));
+      const altChecks = py("audio_tools.py", ["robot"], retry.map((j) => ({ in: alt(j), out: alt(j), text: j.text, role: j.role, marks: j.marks, ...robot })));
+      retry.forEach((j, k) => {
+        const i = jobs.indexOf(j);
+        const [a, c] = [altChecks[k], robotChecks[i]];
+        if ((a.ok && !c.ok) || (a.score ?? 0) > (c.score ?? 0)) {
+          fs.renameSync(alt(j), j.out);
+          robotChecks[i] = a;
+          console.log(`  ${j.vo}: kept the Kokoro take (match ${a.score} vs ${c.score})`);
+        } else {
+          fs.rmSync(alt(j), { force: true });
+          console.log(`  ${j.vo}: Kokoro wasn't better (match ${a.score} vs ${c.score}), kept Chatterbox`);
+        }
+      });
+    }
+  }
   for (const [i, c] of robotChecks.entries()) {
     const g = c.glitches.map((e) => `${e.word} (${e.glitch})`).join(", ");
     if (g) console.log(`  ${jobs[i].vo}: glitched ${g}`);

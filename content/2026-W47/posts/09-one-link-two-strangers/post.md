@@ -5,7 +5,7 @@ Spare for the founding-numbers slot (Zoran's call, 18 Nov): a re-cut of 03 with 
 - **Day:** Tue 24 Nov
 - **Pillar:** Product demo (re-cut of 03)
 - **Format:** Short
-- **Where and when (SAST):** TikTok 18:00 · IG Reel 18:30 · FB Reel
+- **Where and when (SAST):** TikTok 19:30 · IG Reel 19:30 · FB Reel
 - **Footage:** mocked screens built from the app's real components (no AI, no real people)
 - **Status:** draft, waiting for Zoran's review
 

@@ -6,7 +6,7 @@ post 01 or replace it._
 - **Day:** Thu 26 Nov
 - **Pillar:** Organiser pain (the game-day drop-out)
 - **Format:** Short
-- **Where and when (SAST):** TikTok 18:00 · IG Reel 18:30 · FB Reel (Business Suite)
+- **Where and when (SAST):** TikTok 19:30 · IG Reel 19:30 · FB Reel (Business Suite)
 - **Footage:** mocked screens built from the app's real components (no AI footage, no real people)
 - **Status:** sample, waiting for Zoran's review
 

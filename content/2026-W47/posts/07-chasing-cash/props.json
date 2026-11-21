@@ -6,7 +6,13 @@
     "text": "CHASING *R60*\nAFTER EVERY\nGAME?",
     "vo": "vo/07-hook.wav",
     "minSec": 2.2,
-    "voText": "Chasing sixty rand after every game?"
+    "voText": "Chasing sixty rand after every game?",
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ]
   },
   "beats": [
     {
@@ -48,7 +54,18 @@
       "caption": "You booked the court. You paid it. Now you're chasing four people for sixty bucks.",
       "vo": "vo/07-b1.wav",
       "minSec": 4.2,
-      "voText": "You booked the court. You paid it. Now you're chasing four people for sixty bucks."
+      "voText": "You booked the court. You paid it. Now you're chasing four people for sixty bucks.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.4
+        },
+        {
+          "src": "im-alert",
+          "at": 1.2,
+          "vol": 0.6
+        }
+      ]
     },
     {
       "visual": {
@@ -64,7 +81,13 @@
       "caption": "So we're building this: share shown up front, pay the organiser directly, tap a name, marked paid.",
       "vo": "vo/07-b2.wav",
       "minSec": 6,
-      "voText": "So we're building this: share shown up front, pay the organiser directly, tap a name, marked paid."
+      "voText": "So we're building this: share shown up front, pay the organiser directly, tap a name, marked paid.",
+      "sfx": [
+        {
+          "src": "hdd-seek",
+          "vol": 0.6
+        }
+      ]
     },
     {
       "visual": {
@@ -78,14 +101,33 @@
       "caption": "Organisers, what would you add? Tell me in the comments.",
       "vo": "vo/07-b3.wav",
       "minSec": 2.8,
-      "voText": "Organisers, what would you add? Tell me in the comments."
+      "voText": "Organisers, what would you add? Tell me in the comments.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.45
+        }
+      ]
     }
   ],
   "end": {
     "cta": "Free for organisers · 5sfindr.com",
     "vo": "vo/07-end.wav",
-    "voText": "Fives Finder. Free for organisers."
+    "voText": "Fives Finder. Free for organisers.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
   },
   "aiVoice": true,
-  "voice": "Kokoro bm_george"
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
 }

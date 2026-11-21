@@ -147,6 +147,7 @@ PROTECT = ("fives", "finder", "dot", "com", "free")
 
 def _plain(s):
     s = s.lower().replace("organizer", "organiser").replace(".com", " dot com")
+    s = re.sub(r"\b5'?s\b", "fives", s)  # Whisper writes "Fives Finder" as "5's Finder" / "5s Finder"
     return "".join(w for w in re.split(r"[^a-z0-9]+", s) if w and not w.isdigit() and w not in NUMBER_WORDS)
 
 

@@ -120,9 +120,11 @@ To hear Kokoro's other voices: `npm run voice -- --samples` (9 voices → `conte
    ```
    `voice` writes `vo/<name>.wav` (mono 48 kHz, about −13 LUFS so the finished video lands near −16, silence trimmed) at the paths in `props.json`. It skips
    lines whose text and settings haven't changed, and sets `"aiVoice": true`, `"voice": "Chatterbox (bm_george timbre)"`
-   and `"gapSec"`. Then it transcribes each new line (faster-whisper, local) and prints `⚠ … Heard: "…"` for any that
-   don't match the script. The render stretches each beat to fit its line and shows a small **AI VOICE** chip (top
-   right, hidden on the cover frame).
+   and `"gapSec"`. Then it transcribes each new line (faster-whisper, local). **Any Chatterbox line that doesn't match
+   its script is re-made with Kokoro in the same voice and effects, and the better take is kept** (in W47 this fixed a
+   "Fife's Finder", an "EFTU" and a hook where Chatterbox produced almost nothing). It prints `⚠ … Heard: "…"` only
+   for lines where neither take matched. The render stretches each beat to fit its line and shows a small
+   **AI VOICE** chip (top right, hidden on the cover frame).
 4. Fix a line by editing its `voText` (and the burned-in `caption` if it should match), then rerun both commands.
    Only the changed lines are regenerated. Chatterbox gives the same take for the same text, so to fix a fluffed word,
    reword the line slightly.

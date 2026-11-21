@@ -6,7 +6,13 @@
     "text": "RUN A WEEKLY\n5s IN\n*CAPE TOWN*?",
     "vo": "vo/10-hook.wav",
     "minSec": 2.2,
-    "voText": "Run a weekly five-a-side in Cape Town?"
+    "voText": "Run a weekly five-a-side in Cape Town?",
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ]
   },
   "beats": [
     {
@@ -21,7 +27,13 @@
       "caption": "Open field or paid court, we'll help you fill it. Free.",
       "vo": "vo/10-b1.wav",
       "minSec": 2.8,
-      "voText": "Open field or paid court, we'll help you fill it. Free."
+      "voText": "Open field or paid court, we'll help you fill it. Free.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.45
+        }
+      ]
     },
     {
       "visual": {
@@ -48,7 +60,18 @@
       "caption": "Your list, your link, your regulars. The gaps fill themselves.",
       "vo": "vo/10-b2.wav",
       "minSec": 4,
-      "voText": "Your list, your link, your regulars. The gaps fill themselves."
+      "voText": "Your list, your link, your regulars. The gaps fill themselves.",
+      "sfx": [
+        {
+          "src": "dialup",
+          "vol": 0.22
+        },
+        {
+          "src": "im-alert",
+          "at": -0.6,
+          "vol": 0.6
+        }
+      ]
     },
     {
       "visual": {
@@ -62,14 +85,33 @@
       "caption": "Comment LINK and I'll send you a founding organiser spot.",
       "vo": "vo/10-b3.wav",
       "minSec": 2.8,
-      "voText": "Comment LINK and I'll send you a founding organiser spot."
+      "voText": "Comment LINK and I'll send you a founding organiser spot.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.5
+        }
+      ]
     }
   ],
   "end": {
     "cta": "Organisers · 5sfindr.com",
     "vo": "vo/10-end.wav",
-    "voText": "Fives Finder."
+    "voText": "Fives Finder.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
   },
   "aiVoice": true,
-  "voice": "Kokoro bm_george"
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
 }
