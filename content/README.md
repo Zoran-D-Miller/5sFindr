@@ -2,7 +2,7 @@
 
 Free organic social is the growth engine until there's budget for ads (GROWTH-STRATEGY.md §7a, §11).
 **Claude makes → Zoran approves → auto-publish → Zoran taps Post on TikTok → Zoran replies by hand.**
-Zoran never records: the shorts use a free local AI voice (Kokoro, `VOICE.md`). Instagram and the Facebook Page post
+Zoran never records: the shorts use a free local AI voice (Chatterbox, with Kokoro as the fallback: `VOICE.md`). Instagram and the Facebook Page post
 from a free GitHub Action. TikTok gets drafts in the inbox, because unaudited apps can't post publicly.
 **Nothing posts until Zoran has finished `AUTOPOST-SETUP.md` and says "approve <week>" in chat.**
 Replies, comments and DMs are never automated.
@@ -12,8 +12,8 @@ content/
   README.md          ← this file: the weekly workflow
   AUTOPOST-SETUP.md  ← one-time setup: Supabase bucket, Meta app + Page token, TikTok app, GitHub secrets
   PLAYBOOK.md        ← pillars, cadence, brand rules, hooks, honesty rules
-  VOICE.md           ← the AI voice (Kokoro), the AI label rules, and recording your own lines (optional)
-  voice.json         ← which Kokoro voice + speed
+  VOICE.md           ← the AI voice (Chatterbox / Kokoro), the AI label rules, and recording your own lines (optional)
+  voice.json         ← voice engine, voice, speed, pacing, robot narrator, sound bed, effects
   studio/            ← Remotion project: carousel + short + cinematic templates, voice/queue/approve scripts
   publisher/         ← publish.mjs (run by .github/workflows/content-publish.yml), connect.mjs (account set-up)
   2026-W47/          ← one folder per ISO week
@@ -118,7 +118,9 @@ npm run studio
 
 - Remotion is free for individuals and companies of up to 3 people (remotion.dev/license). Fine for 5sFindr now; recheck if the team grows.
 - Fonts (Anton, Big Shoulders Stencil, IBM Plex Mono, Inter) are Google Fonts under the OFL. Free for commercial use.
-- Kokoro-82M (model weights) and kokoro-onnx are Apache-2.0: free for commercial use, no attribution needed in posts.
+- Kokoro-82M (model weights) and kokoro-onnx are Apache-2.0, and Chatterbox-Turbo is MIT: free for commercial use, no
+  attribution needed in posts. faster-whisper (the line checker) is MIT; pedalboard (the polish step) is GPL-3.0 and only
+  used as a tool.
 - Posting stays on free tiers: GitHub Actions (public repo), Supabase Free Storage, and the Meta and TikTok APIs.
 
 ## How to add a template

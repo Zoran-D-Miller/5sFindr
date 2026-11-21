@@ -18,17 +18,19 @@ import { CoordTag, keep5s } from "../components/Brandmarks";
 import { Captions } from "../components/Captions";
 import { EndCard } from "../components/EndCard";
 import { PhoneFrame, ScreenView } from "../components/Phone";
-import type { ShortProps, Visual } from "../types";
+import type { ShortProps, Sfx, Visual } from "../types";
 
 // Vertical short, 1080x1920 @ 30fps.
 //   hook (on screen from frame 0, readable as the thumbnail) → beats → end card.
-// Each beat lasts max(minSec, voice line + 0.35s), so recorded voice lines never get cut.
+// Each beat lasts max(minSec, voice line + gapSec), so voice lines never get cut. gapSec defaults to the old
+// 0.35 s; scripts/voice.mjs sets the week's value (0.12 s keeps the read tight, with no dead air between lines).
 export const FPS = 30;
 const HOOK_SEC = 2.0;
 const BEAT_SEC = 2.8;
 const END_SEC = 3.0;
+const GAP_SEC = 0.35;
 
-export type ShortRenderProps = ShortProps & { _frames?: number[]; _vo?: boolean[] };
+export type ShortRenderProps = ShortProps & { _frames?: number[]; _vo?: boolean[]; _voSec?: number[] };
 
 const voLen = async (path?: string) => {
   if (!path) return 0;
@@ -43,10 +45,45 @@ export const calculateShortMetadata: CalculateMetadataFunction<ShortRenderProps>
   // Voice lines that don't exist yet are skipped, so drafts render silent with captions.
   const lens = [await voLen(props.hook.vo), ...(await Promise.all(props.beats.map((b) => voLen(b.vo)))), await voLen(props.end?.vo)];
   const mins = [props.hook.minSec ?? HOOK_SEC, ...props.beats.map((b) => b.minSec ?? BEAT_SEC), END_SEC];
-  const tails = [0.25, ...props.beats.map(() => 0.35), 0.4];
+  const gap = props.gapSec ?? GAP_SEC;
+  const tails = [Math.min(0.25, gap), ...props.beats.map(() => gap), 0.4];
   const frames = mins.map((m, i) => Math.round(Math.max(m, lens[i] > 0 ? lens[i] + tails[i] : 0) * FPS));
-  return { durationInFrames: frames.reduce((a, b) => a + b, 0), props: { ...props, _frames: frames, _vo: lens.map((l) => l > 0) } };
+  return { durationInFrames: frames.reduce((a, b) => a + b, 0), props: { ...props, _frames: frames, _vo: lens.map((l) => l > 0), _voSec: lens } };
 };
+
+// The beat sits under the voice: dipped while a line plays, up a little in the gaps, faded at both ends.
+const bedVolume = (frame: number, starts: number[], voSec: number[], total: number) => {
+  const RAMP = 6;
+  let talk = 0;
+  starts.forEach((s, i) => {
+    const e = s + Math.round((voSec[i] ?? 0) * FPS);
+    if (e <= s) return;
+    const inside = frame >= s && frame <= e ? 1 : 0;
+    const near = Math.max(0, 1 - Math.min(Math.abs(frame - s), Math.abs(frame - e)) / RAMP);
+    talk = Math.max(talk, inside || near);
+  });
+  const fade = Math.min(1, frame / 6, (total - frame) / 24);
+  // ≈ 13 dB under the voice (AI lines at -13 LUFS; the "machine" bed is made at about -18 LUFS by audio_tools.py)
+  return Math.max(0, fade) * (0.5 - 0.22 * talk);
+};
+
+// Sound-design cues ("crt-on", "dialup", { src: "im-alert", at: 0.8 } …), placed `at` seconds from the start of
+// their segment, or from its end when `at` is negative ({ src: "crt-off", at: -0.4 }). Each gets its own Sequence
+// so a long effect (the dial-up) can run on past the end of its segment.
+const SfxCues: React.FC<{ cues?: Sfx[]; seg: { from: number; durationInFrames: number } }> = ({ cues, seg }) => (
+  <>
+    {(cues ?? []).map((c, i) => {
+      const { src, at = 0, vol = 0.7 } = typeof c === "string" ? { src: c } : c;
+      const file = src.includes("/") || src.endsWith(".wav") ? src : `sfx/${src}.wav`;
+      const start = Math.max(0, (at < 0 ? seg.from + seg.durationInFrames : seg.from) + Math.round(at * FPS));
+      return (
+        <Sequence key={i} from={start} name={`sfx ${src}`} layout="none">
+          <Audio src={staticFile(file)} volume={vol} />
+        </Sequence>
+      );
+    })}
+  </>
+);
 
 export const Short: React.FC<ShortRenderProps> = (props) => {
   const frames = props._frames ?? [HOOK_SEC * FPS, ...props.beats.map(() => BEAT_SEC * FPS), END_SEC * FPS];
@@ -78,13 +115,24 @@ export const Short: React.FC<ShortRenderProps> = (props) => {
         <EndCard line={props.end?.line} cta={props.end?.cta} />
         {props.end?.vo && props._vo?.[props.beats.length + 1] && <Audio src={staticFile(props.end.vo)} />}
       </Sequence>
-      {props.bed && <Audio src={staticFile(props.bed)} volume={0.22} loop />}
+      {props.bed && (
+        <Audio
+          src={staticFile(props.bed)}
+          volume={(f) => bedVolume(f, [hookSeq, ...beatSeqs, endSeq].map((s) => s.from), props._voSec ?? [], at)}
+          loop
+        />
+      )}
+      <SfxCues cues={props.hook.sfx} seg={hookSeq} />
+      {props.beats.map((b, i) => (
+        <SfxCues key={i} cues={b.sfx} seg={beatSeqs[i]} />
+      ))}
+      <SfxCues cues={props.end?.sfx} seg={endSeq} />
       {props.aiVoice && props._vo?.some(Boolean) && <AiVoiceChip />}
     </AbsoluteFill>
   );
 };
 
-// Disclosure: the voiceover is synthetic (Kokoro). Top-right, inside the safe zone, on every frame
+// Disclosure: the voiceover is synthetic (Kokoro or Chatterbox). Top-right, inside the safe zone, on every frame
 // except the hook's first 8 frames so the cover/thumbnail stays clean.
 const AiVoiceChip: React.FC = () => {
   const frame = useCurrentFrame();
