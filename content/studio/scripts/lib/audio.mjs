@@ -54,13 +54,15 @@ export function trimWav(file) {
   return pcm.length / 2 / RATE;
 }
 
-// Any audio file → mono 48 kHz 16-bit WAV at about -16 LUFS (right for TikTok and Reels), silence trimmed.
+// Any audio file → mono 48 kHz 16-bit WAV at about `lufs` (default -16), silence trimmed.
+// voice.mjs uses -13 for AI lines: a mono line drops ~3 dB in Remotion's stereo mix, so the finished video lands
+// near -16 LUFS overall instead of -19 (quiet next to everything else in the feed).
 // Returns the length in seconds, or null if ffmpeg failed.
-export function normalize(input, output, { cwd }) {
+export function normalize(input, output, { cwd, lufs = -16 }) {
   const r = spawnSync(
     "npx",
     ["remotion", "ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", input,
-     "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ac", "1", "-ar", String(RATE), "-c:a", "pcm_s16le", output],
+     "-af", `loudnorm=I=${lufs}:TP=-1.5:LRA=11`, "-ac", "1", "-ar", String(RATE), "-c:a", "pcm_s16le", output],
     { cwd, stdio: "inherit" },
   );
   if (r.status !== 0) return null;
