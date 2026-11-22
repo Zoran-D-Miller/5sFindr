@@ -6,6 +6,13 @@
 -- ════════════════════════════════════════════════════════════════════════
 begin;
 
+-- ═════════════════════════════════════════════════════════════════════════
+--  PART A (scenarios 1–3): the token economy, with the tokens flag ON.
+--  Kept so the deposit logic still works if NEXT_PUBLIC_FLAG_TOKENS returns.
+--  PART B (scenarios 4–8): the S2 launch rules, tokens OFF (the default).
+-- ═════════════════════════════════════════════════════════════════════════
+update public.app_config set tokens_enabled = true;
+
 -- A signed-up user is created by inserting into auth.users (fires the
 -- handle_new_user trigger). We impersonate users via request.jwt.claims.
 
@@ -201,7 +208,8 @@ begin
     end if;
   end loop;
 
-  -- End the match → automated settlement.
+  -- End the match → automated settlement (cron / no user).
+  perform set_config('request.jwt.claims', '', true);
   perform public.settle_match(v_match);
   if (select status from public.matches where id = v_match) <> 'completed'
     then raise exception 'S3 FAIL: match not completed after settle'; end if;
@@ -233,6 +241,293 @@ begin
     then raise exception 'S3 FAIL: expected 2 no_show ledger rows'; end if;
 
   raise notice 'SCENARIO 3 PASSED — 8 checked-in tokens returned; 2 ghosts forfeited + reliability dropped';
+end $$;
+
+-- ═════════════════════════════════════════════════════════════════════════
+--  PART B — S2 launch rules: tokens OFF, no Premium, guests, organiser ticks.
+-- ═════════════════════════════════════════════════════════════════════════
+update public.app_config set tokens_enabled = false;
+
+-- Supabase grants table privileges to these roles by default; the local shim
+-- doesn't, so grant them here (rolled back) to test the RLS policies for real.
+grant usage on schema public to authenticated;
+grant select, insert on public.matches, public.locations, public.match_players to authenticated;
+
+-- ─────────────────────────────────────────────────────────────────────────
+--  SCENARIO 4 — No Premium, no token: post a game and join one for free.
+-- ─────────────────────────────────────────────────────────────────────────
+do $$
+declare
+  v_org uuid := gen_random_uuid();
+  v_p   uuid := gen_random_uuid();
+  v_loc uuid;
+  v_m   uuid;
+  v_res text;
+begin
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data) values
+    ('00000000-0000-0000-0000-000000000000', v_org, 'authenticated', 'authenticated', 's4_org@test.co', '{"name":"Org4"}'),
+    ('00000000-0000-0000-0000-000000000000', v_p,   'authenticated', 'authenticated', 's4_p@test.co',   '{"name":"P4"}');
+  -- Neither is Premium any more, and the player has spent their token elsewhere.
+  update public.subscriptions set state = 'free', free_until = now() - interval '1 day' where user_id in (v_org, v_p);
+  update public.tokens set status = 'forfeited' where owner_id = v_p;
+  if public.is_premium(v_org) then raise exception 'S4 FAIL: setup, organiser still premium'; end if;
+
+  select id into v_loc from public.locations where is_seeded limit 1;
+
+  -- Organiser posts a game through RLS as a non-Premium member.
+  perform set_config('request.jwt.claims', json_build_object('sub', v_org, 'is_anonymous', false)::text, true);
+  set local role authenticated;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
+                              max_players, join_mode, status, share_slug)
+    values (v_org, v_loc, 'official_court', now() + interval '2 days', 60, now() + interval '2 days 1 hour',
+            10, 'instant', 'open', 's4-' || substr(md5(random()::text), 1, 8))
+    returning id into v_m;
+  reset role;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_p, 'is_anonymous', false)::text, true);
+  v_res := public.join_match(v_m);
+  if v_res <> 'accepted' then raise exception 'S4 FAIL: join returned %', v_res; end if;
+  if (select token_id from public.match_players where match_id = v_m and user_id = v_p) is not null
+    then raise exception 'S4 FAIL: a token was committed with tokens off'; end if;
+  if exists (select 1 from public.token_transactions where user_id = v_p and type = 'commit')
+    then raise exception 'S4 FAIL: commit ledger row written with tokens off'; end if;
+
+  -- Direct inserts into the roster are closed (join_match only).
+  begin
+    set local role authenticated;
+    insert into public.match_players (match_id, user_id, status) values (v_m, v_org, 'accepted');
+    reset role;
+    raise exception 'S4 FAIL: direct roster insert allowed';
+  exception when insufficient_privilege or unique_violation then reset role;
+  end;
+
+  raise notice 'SCENARIO 4 PASSED — non-Premium member posts a game; join is free, no token';
+end $$;
+
+-- ─────────────────────────────────────────────────────────────────────────
+--  SCENARIO 5 — Guest (anonymous sign-in): details + POPIA, then join.
+--  Guests can't post games, get no founding number until they keep the profile.
+-- ─────────────────────────────────────────────────────────────────────────
+do $$
+declare
+  v_org uuid := gen_random_uuid();
+  v_g   uuid := gen_random_uuid();
+  v_loc uuid;
+  v_m   uuid;
+  v_err text;
+begin
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data) values
+    ('00000000-0000-0000-0000-000000000000', v_org, 'authenticated', 'authenticated', 's5_org@test.co', '{"name":"Org5"}');
+  insert into auth.users (instance_id, id, aud, role, email, is_anonymous) values
+    ('00000000-0000-0000-0000-000000000000', v_g, 'authenticated', 'authenticated', null, true);
+  if (select founding_number from public.profiles where id = v_g) is not null
+    then raise exception 'S5 FAIL: guest got a founding number'; end if;
+
+  select id into v_loc from public.locations where is_seeded limit 1;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
+                              max_players, join_mode, status, share_slug)
+    values (v_org, v_loc, 'open_area', now() + interval '1 day', 60, now() + interval '1 day 1 hour',
+            10, 'instant', 'open', 's5-' || substr(md5(random()::text), 1, 8))
+    returning id into v_m;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_g, 'is_anonymous', true)::text, true);
+
+  -- No WhatsApp number yet → NEED_DETAILS.
+  begin
+    perform public.join_match(v_m);
+    raise exception 'S5 FAIL: guest joined without details';
+  exception when others then
+    if sqlerrm not like '%NEED_DETAILS%' then raise; end if;
+  end;
+
+  -- Bad number / missing consent are rejected.
+  begin perform public.save_guest_details('Sam', '0821234567', 'popia-2026-11');
+        raise exception 'S5 FAIL: non-E.164 number accepted';
+  exception when others then if sqlerrm not like '%BAD_PHONE%' then raise; end if; end;
+  begin perform public.save_guest_details('Sam', '+27821234567', '');
+        raise exception 'S5 FAIL: missing consent accepted';
+  exception when others then if sqlerrm not like '%NO_CONSENT%' then raise; end if; end;
+
+  perform public.save_guest_details('  Sam  ', '+27821234567', 'popia-2026-11');
+  if (select name from public.profiles where id = v_g) <> 'Sam' then raise exception 'S5 FAIL: name not saved'; end if;
+  if (select consent_at from public.profiles where id = v_g) is null then raise exception 'S5 FAIL: consent not stamped'; end if;
+
+  if public.join_match(v_m) <> 'accepted' then raise exception 'S5 FAIL: guest not accepted'; end if;
+
+  -- Guests can't post a game (RLS).
+  begin
+    set local role authenticated;
+    insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
+                                max_players, join_mode, status, share_slug)
+      values (v_g, v_loc, 'open_area', now() + interval '1 day', 60, now() + interval '1 day 1 hour',
+              10, 'instant', 'open', 's5g-' || substr(md5(random()::text), 1, 8));
+    reset role;
+    raise exception 'S5 FAIL: guest posted a game';
+  exception when insufficient_privilege then reset role;
+  end;
+
+  -- Keeping the profile (Google / email linked) assigns a founding number.
+  update auth.users set is_anonymous = false, email = 's5_guest@test.co' where id = v_g;
+  if (select founding_number from public.profiles where id = v_g) is null
+    then raise exception 'S5 FAIL: no founding number after upgrade'; end if;
+
+  raise notice 'SCENARIO 5 PASSED — guest: NEED_DETAILS → details + consent → joined; can''t post; upgrade numbers them';
+end $$;
+
+-- ─────────────────────────────────────────────────────────────────────────
+--  SCENARIO 6 — Cancelling without tokens: early is free, late counts as missed.
+-- ─────────────────────────────────────────────────────────────────────────
+do $$
+declare
+  v_org uuid := gen_random_uuid();
+  v_a   uuid := gen_random_uuid();
+  v_b   uuid := gen_random_uuid();
+  v_loc uuid;
+  v_m1  uuid;
+  v_m2  uuid;
+begin
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data) values
+    ('00000000-0000-0000-0000-000000000000', v_org, 'authenticated', 'authenticated', 's6_org@test.co', '{"name":"Org6"}'),
+    ('00000000-0000-0000-0000-000000000000', v_a,   'authenticated', 'authenticated', 's6_a@test.co',   '{"name":"A6"}'),
+    ('00000000-0000-0000-0000-000000000000', v_b,   'authenticated', 'authenticated', 's6_b@test.co',   '{"name":"B6"}');
+  select id into v_loc from public.locations where is_seeded limit 1;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
+                              max_players, join_mode, status, share_slug)
+    values (v_org, v_loc, 'open_area', now() + interval '13 hours', 60, now() + interval '14 hours',
+            10, 'instant', 'open', 's6a-' || substr(md5(random()::text), 1, 8)) returning id into v_m1;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
+                              max_players, join_mode, status, share_slug)
+    values (v_org, v_loc, 'open_area', now() + interval '11 hours', 60, now() + interval '12 hours',
+            10, 'instant', 'open', 's6b-' || substr(md5(random()::text), 1, 8)) returning id into v_m2;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  perform public.join_match(v_m1);
+  if public.cancel_participation(v_m1) <> 'refunded' then raise exception 'S6 FAIL: early cancel outcome'; end if;
+  if (select games_missed from public.profiles where id = v_a) <> 0 then raise exception 'S6 FAIL: early cancel penalised'; end if;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_b)::text, true);
+  perform public.join_match(v_m2);
+  if public.cancel_participation(v_m2) <> 'forfeited' then raise exception 'S6 FAIL: late cancel outcome'; end if;
+  if (select games_missed from public.profiles where id = v_b) <> 1 then raise exception 'S6 FAIL: late cancel not counted'; end if;
+  if exists (select 1 from public.platform_ledger where user_id in (v_a, v_b))
+    then raise exception 'S6 FAIL: platform ledger written with tokens off'; end if;
+  if exists (select 1 from public.tokens where owner_id in (v_a, v_b) and status <> 'available')
+    then raise exception 'S6 FAIL: a token moved with tokens off'; end if;
+
+  -- Rejoin after cancelling (0021) still works token-less.
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  if public.join_match(v_m1) <> 'accepted' then raise exception 'S6 FAIL: rejoin after early cancel'; end if;
+
+  raise notice 'SCENARIO 6 PASSED — early cancel free; late cancel = 1 missed game; no token or ledger moves';
+end $$;
+
+-- ─────────────────────────────────────────────────────────────────────────
+--  SCENARIO 7 — Organiser ticks attendance; settlement waits for them.
+-- ─────────────────────────────────────────────────────────────────────────
+do $$
+declare
+  v_org uuid := gen_random_uuid();
+  v_p   uuid[] := '{}';
+  v_pid uuid;
+  v_loc uuid;
+  v_m   uuid;
+  i     int;
+begin
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data) values
+    ('00000000-0000-0000-0000-000000000000', v_org, 'authenticated', 'authenticated', 's7_org@test.co', '{"name":"Org7"}');
+  select id into v_loc from public.locations where is_seeded limit 1;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
+                              max_players, join_mode, status, share_slug)
+    values (v_org, v_loc, 'open_area', now() + interval '2 hours', 60, now() + interval '3 hours',
+            10, 'instant', 'open', 's7-' || substr(md5(random()::text), 1, 8)) returning id into v_m;
+  for i in 1..4 loop
+    v_pid := gen_random_uuid();
+    insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data)
+      values ('00000000-0000-0000-0000-000000000000', v_pid, 'authenticated', 'authenticated',
+              's7_p' || i || '@test.co', json_build_object('name', 'P7-' || i));
+    v_p := v_p || v_pid;
+    perform set_config('request.jwt.claims', json_build_object('sub', v_pid)::text, true);
+    perform public.join_match(v_m);
+  end loop;
+
+  -- Before kickoff → TOO_EARLY.
+  perform set_config('request.jwt.claims', json_build_object('sub', v_org)::text, true);
+  begin perform public.set_attendance(v_m, v_p[1], true);
+        raise exception 'S7 FAIL: ticked before kickoff';
+  exception when others then if sqlerrm not like '%TOO_EARLY%' then raise; end if; end;
+
+  update public.matches set kickoff_at = now() - interval '65 minutes', ends_at = now() - interval '5 minutes' where id = v_m;
+
+  -- Only the organiser can tick.
+  perform set_config('request.jwt.claims', json_build_object('sub', v_p[1])::text, true);
+  begin perform public.set_attendance(v_m, v_p[1], true);
+        raise exception 'S7 FAIL: player ticked themselves';
+  exception when others then if sqlerrm not like '%NOT_ORGANIZER%' then raise; end if; end;
+
+  -- A player viewing the ended game (lazy settle) and the cron both wait.
+  if public.settle_match(v_m) <> 'waiting' then raise exception 'S7 FAIL: player settled inside the window'; end if;
+  perform set_config('request.jwt.claims', '', true);
+  perform public.settle_due_matches();
+  if (select status from public.matches where id = v_m) = 'completed' then raise exception 'S7 FAIL: cron settled inside the window'; end if;
+
+  -- Organiser ticks themselves + players 1–3 (and un-ticks/re-ticks 3); player 4 didn't come.
+  perform set_config('request.jwt.claims', json_build_object('sub', v_org)::text, true);
+  perform public.set_attendance(v_m, v_org, true);
+  for i in 1..3 loop perform public.set_attendance(v_m, v_p[i], true); end loop;
+  if public.set_attendance(v_m, v_p[3], false) <> 'accepted' then raise exception 'S7 FAIL: untick'; end if;
+  perform public.set_attendance(v_m, v_p[3], true);
+
+  if public.settle_match(v_m) <> 'completed' then raise exception 'S7 FAIL: organiser could not settle'; end if;
+  for i in 1..3 loop
+    if (select games_played from public.profiles where id = v_p[i]) <> 1
+      then raise exception 'S7 FAIL: ticked player % not credited', i; end if;
+  end loop;
+  if (select status from public.match_players where match_id = v_m and user_id = v_p[4]) <> 'no_show'
+    then raise exception 'S7 FAIL: unticked player not a no-show'; end if;
+  if (select reliability_score from public.profiles where id = v_p[4]) <> 0
+    then raise exception 'S7 FAIL: no-show reliability not dropped'; end if;
+  if exists (select 1 from public.platform_ledger where match_id = v_m)
+    then raise exception 'S7 FAIL: ledger written with tokens off'; end if;
+
+  -- Ticking after settlement is closed.
+  begin perform public.set_attendance(v_m, v_p[4], true);
+        raise exception 'S7 FAIL: ticked after settlement';
+  exception when others then if sqlerrm not like '%WINDOW_CLOSED%' then raise; end if; end;
+
+  raise notice 'SCENARIO 7 PASSED — organiser ticks 3 of 4; others wait 24h; unticked = no-show';
+end $$;
+
+-- ─────────────────────────────────────────────────────────────────────────
+--  SCENARIO 8 — Organiser never ticked: after 24h the cron credits everyone.
+-- ─────────────────────────────────────────────────────────────────────────
+do $$
+declare
+  v_org uuid := gen_random_uuid();
+  v_a   uuid := gen_random_uuid();
+  v_loc uuid;
+  v_m   uuid;
+begin
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data) values
+    ('00000000-0000-0000-0000-000000000000', v_org, 'authenticated', 'authenticated', 's8_org@test.co', '{"name":"Org8"}'),
+    ('00000000-0000-0000-0000-000000000000', v_a,   'authenticated', 'authenticated', 's8_a@test.co',   '{"name":"A8"}');
+  select id into v_loc from public.locations where is_seeded limit 1;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
+                              max_players, join_mode, status, share_slug)
+    values (v_org, v_loc, 'open_area', now() + interval '2 hours', 60, now() + interval '3 hours',
+            10, 'instant', 'open', 's8-' || substr(md5(random()::text), 1, 8)) returning id into v_m;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  perform public.join_match(v_m);
+
+  update public.matches set kickoff_at = now() - interval '26 hours', ends_at = now() - interval '25 hours' where id = v_m;
+  perform set_config('request.jwt.claims', '', true);
+  perform public.settle_due_matches();
+
+  if (select status from public.matches where id = v_m) <> 'completed' then raise exception 'S8 FAIL: not settled after 24h'; end if;
+  if (select status from public.match_players where match_id = v_m and user_id = v_a) <> 'attended'
+    then raise exception 'S8 FAIL: player marked no-show when attendance wasn''t taken'; end if;
+  if (select games_played from public.profiles where id = v_a) <> 1 then raise exception 'S8 FAIL: player not credited'; end if;
+
+  raise notice 'SCENARIO 8 PASSED — no ticks + 24h → cron settles, squad credited, nobody a no-show';
 end $$;
 
 rollback;  -- leave the database untouched

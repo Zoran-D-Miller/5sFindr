@@ -29,8 +29,13 @@ create table if not exists auth.users (
   raw_app_meta_data  jsonb default '{}'::jsonb,
   raw_user_meta_data jsonb default '{}'::jsonb,
   created_at         timestamptz default now(),
-  updated_at         timestamptz default now()
+  updated_at         timestamptz default now(),
+  is_anonymous       boolean not null default false
 );
+
+-- 0019 revokes EXECUTE on seed_lifecycle(), which lived outside migrations
+-- (supabase/seed_lifecycle.sql, removed from prod 2026-11-09). Stub it.
+create or replace function public.seed_lifecycle() returns text language sql as $$ select 'stub'::text $$;
 
 -- auth.uid() resolves the impersonated user from the request.jwt.claims GUC,
 -- exactly like Supabase. Tests set this with set_config(...).

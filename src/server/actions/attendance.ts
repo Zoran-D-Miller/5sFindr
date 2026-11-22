@@ -71,6 +71,23 @@ export async function settleMatch(
   return { ok: true };
 }
 
+// Organiser ticks (or unticks) a player as having shown up.
+export async function setAttendance(
+  matchId: string,
+  userId: string,
+  attended: boolean,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const supabase = createClient();
+  const { error } = await supabase.rpc("set_attendance", {
+    p_match_id: matchId,
+    p_user_id: userId,
+    p_attended: attended,
+  });
+  if (error) return { ok: false, error: friendly(error.message) };
+  refresh(matchId);
+  return { ok: true };
+}
+
 // Post-match MotM vote.
 export async function voteMotm(
   matchId: string,

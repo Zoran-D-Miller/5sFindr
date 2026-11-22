@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { respondToRequest, lockMatch, cancelMatch } from "@/server/actions/participation";
+import { FEATURES } from "@/lib/flags";
 import type { MatchStatus, RosterEntry } from "@/lib/types";
 
 export function OrganizerControls({
@@ -34,7 +35,10 @@ export function OrganizerControls({
   }
 
   function onDelete() {
-    if (!window.confirm("Delete this match? All players will get their tokens back. This can't be undone."))
+    const msg = FEATURES.tokens
+      ? "Delete this match? All players will get their tokens back. This can't be undone."
+      : "Delete this match? Everyone on the list is taken off. This can't be undone.";
+    if (!window.confirm(msg))
       return;
     run(() => cancelMatch(matchId));
   }
@@ -80,7 +84,7 @@ export function OrganizerControls({
         </section>
       )}
 
-      {matchStatus === "open" && (
+      {FEATURES.shirts && matchStatus === "open" && (
         <button
           type="button"
           disabled={pending}
@@ -100,7 +104,7 @@ export function OrganizerControls({
             onClick={onDelete}
             className="w-full rounded-2xl border border-red-500/40 py-3 font-semibold text-red-400 transition hover:bg-red-500/10 disabled:opacity-60"
           >
-            Delete match (refunds all tokens)
+            {FEATURES.tokens ? "Delete match (refunds all tokens)" : "Delete match"}
           </button>
         ) : (
           <p className="rounded-2xl border border-ink-700 bg-ink-800/60 p-3 text-center text-xs text-white/50">

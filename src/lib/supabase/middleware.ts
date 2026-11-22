@@ -14,7 +14,10 @@ const AUTH_PAGES = ["/login", "/signup"];
 // Pre-launch, signed-out visitors only reach these (plus / and files such as
 // robots.txt and the service worker's scripts); the rest goes to the waitlist.
 // /login stays open so existing accounts can still sign in and use the app.
-const PRELAUNCH_OPEN = ["/privacy", "/terms", "/login", "/offline", "/api/"];
+const PRELAUNCH_OPEN = ["/privacy", "/terms", "/login", "/offline", "/api/", "/auth/"];
+// Guests (Supabase anonymous sign-in) only ever need their game and the
+// sign-in callback; everything else treats them as signed out.
+const GUEST_OPEN = ["/matches/", "/m/", "/auth/"];
 const FILE_PATH = /\.[a-z0-9]+$/i;
 
 // Refreshes the Supabase session cookie on every request AND enforces
@@ -51,10 +54,13 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
+  const member = !!user && !user.is_anonymous;
+  const guestOk = !!user?.is_anonymous && GUEST_OPEN.some((p) => path.startsWith(p)) && path !== "/matches/new";
 
   if (
     PRELAUNCH &&
-    !user &&
+    !member &&
+    !guestOk &&
     path !== "/" &&
     !FILE_PATH.test(path) &&
     !PRELAUNCH_OPEN.some((p) => path.startsWith(p))
@@ -64,14 +70,14 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(dest);
   }
 
-  if (!user && PROTECTED.some((p) => path.startsWith(p))) {
+  if (!member && PROTECTED.some((p) => path.startsWith(p))) {
     const dest = request.nextUrl.clone();
     dest.pathname = "/login";
     dest.searchParams.set("next", path);
     return NextResponse.redirect(dest);
   }
 
-  if (user && AUTH_PAGES.some((p) => path.startsWith(p))) {
+  if (member && AUTH_PAGES.some((p) => path.startsWith(p))) {
     const dest = request.nextUrl.clone();
     dest.pathname = "/profile/edit";
     return NextResponse.redirect(dest);

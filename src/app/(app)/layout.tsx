@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/server/actions/auth";
+import { FEATURES, WALLET_ENABLED } from "@/lib/flags";
 
 // App shell. Browsing (feed, match details, ranks) is PUBLIC — anonymous
 // visitors get a "Log in" CTA instead of being bounced. Private surfaces
@@ -18,7 +19,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <Link href="/feed" className="text-heading font-extrabold tracking-tight">
           5s<span className="text-pitch">Findr</span>
         </Link>
-        {user ? (
+        {user?.is_anonymous ? null : user ? (
           <form action={signOut}>
             <button
               type="submit"
@@ -44,8 +45,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="mx-auto flex max-w-md justify-around py-2 sm:max-w-2xl">
           {[
             ["Feed", "/feed"],
-            ["Ranks", "/leaderboard"],
-            ["Wallet", "/wallet"],
+            ...(FEATURES.leaderboard ? [["Ranks", "/leaderboard"]] : []),
+            ...(WALLET_ENABLED ? [["Wallet", "/wallet"]] : []),
             ["Profile", "/profile/edit"],
           ].map(([label, href]) => (
             <Link

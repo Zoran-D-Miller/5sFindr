@@ -2,6 +2,9 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { PRELAUNCH } from "@/lib/flags";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://5sfindr.com";
 
 function safeNext(next: FormDataEntryValue | null): string {
   const n = typeof next === "string" ? next : "";
@@ -83,6 +86,37 @@ export async function signUp(
   // from a match invite (?next=/matches/…) send them there to claim the spot;
   // otherwise drop the brand-new baller onto their profile.
   redirect(safeNext(next));
+}
+
+// Email magic link (passwordless). While PRELAUNCH is on it only signs in
+// existing accounts, so the waitlist gate holds.
+export async function sendMagicLink(
+  _prev: { error?: string; sent?: boolean },
+  formData: FormData,
+): Promise<{ error?: string; sent?: boolean }> {
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Enter a valid email." };
+  const next = safeNext(formData.get("next"));
+  try {
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: !PRELAUNCH,
+        emailRedirectTo: `${SITE_URL}/auth/callback?next=${encodeURIComponent(next)}`,
+      },
+    });
+    if (error) {
+      console.error("[5sFindr] magic link failed:", error.message);
+      // Don't reveal whether an account exists.
+      if (!error.message.toLowerCase().includes("signups not allowed")) {
+        return { error: "Couldn’t send the link. Try again shortly." };
+      }
+    }
+  } catch (e) {
+    return { error: authErrorMessage(e) };
+  }
+  return { sent: true };
 }
 
 export async function signOut(): Promise<void> {
