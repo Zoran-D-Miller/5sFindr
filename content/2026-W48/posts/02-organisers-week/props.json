@@ -1,0 +1,65 @@
+{
+  "type": "carousel",
+  "id": "w48-02-organisers-week",
+  "coord": "33.902° S, 18.409° E · THU 18:30",
+  "slides": [
+    {
+      "kind": "cover",
+      "kicker": "FOR ORGANISERS",
+      "headline": "One game.\nFive days\nof *admin*.",
+      "sub": "An organiser's week in Cape Town, in 5 messages."
+    },
+    {
+      "kind": "point",
+      "n": "MON",
+      "title": "“Thursday 18:30, *who's in?*”",
+      "body": "Post the game. Watch 38 people read it."
+    },
+    {
+      "kind": "point",
+      "n": "WED",
+      "title": "“Still need *3*. Anyone?”",
+      "body": "Copy the names into a numbered list. Again."
+    },
+    {
+      "kind": "point",
+      "n": "THU",
+      "title": "17:04: “Sorry bru, *can't make it*.”",
+      "body": "Two drop out. Kick-off is in 86 minutes."
+    },
+    {
+      "kind": "point",
+      "n": "FRI",
+      "title": "“Guys, *R60 each* for the court.”",
+      "body": "Three people pay. You chase the rest all weekend."
+    },
+    {
+      "kind": "compare",
+      "title": "Same game. *Less admin.*",
+      "left": {
+        "label": "This week",
+        "items": [
+          "5 days of messages",
+          "A list you keep by hand",
+          "Begging for a sub",
+          "Chasing cash"
+        ]
+      },
+      "right": {
+        "label": "5sFindr (building now)",
+        "items": [
+          "One link",
+          "A list that builds itself",
+          "Spots filled from nearby",
+          "Who's paid, at a glance"
+        ]
+      }
+    },
+    {
+      "kind": "cta",
+      "headline": "Run a game?\nGet *your week*\nback.",
+      "body": "Free for organisers. Open fields or paid courts.",
+      "cta": "Free for organisers · 5sfindr.com"
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "type": "short",
+  "id": "w48-07-stop-adding-people",
+  "coord": "33.902° S, 18.409° E · MON 19:00",
+  "hook": {
+    "text": "STOP ADDING\nPEOPLE TO YOUR\n*GROUP CHAT*",
+    "minSec": 1.8,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ],
+    "vo": "vo/07-hook.wav",
+    "voText": "Stop adding people to your group chat. ~Seriously:stutter~."
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "38",
+        "label": "MEMBERS",
+        "small": "6 PLAY"
+      },
+      "caption": "Thirty-eight members. Six actually play.",
+      "vo": "vo/07-b1.wav",
+      "minSec": 2.2,
+      "voText": "Thirty-eight members. Six actually play.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "THE GROUP CHAT",
+        "screen": "chat",
+        "group": "Monday 5s ⚽",
+        "messages": [
+          {
+            "from": "Thabo",
+            "text": "Thursday 18:30, who's in? 1. Thabo",
+            "me": true
+          },
+          {
+            "from": "Aisha",
+            "text": "who's this?"
+          },
+          {
+            "from": "Jonas",
+            "text": "can someone remove me pls"
+          },
+          {
+            "from": "Luca",
+            "text": "😂"
+          }
+        ]
+      },
+      "caption": "Every new name makes it louder. Not fuller.",
+      "vo": "vo/07-b2.wav",
+      "minSec": 2.8,
+      "voText": "Every new name makes it louder. ~Not:pitch~ fuller.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.3
+        },
+        {
+          "src": "im-alert",
+          "at": 0.9,
+          "vol": 0.6
+        },
+        {
+          "src": "im-alert",
+          "at": 1.5,
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "list",
+        "title": "WHAT A GAME NEEDS",
+        "items": [
+          "A list, not a chat",
+          "A waiting list",
+          "One link for subs"
+        ]
+      },
+      "caption": "A game needs a list, not a chat. A waiting list. And one link for subs.",
+      "vo": "vo/07-b3.wav",
+      "minSec": 2.8,
+      "voText": "A game needs a list, not a chat. A waiting list. And one link for subs.",
+      "sfx": [
+        {
+          "src": "relay",
+          "vol": 0.5
+        },
+        {
+          "src": "data-chirp",
+          "at": 1.2,
+          "vol": 0.4
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "BUILDING NOW",
+        "screen": "fill",
+        "title": "Thursday 5s",
+        "kickoff": "Thu 18:30",
+        "max": 10,
+        "startTaken": 7,
+        "names": [
+          "Ana",
+          "Sipho",
+          "Kyle"
+        ],
+        "endLabel": "FULL"
+      },
+      "caption": "That's what we're building. Free for organisers.",
+      "vo": "vo/07-b4.wav",
+      "minSec": 2.8,
+      "voText": "That's what we're building. Free for organisers.",
+      "sfx": [
+        {
+          "src": "servo",
+          "vol": 0.4
+        },
+        {
+          "src": "im-alert",
+          "at": -0.6,
+          "vol": 0.6
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Free for organisers · 5sfindr.com",
+    "vo": "vo/07-end.wav",
+    "voText": "Fives Finder. Free for organisers. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}

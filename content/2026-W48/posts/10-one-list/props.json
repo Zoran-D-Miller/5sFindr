@@ -1,0 +1,145 @@
+{
+  "type": "short",
+  "id": "w48-10-one-list",
+  "coord": "33.902° S, 18.409° E · WED 19:00",
+  "hook": {
+    "text": "WHAT IF EVERY\nCAPE TOWN 5s\nWAS IN *ONE…*",
+    "minSec": 1.8,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ],
+    "vo": "vo/10-hook.wav",
+    "voText": "What if every five-a-side in Cape Town was in one…"
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "…*LIST*."
+        ]
+      },
+      "caption": "…list.",
+      "vo": "vo/10-b1.wav",
+      "minSec": 1.4,
+      "voText": "…~list:stutter~.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "BUILDING NOW",
+        "screen": "feed",
+        "heading": "This week near you",
+        "games": [
+          {
+            "day": "Wed 2 Dec",
+            "time": "18:30",
+            "title": "Green Point Urban Park",
+            "court": false,
+            "taken": 6,
+            "max": 10
+          },
+          {
+            "day": "Thu 3 Dec",
+            "time": "19:00",
+            "title": "Indoor court · Claremont",
+            "court": true,
+            "price": 60,
+            "taken": 8,
+            "max": 10
+          },
+          {
+            "day": "Sat 5 Dec",
+            "time": "09:00",
+            "title": "Sea Point field",
+            "court": false,
+            "taken": 9,
+            "max": 10
+          }
+        ]
+      },
+      "caption": "Open fields and courts. The day, the time, how many spots are left.",
+      "vo": "vo/10-b2.wav",
+      "minSec": 3.2,
+      "voText": "Open fields and courts. The day, the time, how many spots are left.",
+      "sfx": [
+        {
+          "src": "data-chirp",
+          "vol": 0.5
+        },
+        {
+          "src": "hdd-seek",
+          "at": 1.6,
+          "vol": 0.4
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "R0",
+        "label": "OPEN FIELDS",
+        "small": "COURTS: SHARE SHOWN UP FRONT"
+      },
+      "caption": "Free on open fields. On courts, your share is shown up front.",
+      "vo": "vo/10-b3.wav",
+      "minSec": 2.6,
+      "voText": "Free on open fields. On courts, your share is shown up front.",
+      "sfx": [
+        {
+          "src": "relay",
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "NO GROUP CHAT",
+          "TO GET INTO.",
+          "*JUST PLAY.*"
+        ]
+      },
+      "caption": "No group chat to get into. Just play. We're building it.",
+      "vo": "vo/10-b4.wav",
+      "minSec": 2,
+      "voText": "No group chat to get into. Just play. We're building it.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.5
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Get on the list · 5sfindr.com",
+    "vo": "vo/10-end.wav",
+    "voText": "Fives Finder. Free five-a-side in Cape Town. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}

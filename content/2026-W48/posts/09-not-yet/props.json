@@ -1,0 +1,133 @@
+{
+  "type": "short",
+  "id": "w48-09-not-yet",
+  "coord": "33.915° S, 18.389° E · NOT YET",
+  "hook": {
+    "text": "33.91° S\n18.38° E\n*NOT YET.*",
+    "minSec": 1.8,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      },
+      {
+        "src": "alien-sweep",
+        "at": 1,
+        "vol": 0.3
+      }
+    ],
+    "vo": "vo/09-hook.wav",
+    "voText": "These coordinates. ~Not:tapestop~ yet."
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "CITY BOWL.",
+          "WOODSTOCK.",
+          "CLAREMONT.",
+          "*LOCKED.*"
+        ]
+      },
+      "caption": "City Bowl. Woodstock. Claremont. Every area starts locked.",
+      "vo": "vo/09-b1.wav",
+      "minSec": 2.6,
+      "voText": "City Bowl. Woodstock. Claremont. Every area starts locked.",
+      "sfx": [
+        {
+          "src": "relay",
+          "vol": 0.5
+        },
+        {
+          "src": "relay",
+          "at": 0.8,
+          "vol": 0.5
+        },
+        {
+          "src": "relay",
+          "at": 1.6,
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "50",
+        "label": "PLAYERS",
+        "small": "+ 3 WEEKLY GAMES"
+      },
+      "caption": "It opens at fifty players… and three weekly games.",
+      "vo": "vo/09-b2.wav",
+      "minSec": 2.6,
+      "voText": "It opens at fifty players… and three weekly games.",
+      "sfx": [
+        {
+          "src": "data-chirp",
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "list",
+        "title": "WHO OPENS IT",
+        "items": [
+          "Players who join the list",
+          "Organisers who bring a game",
+          "Nobody can buy it open"
+        ]
+      },
+      "caption": "Players join the list. Organisers bring a game. Nobody can buy it open.",
+      "vo": "vo/09-b3.wav",
+      "minSec": 3,
+      "voText": "Players join the list. Organisers bring a game. ~Nobody:pitch~ can buy it open.",
+      "sfx": [
+        {
+          "src": "servo",
+          "vol": 0.4
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "PICK YOUR",
+          "*AREA*."
+        ]
+      },
+      "caption": "Pick your area. Help open it.",
+      "vo": "vo/09-b4.wav",
+      "minSec": 1.8,
+      "voText": "Pick your area. Help open it.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.5
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Get on the list · 5sfindr.com",
+    "vo": "vo/09-end.wav",
+    "voText": "Fives Finder. Free five-a-side in Cape Town. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}
