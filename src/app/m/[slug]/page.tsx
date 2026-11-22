@@ -40,13 +40,9 @@ export default async function MatchInvitePage({ params }: { params: { slug: stri
   if (!match) notFound();
 
   const open = match.status === "open";
-  const ref = match.organizer?.referral_code ?? "";
-  // Logged-in users go straight to the lobby; newcomers sign up (carrying the
-  // organizer's referral code so the organizer earns a free week) and are
-  // routed back to the match to claim their spot.
-  const claimHref = user
-    ? `/matches/${match.id}`
-    : `/signup?ref=${encodeURIComponent(ref)}&next=${encodeURIComponent(`/matches/${match.id}`)}`;
+  // Everyone goes to the lobby: newcomers tap "I'm in" there (name + WhatsApp,
+  // no account). The organiser's referral code rides along for later.
+  const claimHref = `/matches/${match.id}`;
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col px-6 py-10">
@@ -94,7 +90,7 @@ export default async function MatchInvitePage({ params }: { params: { slug: stri
           href={claimHref}
           className="mt-6 rounded-2xl bg-pitch py-4 text-center text-base font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark"
         >
-          {user ? "Claim your spot" : "Claim your spot — first month free"}
+          I’m in
         </Link>
       ) : (
         <p className="mt-6 rounded-2xl border border-ink-700 bg-ink-800/60 py-4 text-center text-sm text-white/50">
@@ -104,7 +100,7 @@ export default async function MatchInvitePage({ params }: { params: { slug: stri
 
       {!user && (
         <p className="mt-4 text-center text-xs text-white/40">
-          New to 5sFindr? You’ll get a 30-day Premium trial and a free token to join your first game.
+          Free to join. No account needed, just your first name and WhatsApp number.
         </p>
       )}
 

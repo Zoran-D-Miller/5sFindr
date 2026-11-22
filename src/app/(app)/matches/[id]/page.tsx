@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { isPremium } from "@/lib/entitlements";
+import { FEATURES } from "@/lib/flags";
 import { PlayerActions } from "@/components/match/PlayerActions";
 import { OrganizerControls } from "@/components/match/OrganizerControls";
 import { TeamPanel } from "@/components/match/TeamPanel";
@@ -12,6 +12,8 @@ import { settleMatch } from "@/server/actions/attendance";
 import { WhatsAppInvite } from "@/components/match/WhatsAppInvite";
 import { PingBallers } from "@/components/match/PingBallers";
 import { PlayerChip } from "@/components/profile/PlayerChip";
+import { AttendancePanel } from "@/components/match/AttendancePanel";
+import { KeepProfile } from "@/components/match/KeepProfile";
 import type { MatchStatus, JoinMode, VenueType, RosterEntry } from "@/lib/types";
 
 interface MatchRow {
@@ -61,6 +63,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   // Public browsing: match details are viewable anonymously. uid === null →
   // spectator mode (no wallet/vote/check-in reads, join CTA routes to signup).
   const uid = user?.id ?? null;
+  const isGuest = !!user?.is_anonymous;
 
   // Resolve by UUID id OR share_slug — bulletproof regardless of which the URL
   // carries (a slug is not a valid uuid, so `.eq("id", slug)` would error → 404).
@@ -79,7 +82,8 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   const ended = now >= new Date(match.ends_at).getTime();
 
   // Lazy automated closure: once a match has ended, settle it (returns tokens
-  // to attendees, forfeits no-shows). Call the RPC directly — NOT settleMatch()
+  // to attendees, forfeits no-shows). With tokens off the DB waits 24h after
+  // full time for anyone but the organiser, so they can tick attendance. Call the RPC directly — NOT settleMatch()
   // — because that action calls revalidatePath(), illegal during render. We
   // re-fetch below, so revalidation isn't needed here. Skipped for anonymous
   // visitors (RPC execute is granted to authenticated only); the pg_cron sweep
@@ -96,19 +100,18 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   }
   if (!match) notFound();
 
-  const [{ data: rawRoster }, { count: availableTokens }, premium, { data: myVote }, { data: organizerRow }] =
+  const [{ data: rawRoster }, { count: availableTokens }, { data: myVote }, { data: organizerRow }] =
     await Promise.all([
       supabase
         .from("match_players")
         .select("user_id, status, team_color, position, profile:profiles(name, skill_level, reliability_score)")
         .eq("match_id", matchId)
         .returns<RawRosterRow[]>(),
-      uid
+      uid && FEATURES.tokens
         ? supabase.from("tokens").select("id", { count: "exact", head: true })
             .eq("owner_id", uid).eq("status", "available")
         : Promise.resolve({ count: 0 }),
-      uid ? isPremium(uid) : Promise.resolve(false),
-      uid
+      uid && FEATURES.motm
         ? supabase.from("match_votes").select("id").eq("match_id", matchId).eq("voter_id", uid).maybeSingle()
         : Promise.resolve({ data: null }),
       supabase.from("profiles").select("name").eq("id", match.organizer_id).maybeSingle<{ name: string }>(),
@@ -133,7 +136,10 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   const requests = roster.filter((r) => r.status === "requested");
   const mine = roster.find((r) => r.user_id === uid) ?? null;
   const completed = match.status === "completed";
-  const inCheckInWindow = now >= new Date(match.kickoff_at).getTime() && !ended && !completed;
+  const kickedOff = now >= new Date(match.kickoff_at).getTime();
+  const inCheckInWindow = kickedOff && !ended && !completed;
+  const live = match.status !== "cancelled" && !completed;
+  const showTeams = FEATURES.shirts && match.teams_assigned;
   const winner = match.motm_winner_id ? roster.find((r) => r.user_id === match!.motm_winner_id) : null;
 
   return (
@@ -160,7 +166,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
       </div>
 
       {/* MotM winner banner */}
-      {completed && winner && (
+      {FEATURES.motm && completed && winner && (
         <div className="rounded-2xl border border-pitch/30 bg-pitch/10 p-4 text-center">
           <p className="text-xs uppercase tracking-wide text-white/50">Man of the Match</p>
           <p className="mt-0.5 text-lg font-black text-pitch">🏆 {winner.name}</p>
@@ -168,7 +174,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
       )}
 
       {/* Teams / squad */}
-      {match.teams_assigned ? (
+      {showTeams ? (
         <section>
           <h3 className="mb-2 px-1 text-sm font-bold uppercase tracking-wide text-white/50">Match tickets</h3>
           <TeamPanel roster={completed ? attended : confirmed} meId={uid ?? ""} captainId={captainId} />
@@ -200,7 +206,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
       )}
 
       {/* Post-match MotM vote (attendees only) */}
-      {completed && mine?.status === "attended" && (
+      {FEATURES.motm && completed && mine?.status === "attended" && (
         <MotMVote
           matchId={match.id}
           candidates={attended.filter((a) => a.user_id !== uid)}
@@ -209,14 +215,22 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
       )}
 
       {/* Check-in (any accepted player incl. the Captain, during the window) */}
-      {inCheckInWindow && mine?.status === "accepted" && (
+      {FEATURES.gpsCheckIn && inCheckInWindow && mine?.status === "accepted" && (
         <CheckInPanel matchId={match.id} hasGeo={match.location?.latitude != null} />
       )}
-      {mine?.status === "attended" && !completed && (
+      {FEATURES.gpsCheckIn && mine?.status === "attended" && !completed && (
         <div className="rounded-2xl border border-pitch/40 bg-pitch/10 p-4 text-center font-bold text-pitch">
           ✓ Checked in{isOrganizer ? " (Captain)" : ""} — token returns when the match settles.
         </div>
       )}
+
+      {/* Organiser ticks attendance from kickoff until the game is closed */}
+      {!FEATURES.gpsCheckIn && isOrganizer && kickedOff && live && confirmed.length > 0 && (
+        <AttendancePanel matchId={match.id} players={confirmed} />
+      )}
+
+      {/* Guests: keep the profile (Google / email link) once they're on a list */}
+      {isGuest && mine && <KeepProfile />}
 
       {/* Actions */}
       {isOrganizer ? (
@@ -240,7 +254,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
               />
             </>
           )}
-          {!completed && <MatchCodePanel matchId={match.id} />}
+          {FEATURES.gpsCheckIn && !completed && <MatchCodePanel matchId={match.id} />}
           <OrganizerControls
             matchId={match.id}
             matchStatus={match.status}
@@ -250,7 +264,7 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
           {!completed && ended && (
             <form action={async () => { "use server"; await settleMatch(match!.id); }}>
               <button className="w-full rounded-2xl border border-ink-600 py-3 font-semibold text-white/80 hover:border-pitch">
-                End match & settle tokens
+                {FEATURES.tokens ? "End match & settle tokens" : "Done ticking? Close the game"}
               </button>
             </form>
           )}
@@ -264,7 +278,6 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
             kickoffIso={match.kickoff_at}
             myStatus={mine?.status ?? null}
             isAuthed={!!uid}
-            isPremium={premium}
             availableTokens={availableTokens ?? 0}
           />
         )

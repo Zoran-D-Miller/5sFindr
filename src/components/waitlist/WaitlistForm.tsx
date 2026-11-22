@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { track } from "@/lib/analytics";
 import { useFormState, useFormStatus } from "react-dom";
 import { joinWaitlist } from "@/server/actions/waitlist";
 import { AVAILABILITY, CONSENT_COPY, NEIGHBOURHOODS, ROLES, type WaitlistState } from "@/lib/waitlist";
@@ -234,9 +235,11 @@ function Joined({
 }: NonNullable<WaitlistState["joined"]> & { siteUrl: string }) {
   const [copied, setCopied] = useState(false);
   const link = `${siteUrl}/?ref=${code}`;
+  useEffect(() => track("waitlist_submit"), []);
   const shareText = `I just joined the 5sFindr waitlist — find or fill a 5-a-side in Cape Town. Join the founding squad: ${link}`;
 
   async function copy() {
+    track("share", { via: "waitlist_copy" });
     await navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
@@ -258,6 +261,7 @@ function Joined({
         <div className="flex gap-2">
           <a
             href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
+            onClick={() => track("share", { via: "waitlist_whatsapp" })}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary flex-1"

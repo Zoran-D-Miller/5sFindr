@@ -1,7 +1,10 @@
+import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { FEATURES } from "@/lib/flags";
 import { LeaderboardList, type LeaderRow } from "@/components/leaderboard/LeaderboardList";
 
 export default async function LeaderboardPage() {
+  if (!FEATURES.leaderboard) notFound();
   const supabase = createClient();
   const {
     data: { user },

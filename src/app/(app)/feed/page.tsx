@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { isPremium } from "@/lib/entitlements";
+import { canPostGames } from "@/lib/entitlements";
+import { TrackEvent } from "@/components/analytics/TrackEvent";
 import { FeedShell } from "@/components/feed/FeedShell";
 import type { MatchFeedItem, ViewMode } from "@/lib/types";
 
@@ -12,7 +13,7 @@ interface PingRow {
   match: { status: string; kickoff_at: string } | null;
 }
 
-export default async function FeedPage() {
+export default async function FeedPage({ searchParams }: { searchParams: { posted?: string } }) {
   const supabase = createClient();
   const {
     data: { user },
@@ -21,6 +22,7 @@ export default async function FeedPage() {
   // open feed; per-user extras (own-match exclusion, organizer view, pings)
   // simply don't apply.
   const uid = user?.id ?? null;
+  const member = !!user && !user.is_anonymous;
 
   const now = new Date().toISOString();
 
@@ -43,7 +45,7 @@ export default async function FeedPage() {
           .order("kickoff_at", { ascending: true })
           .returns<MatchFeedItem[]>()
       : Promise.resolve({ data: [] as MatchFeedItem[], error: null }),
-    uid ? isPremium(uid) : Promise.resolve(false),
+    member && uid ? canPostGames(uid) : Promise.resolve(false),
   ]);
 
   // Surface (don't swallow) read errors — an empty feed from a permission/RLS
@@ -93,6 +95,8 @@ export default async function FeedPage() {
 
   return (
     <>
+      <TrackEvent name="browse" data={{ who: member ? "member" : user ? "guest" : "visitor" }} />
+      {searchParams.posted === "1" && <TrackEvent name="post_game" />}
       <h1 className="mb-5 text-2xl font-black tracking-tight">
         Games in <span className="text-pitch">Cape Town</span>
       </h1>
@@ -122,6 +126,7 @@ export default async function FeedPage() {
         organizerMatches={organizerMatches ?? []}
         neighborhoods={neighborhoods}
         isPremium={premium}
+        canPost={premium}
       />
     </>
   );

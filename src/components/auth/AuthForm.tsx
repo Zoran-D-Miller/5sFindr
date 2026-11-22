@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { signIn, signUp } from "@/server/actions/auth";
 import { PasswordInput } from "./PasswordInput";
+import { PasswordlessOptions } from "./PasswordlessOptions";
+import { FEATURES } from "@/lib/flags";
 
 const inputCls = "input-field";
 
@@ -20,10 +22,15 @@ export function AuthForm({
   mode,
   next,
   defaultRef,
+  allowNew = false,
+  notice,
 }: {
   mode: "login" | "signup";
   next?: string;
   defaultRef?: string;
+  /** New accounts allowed (PRELAUNCH off) → offer Continue with Google. */
+  allowNew?: boolean;
+  notice?: string;
 }) {
   const action = mode === "signup" ? signUp : signIn;
   const [state, formAction] = useFormState(action, {});
@@ -40,11 +47,15 @@ export function AuthForm({
       </h1>
       <p className="mt-1 text-sm text-white/50">
         {isSignup
-          ? "30 days of Premium + 1 free token. No card needed."
+          ? FEATURES.premium ? "30 days of Premium + 1 free token. No card needed." : "Free. Post games and keep your regulars."
           : "Log in to find your next 5-a-side."}
       </p>
 
-      <form action={formAction} className="mt-7 space-y-3">
+      {notice && <p className="mt-4 text-sm text-red-400">{notice}</p>}
+
+      <PasswordlessOptions next={next} allowGoogle={allowNew} />
+
+      <form action={formAction} className="mt-3 space-y-3">
         {isSignup && (
           <input
             name="name"

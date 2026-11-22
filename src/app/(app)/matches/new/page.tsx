@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { isPremium } from "@/lib/entitlements";
+import { canPostGames } from "@/lib/entitlements";
 import { MatchCreateForm } from "@/components/match/MatchCreateForm";
 import type { VenueOption } from "@/lib/types";
 
@@ -10,8 +10,9 @@ export default async function NewMatchPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Premium gate — free/expired users are routed to upgrade.
-  if (!(await isPremium(user!.id))) redirect("/wallet");
+  // Premium gate only while the premium flag is on (guests are sent to /login
+  // by the middleware).
+  if (!(await canPostGames(user!.id))) redirect("/wallet");
 
   // Seeded Cape Town venues for the dropdown (custom fields are typed in).
   const { data: venues } = await supabase

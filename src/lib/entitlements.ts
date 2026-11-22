@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { FEATURES } from "@/lib/flags";
 
 /**
  * Premium gate — mirrors the SQL is_premium() function so app code and RLS
@@ -9,6 +10,11 @@ import { createClient } from "@/lib/supabase/server";
  * PREMIUM tier: create matches, request to join, leaderboard, shirt colors,
  *               Man-of-the-Match voting/trophies.
  */
+/** Posting a game: anyone with a kept account, unless the Premium flag is back on. */
+export async function canPostGames(userId: string): Promise<boolean> {
+  return FEATURES.premium ? isPremium(userId) : true;
+}
+
 export async function isPremium(userId: string): Promise<boolean> {
   const supabase = createClient();
   const { data } = await supabase

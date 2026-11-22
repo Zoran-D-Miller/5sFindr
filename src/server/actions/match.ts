@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { isPremium } from "@/lib/entitlements";
+import { canPostGames } from "@/lib/entitlements";
 import { randomSlug } from "@/lib/slug";
 import type { CreateMatchInput, Position, VenueType } from "@/lib/types";
 
@@ -19,9 +19,10 @@ export async function createMatch(input: CreateMatchInput): Promise<CreateMatchR
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { error: "Not signed in." };
+  if (user.is_anonymous) return { error: "Keep your profile (Google or email) to post a game." };
 
-  // Premium gate (RLS also enforces this; we fail fast with a clear message).
-  if (!(await isPremium(user.id))) return { error: "Go Premium to create matches." };
+  // Premium gate only while the premium flag is on.
+  if (!(await canPostGames(user.id))) return { error: "Go Premium to create matches." };
 
   // Kickoff must be a real, future time.
   const kickoff = new Date(input.kickoffAtIso);
@@ -108,5 +109,5 @@ export async function createMatch(input: CreateMatchInput): Promise<CreateMatchR
   // Land them on their Organizer dashboard with the new match showing.
   cookies().set("view", "organizer", { path: "/", maxAge: 31_536_000, sameSite: "lax" });
   revalidatePath("/feed");
-  redirect("/feed");
+  redirect("/feed?posted=1"); // ?posted=1 → Umami "post_game" event on the feed
 }

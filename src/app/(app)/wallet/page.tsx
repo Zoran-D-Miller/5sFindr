@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { WALLET_ENABLED } from "@/lib/flags";
 import { SubscriptionCard } from "@/components/wallet/SubscriptionCard";
 import { TokenWallet } from "@/components/wallet/TokenWallet";
 import { TokenBundles } from "@/components/wallet/TokenBundles";
@@ -8,6 +10,7 @@ import { CommunityBanner } from "@/components/CommunityBanner";
 import type { Subscription, Token, TokenTransaction, Profile } from "@/lib/types";
 
 export default async function WalletPage() {
+  if (!WALLET_ENABLED) redirect("/profile/edit");
   const supabase = createClient();
   const {
     data: { user },

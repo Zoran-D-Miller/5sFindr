@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@/lib/analytics";
 import { useState, useTransition } from "react";
 import { pingBallers } from "@/server/actions/ping";
 import { buildPingBlast } from "@/lib/whatsapp";
@@ -36,6 +37,7 @@ export function PingBallers({
   }
 
   async function copyBlast() {
+    track("share", { via: "blast" });
     await navigator.clipboard.writeText(
       buildPingBlast({ venue, kickoffIso, spotsLeft, shareSlug, siteUrl }),
     );
