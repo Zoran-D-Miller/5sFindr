@@ -3,7 +3,7 @@
 - **Day:** Wed 25 Nov
 - **Pillar:** Organiser recruitment (pain → product)
 - **Format:** Short
-- **Where and when (SAST):** TikTok 18:00 · IG Reel 19:00 · FB Reel
+- **Where and when (SAST):** TikTok 19:30 · IG Reel 19:30 · FB Reel
 - **Footage:** mocked screens built from the app's real components (no AI, no real people)
 - **Status:** draft, waiting for Zoran's review
 

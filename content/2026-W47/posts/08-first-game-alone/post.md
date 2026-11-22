@@ -3,7 +3,7 @@
 - **Day:** Tue 24 Nov
 - **Pillar:** New to Cape Town / making friends
 - **Format:** Carousel
-- **Where and when (SAST):** IG 10:00 · FB 10:00
+- **Where and when (SAST):** IG 12:30 · FB 12:30
 - **Footage:** designed slides, no photos of people
 - **Status:** draft, waiting for Zoran's review
 

@@ -7,7 +7,13 @@
     "sub": "Short 2 at 17:00. Kickoff 18:30.",
     "vo": "vo/09-hook.wav",
     "minSec": 2.2,
-    "voText": "One link. Two strangers. Game on."
+    "voText": "One link. Two strangers. Game on.",
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ]
   },
   "beats": [
     {
@@ -43,7 +49,18 @@
       "caption": "Two pull out at five o'clock. Old way: beg the group chat.",
       "vo": "vo/03-b1.wav",
       "minSec": 3.4,
-      "voText": "Two pull out at five o'clock. Old way: beg the group chat."
+      "voText": "Two pull out at five o'clock. Old way: beg the group chat.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.4
+        },
+        {
+          "src": "im-alert",
+          "at": 1.2,
+          "vol": 0.6
+        }
+      ]
     },
     {
       "visual": {
@@ -60,7 +77,13 @@
       "caption": "New way: drop one link. Anyone nearby can claim a spot.",
       "vo": "vo/03-b2.wav",
       "minSec": 3.4,
-      "voText": "New way: drop one link. Anyone nearby can claim a spot."
+      "voText": "New way: drop one link. Anyone nearby can claim a spot.",
+      "sfx": [
+        {
+          "src": "data-chirp",
+          "vol": 0.5
+        }
+      ]
     },
     {
       "visual": {
@@ -87,7 +110,18 @@
       "caption": "Two strangers in. Game on. Nobody cancels.",
       "vo": "vo/03-b3.wav",
       "minSec": 4.2,
-      "voText": "Two strangers in. Game on. Nobody cancels."
+      "voText": "Two strangers in. Game on. Nobody cancels.",
+      "sfx": [
+        {
+          "src": "dialup",
+          "vol": 0.22
+        },
+        {
+          "src": "im-alert",
+          "at": -0.6,
+          "vol": 0.6
+        }
+      ]
     },
     {
       "visual": {
@@ -101,15 +135,34 @@
       "caption": "Free for organisers. Founding spots open now.",
       "vo": "vo/03-b4.wav",
       "minSec": 2.6,
-      "voText": "Free for organisers. Founding spots open now."
+      "voText": "Free for organisers. Founding spots open now.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.45
+        }
+      ]
     }
   ],
   "end": {
     "line": "Free 5-a-side games in Cape Town · 5sfindr.com",
     "cta": "Run a game? 5sfindr.com",
     "vo": "vo/03-end.wav",
-    "voText": "Fives Finder."
+    "voText": "Fives Finder.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
   },
   "aiVoice": true,
-  "voice": "Kokoro bm_george"
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
 }

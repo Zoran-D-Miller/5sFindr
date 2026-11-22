@@ -6,7 +6,13 @@
     "text": "THINGS EVERY\nCAPE TOWN 5s\nPLAYER HAS *SAID*",
     "vo": "vo/06-hook.wav",
     "minSec": 2.4,
-    "voText": "Things every Cape Town five-a-side player has said."
+    "voText": "Things every Cape Town five-a-side player has said.",
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ]
   },
   "beats": [
     {
@@ -21,7 +27,13 @@
       "caption": "Ja, I'm coming. Now now.",
       "vo": "vo/06-b1.wav",
       "minSec": 2,
-      "voText": "Ja, I'm coming. Now now."
+      "voText": "Ja, I'm coming. Now now.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.45
+        }
+      ]
     },
     {
       "visual": {
@@ -36,7 +48,13 @@
       "caption": "Who's bringing the bibs?",
       "vo": "vo/06-b2.wav",
       "minSec": 2,
-      "voText": "Who's bringing the bibs?"
+      "voText": "Who's bringing the bibs?",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.5
+        }
+      ]
     },
     {
       "visual": {
@@ -50,7 +68,13 @@
       "caption": "Next goal wins. Third time.",
       "vo": "vo/06-b3.wav",
       "minSec": 2,
-      "voText": "Next goal wins. Third time."
+      "voText": "Next goal wins. Third time.",
+      "sfx": [
+        {
+          "src": "relay",
+          "vol": 0.6
+        }
+      ]
     },
     {
       "visual": {
@@ -64,7 +88,13 @@
       "caption": "That's not a foul, bru.",
       "vo": "vo/06-b4.wav",
       "minSec": 2,
-      "voText": "That's not a foul, bru."
+      "voText": "That's not a foul, bru.",
+      "sfx": [
+        {
+          "src": "data-chirp",
+          "vol": 0.5
+        }
+      ]
     },
     {
       "visual": {
@@ -78,7 +108,13 @@
       "caption": "I'll EFT you later. Famous last words.",
       "vo": "vo/06-b5.wav",
       "minSec": 2,
-      "voText": "I'll EFT you later. Famous last words."
+      "voText": "I'll EFT you later. Famous last words.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.45
+        }
+      ]
     },
     {
       "visual": {
@@ -93,15 +129,34 @@
       "caption": "Lekker game. Same time next week?",
       "vo": "vo/06-b6.wav",
       "minSec": 2,
-      "voText": "Lekker game. Same time next week?"
+      "voText": "Lekker game. Same time next week?",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.5
+        }
+      ]
     }
   ],
   "end": {
     "line": "Free 5-a-side games in Cape Town · 5sfindr.com",
     "cta": "Which one's you? 5sfindr.com",
     "vo": "vo/06-end.wav",
-    "voText": "Fives Finder. Which one's you?"
+    "voText": "Fives Finder. Which one's you?",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
   },
   "aiVoice": true,
-  "voice": "Kokoro bm_george"
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
 }

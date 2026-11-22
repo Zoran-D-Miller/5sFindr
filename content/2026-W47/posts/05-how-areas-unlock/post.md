@@ -1,6 +1,6 @@
 # 05 · How your area unlocks
 
-- **Day:** Sat 21 Nov
+- **Day:** Sun 22 Nov
 - **Pillar:** The inner circle (area unlocks, founding numbers)
 - **Format:** Carousel
 - **Where and when (SAST):** IG 12:30 · FB 12:30

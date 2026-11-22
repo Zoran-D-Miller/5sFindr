@@ -35,3 +35,11 @@ voice-samples/
 # Generated AI clips are large: keep them in cloud storage / on disk, not in git
 cinematic/**/clips/*
 !cinematic/**/clips/.gitkeep
+
+# Python bytecode from the voice scripts
+**/__pycache__/
+
+# Sound design is rebuilt from code by npm run voice (audio_tools.py): effects library + room-tone bed
+**/sfx/*.wav
+**/sfx/version.json
+**/bed-*.wav

@@ -1,0 +1,140 @@
+{
+  "type": "short",
+  "id": "w48-01-one-message-1704",
+  "coord": "33.902° S, 18.409° E · THU 17:04",
+  "hook": {
+    "text": "17:04.\nONE\n*MESSAGE.*",
+    "vo": "vo/01-hook.wav",
+    "minSec": 1.6,
+    "voText": "Five oh four p.m. One message. ~And:pitch~ Thursday's game is dead.",
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      },
+      {
+        "src": "static-hit",
+        "at": 2.2,
+        "vol": 0.5
+      }
+    ]
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "THURSDAY 5s · 38 MEMBERS",
+        "screen": "chat",
+        "group": "Thursday 5s ⚽",
+        "messages": [
+          {
+            "from": "Thabo",
+            "text": "Kick-off 18:30, 10 confirmed 🔥",
+            "me": true
+          },
+          {
+            "from": "Kyle",
+            "text": "lekker"
+          },
+          {
+            "from": "Jonas",
+            "text": "sorry bru, can't make it 🙏"
+          },
+          {
+            "from": "Luca",
+            "text": "same, work ran late"
+          }
+        ]
+      },
+      "caption": "“Sorry bru, can't make it.” Now you're two short. Again.",
+      "vo": "vo/01-b1.wav",
+      "minSec": 2.4,
+      "voText": "Sorry bru, ~can't:stutter~ make it. Now you're two short. ~Again:tapestop~.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.5
+        },
+        {
+          "src": "im-alert",
+          "at": 1.3,
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "38",
+        "label": "PEOPLE IN THE GROUP",
+        "small": "0 REPLIES"
+      },
+      "caption": "So you beg the group chat. 38 people. Zero replies.",
+      "vo": "vo/01-b2.wav",
+      "minSec": 2.4,
+      "voText": "So you beg ~the:wow~ group chat. Thirty-eight people. Zero replies.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.6
+        },
+        {
+          "src": "hdd-seek",
+          "at": 1.7,
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "BUILDING NOW · ONE LINK",
+        "screen": "fill",
+        "title": "Thursday 5s",
+        "kickoff": "Thu 18:30",
+        "max": 10,
+        "startTaken": 8,
+        "names": [
+          "Sipho",
+          "Ana"
+        ],
+        "endLabel": "FULL"
+      },
+      "caption": "What if one link filled that spot for you? We're building it. Cape Town first.",
+      "vo": "vo/01-b3.wav",
+      "minSec": 3,
+      "voText": "What if one link filled that ~spot:stutter~ for you? We're building it. Cape Town first.",
+      "sfx": [
+        {
+          "src": "dialup",
+          "vol": 0.22
+        },
+        {
+          "src": "im-alert",
+          "at": -0.6,
+          "vol": 0.6
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Free for organisers · 5sfindr.com",
+    "vo": "vo/01-end.wav",
+    "voText": "Fives Finder. Free for organisers. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}
