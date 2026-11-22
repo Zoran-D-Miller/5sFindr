@@ -1,0 +1,200 @@
+{
+  "type": "short",
+  "id": "dropout-ep1-excuses",
+  "coord": "THE 17:00 DROPOUT · EP 1",
+  "hook": {
+    "text": "THE 17:00\n*DROPOUT.*",
+    "sub": "Episode 1 · The Excuses",
+    "vo": "vo/01-hook.wav",
+    "minSec": 1.4,
+    "voText": "Thursday. Seventeen hundred. ~Here:stutter~ it comes.",
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      },
+      {
+        "src": "im-alert",
+        "at": -0.3,
+        "vol": 0.7
+      }
+    ]
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "THURSDAY 5s · 17:00",
+        "screen": "chat",
+        "group": "Thursday 5s ⚽",
+        "messages": [
+          {
+            "from": "Kyle",
+            "text": "bro my cat is sick 🙏"
+          },
+          {
+            "from": "Jonas",
+            "text": "car won't start 😩"
+          },
+          {
+            "from": "Pieter",
+            "text": "my mom says I can't"
+          },
+          {
+            "from": "Luca",
+            "text": "can't. I'm... busy"
+          },
+          {
+            "from": "Thabo",
+            "text": "😐",
+            "me": true
+          }
+        ]
+      },
+      "caption": "Sick cat. Dead car. Mom said no. “Busy.”",
+      "vo": "vo/01-b1.wav",
+      "minSec": 3.4,
+      "voText": "Sick cat. Dead car. His mom said no. And ~busy:tapestop~.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.3,
+          "vol": 0.6
+        },
+        {
+          "src": "im-alert",
+          "at": 1,
+          "vol": 0.6
+        },
+        {
+          "src": "im-alert",
+          "at": 1.7,
+          "vol": 0.6
+        },
+        {
+          "src": "im-alert",
+          "at": 2.4,
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "4",
+        "label": "OUT",
+        "small": "KICKOFF IN 90 MIN"
+      },
+      "caption": "Four out. Kickoff in 90 minutes.",
+      "vo": "vo/01-b2.wav",
+      "minSec": 2,
+      "voText": "Four out. Kickoff in ninety ~minutes:pitch~.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "ONE LINK",
+        "screen": "invite",
+        "organiser": "Thabo",
+        "venue": "Green Point Urban Park",
+        "area": "Green Point",
+        "kickoff": "Thursday 18:30",
+        "court": false,
+        "claimAt": 0.6
+      },
+      "caption": "So drop one link. Anyone nearby can claim a spot.",
+      "vo": "vo/01-b3.wav",
+      "minSec": 2.8,
+      "voText": "So drop one link. Anyone nearby can claim a spot.",
+      "sfx": [
+        {
+          "src": "data-chirp",
+          "at": 0.2,
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "17:00 → 17:20",
+        "screen": "fill",
+        "title": "Thursday 5s",
+        "kickoff": "Thu · 18:30 · Green Point Urban Park",
+        "max": 10,
+        "startTaken": 6,
+        "names": [
+          "Thabo",
+          "Sam",
+          "Aisha",
+          "Nandi",
+          "Ama",
+          "Zoe",
+          "Sipho",
+          "Ana",
+          "Yusuf",
+          "Kai"
+        ],
+        "endLabel": "GAME ON"
+      },
+      "caption": "Four strangers in. Game on. Cat's fine, by the way.",
+      "vo": "vo/01-b4.wav",
+      "minSec": 3.2,
+      "voText": "Four strangers in. Game on. The cat's fine, by the way.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.6,
+          "vol": 0.5
+        },
+        {
+          "src": "relay",
+          "at": -0.5,
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "NEXT WEEK:",
+          "*THE RINGER*"
+        ],
+        "small": "THE 17:00 DROPOUT · EP 2"
+      },
+      "caption": "Next week: the cousin who “played semi-pro”.",
+      "vo": "vo/01-b5.wav",
+      "minSec": 2.2,
+      "voText": "Next week. The cousin who ~played:stutter~ semi-pro.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.5
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Run a game? 5sfindr.com",
+    "vo": "vo/01-end.wav",
+    "voText": "Fives Finder. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}

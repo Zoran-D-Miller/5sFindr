@@ -1,5 +1,7 @@
 # C2 · "Numbered": not for sale
 
+> **Cast changed 22 Nov 2026:** NIA is retired and all characters are now faceless (see `../CHARACTERS.md` and README §3, Islamic principles). Rewrite this concept's prompts against the new cast before generating anything.
+
 **Runtime:** 15 s + 2.8 s end card · **Shots:** 6 (5 AI, 1 real-UI insert) · **Ready:** ⚠️ **only after S5** puts founding numbers in the product **and** Zoran confirms the cap (500 for Cape Town, GROWTH-STRATEGY.md §6). Until then this is a prepared concept, not a post.
 
 ## The idea
