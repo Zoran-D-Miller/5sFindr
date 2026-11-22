@@ -42,22 +42,11 @@ run() {
 }
 
 run "$ROOT/supabase/tests/00_bootstrap.sql"
-run "$ROOT/supabase/migrations/0001_init.sql"
-run "$ROOT/supabase/migrations/0002_match_feed.sql"
-run "$ROOT/supabase/migrations/0003_nullable_coords.sql"
-run "$ROOT/supabase/migrations/0004_lifecycle.sql"
-run "$ROOT/supabase/migrations/0005_attendance.sql"
-run "$ROOT/supabase/migrations/0006_realtime.sql"
-run "$ROOT/supabase/migrations/0007_premium.sql"
-run "$ROOT/supabase/migrations/0008_settlement_cron.sql"
-run "$ROOT/supabase/migrations/0009_phone.sql"
-run "$ROOT/supabase/migrations/0010_custom_location_fix.sql"
-run "$ROOT/supabase/migrations/0011_read_visibility_fix.sql"
-run "$ROOT/supabase/migrations/0012_match_deletion_rules.sql"
-run "$ROOT/supabase/migrations/0013_repair_matches_motm.sql"
-run "$ROOT/supabase/migrations/0014_organizer_captain.sql"
-run "$ROOT/supabase/migrations/0015_settle_null_token.sql"
-run "$ROOT/supabase/migrations/0016_public_browse.sql"
+# Every migration in order. 0026 needs pg_net + Vault (real Supabase only).
+for f in "$ROOT"/supabase/migrations/[0-9]*.sql; do
+  case "$(basename "$f")" in 0026_*) echo "▸ skip $(basename "$f") (pg_net/Vault)"; continue ;; esac
+  run "$f"
+done
 run "$ROOT/supabase/seed.sql"
 
 echo "▸ running economy_test.sql …"
