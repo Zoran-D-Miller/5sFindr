@@ -1,5 +1,7 @@
 # C3 · "Lights on": an area unlocks
 
+> **Cast changed 22 Nov 2026:** NIA is retired and all characters are now faceless (see `../CHARACTERS.md` and README §3, Islamic principles). Rewrite this concept's prompts against the new cast before generating anything.
+
 **Runtime:** 16 s + 2.8 s end card · **Shots:** 6 (4 AI, 1 real-UI insert, 1 AI with a real-UI corner pin) · **Ready:** now as a teaser ("unlocks at 50"). It becomes the **first Meta ad** once an area is actually live.
 
 ## The idea

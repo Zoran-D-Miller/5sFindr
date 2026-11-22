@@ -61,6 +61,15 @@ concept → storyboard + shot list → character sheet → reference stills → 
 
 ## 3. Guardrails (all must hold before anything is posted)
 
+### Islamic principles (Zoran, 22 Nov 2026; these come before every other rule)
+- **No faces** of people or AI characters. Hands, boots, backs, silhouettes and point-of-view only.
+- **No mixed-gender scenes.** Men's films are men-only. Women appear only in women-only game content, in modest, loose, full-length clothing, also faceless.
+- **Men's kit covers navel to knee** (full-length joggers or track pants).
+- **No music**, notes, beats or melodies. Voice and synthesized sound design only (see `../VOICE.md`).
+- **Nothing haram on screen or in copy:** no alcohol, bars, betting or gambling, swearing, or mocking people.
+- **Honesty:** AI is always labelled; no fake users, fake numbers or made-up scarcity.
+
+
 - **AI characters are never presented as real users, members or testimonials.** No "Nia found her crew on 5sFindr". Characters are unnamed on screen, have no quotes, and captions talk about *you*, not *them*.
 - **Disclosure on every AI short:** the on-screen chip "AI-generated scenes · real app screens" (built into the template), **plus** the platform label: Instagram/Facebook "AI info" (Advanced settings → AI label) and TikTok "AI-generated content".
 - **Real UI only.** Product screens come from the app (mocked from real components, later screen recordings). If a generated clip shows any UI or text on a screen, don't use that take.

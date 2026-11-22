@@ -1,0 +1,57 @@
+{
+  "type": "cinematic",
+  "id": "c5-alone-to-crew",
+  "aspect": "9:16",
+  "coord": "CAPE TOWN · TONIGHT",
+  "bed": "bed-machine.wav",
+  "shots": [
+    {
+      "label": "S01 · Phone buzzes face-down",
+      "sec": 2.0,
+      "src": "clips/s01.mp4",
+      "title": "NEW CITY.\nNO SQUAD."
+    },
+    {
+      "label": "S02 · REAL UI insert: invite + claim",
+      "sec": 2.8,
+      "insert": {
+        "screen": "invite",
+        "organiser": "Thabo",
+        "venue": "Green Point Urban Park",
+        "area": "Green Point",
+        "kickoff": "Thursday 19:00",
+        "court": false,
+        "claimAt": 0.6
+      },
+      "caption": "One link. One spot."
+    },
+    {
+      "label": "S03 · Lacing the green lace",
+      "sec": 2.2,
+      "src": "clips/s03.mp4"
+    },
+    {
+      "label": "S04 · Taxi window, city lights",
+      "sec": 2.4,
+      "src": "clips/s04.mp4"
+    },
+    {
+      "label": "S05 · Through the fence: a hand goes up",
+      "sec": 2.6,
+      "src": "clips/s05.mp4",
+      "title": "ONE SPOT.\nYOURS."
+    },
+    {
+      "label": "S07 · Ball hits the net",
+      "sec": 2.0,
+      "src": "clips/s07.mp4",
+      "title": "GAME ON."
+    },
+    {
+      "label": "S08 · Fist bump: new crew",
+      "sec": 2.2,
+      "src": "clips/s08.mp4",
+      "caption": "Came alone. Left with a crew."
+    }
+  ]
+}
