@@ -158,7 +158,7 @@ linked to the FB Page.
   `NEXT_PUBLIC_FLAG_<NAME>=true` (set in Vercel + redeploy). Hidden: Premium gate/copy, tokens + `/wallet` (redirects to
   profile), `/leaderboard` (404) and the Ranks/Wallet tabs, MotM, shirt teams + "Lock match & assign teams", the role
   switcher (the feed is one page: "Post a game", "Your games", then all games), GPS + code check-in.
-- [x] Migration **0027_free_join_guests** (not yet in prod): `app_config.tokens_enabled` (default false, keep in step
+- [x] Migration **0027_free_join_guests** (applied to prod 2026-11-23 with Zoran's OK; verified functions, policies, grants; security advisor shows nothing new): `app_config.tokens_enabled` (default false, keep in step
   with `NEXT_PUBLIC_FLAG_TOKENS`); `join_match` needs no Premium and no token; posting a game / adding a venue needs any
   non-guest account; direct roster inserts closed (join via RPC only); `save_guest_details`; guests get a founding
   number only when they keep their profile; `set_attendance` (organiser ticks from kickoff until the game is closed).
@@ -178,7 +178,7 @@ linked to the FB Page.
   and `/auth/`), so none of this is visible in prod until S3 opens `/m/<slug>`.
 
 **Zoran, before S3 (one-time setup, all free):**
-1. OK applying migration 0027 to prod (Claude applies it with the Supabase tool once you say so).
+1. ~~OK applying migration 0027 to prod~~ Done 2026-11-23.
 2. Supabase → Authentication → Sign In / Providers: turn on **Allow anonymous sign-ins** and **Allow manual linking**.
 3. Google: create an OAuth client in Google Cloud (Web; redirect URI `https://ujhbbwptsaefpzangvwa.supabase.co/auth/v1/callback`),
    then paste the client ID + secret into Supabase → Providers → Google.
@@ -192,7 +192,7 @@ linked to the FB Page.
   private per 0025). The S3 "WhatsApp group list" share message is where that belongs.
 
 ## Next session → S3 (organiser soft launch) in PRODUCT-BRIEF.md
-Apply 0027 + the setup above first. Then S3: organiser signup path, open `/m/<slug>` to signed-out visitors under the
+Merge PR #17 (0027 is already in prod) and do the setup above first. Then S3: organiser signup path, open `/m/<slug>` to signed-out visitors under the
 gate, fast "post a game", the WhatsApp list share message, paid-court "who's paid", admin counts.
 Content runs alongside: each week, `/content-week` → Zoran reviews `REVIEW.md` → records → schedules.
 

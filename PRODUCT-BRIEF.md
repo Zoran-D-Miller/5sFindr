@@ -40,7 +40,7 @@ friends through football, and anyone who wants a quick game when their schedule 
 - Zoran: works **online only** (can't travel for now), **R0 marketing budget**, about 5–7 hours a day,
   and is a member of 2–3 social 5-a-side WhatsApp groups.
 - Code (2026-11-23): S1 essentials + S2 built (see `LAUNCH-HANDOFF.md`). Joining and posting are free,
-  guests join with name + WhatsApp, extras sit behind flags. Migration 0027 still needs applying to prod.
+  guests join with name + WhatsApp, extras sit behind flags. Migration 0027 is in prod (2026-11-23).
 
 ## Locked decisions
 | Topic | Decision |
