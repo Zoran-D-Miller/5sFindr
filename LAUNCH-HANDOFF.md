@@ -140,10 +140,60 @@ linked to the FB Page.
   `connect.mjs meta`; TikTok app + Sandbox/review + `connect.mjs tiktok`; merge PR #9; set the switch). Possible
   blockers flagged there: Meta may ask for review before Live; TikTok wants a Terms URL (no `/terms` page yet).
 
-## Next session → S1 (leftover clean-up), then S2 (cut the fat + join in 2 taps) in PRODUCT-BRIEF.md
-The domain, seed removal, privacy page and gate are done (see the updates above). S1 is what's left:
-commit the docs (now also `content/` + `.claude/commands/`, on a `content-engine` branch if Zoran wants it separate),
-reconcile PRs #1–3, the demo Supabase project (it also unblocks real screen recordings for content) and Umami funnel events.
+## Update 2026-11-23: S1 essentials + S2 built (one PR, branch `claude/strange-ishizaka-c4807c`)
+**S1**
+- [x] Docs committed (this file, `PRODUCT-BRIEF.md`, `GROWTH-STRATEGY.md`).
+- [x] PRs #1–3 reconciled: their three commits are cherry-picked, so `main` now has migrations 0019–0021 exactly as
+  they run in prod (checked against prod's `supabase_migrations` list and the live functions/indexes on 2026-11-23).
+  Nothing was re-run on prod. Close PRs #1–3 once this merges.
+- [x] Umami funnel events (`src/lib/analytics.ts`): `waitlist_submit`, `browse` (feed; `who` = visitor/guest/member),
+  `im_in` (`as` = guest/member), `post_game` (feed after `?posted=1`), `share` (`via` = whatsapp/copy/blast/waitlist_*).
+  Create a funnel from them in Umami → Reports.
+- [ ] **Deferred:** separate demo Supabase project for filming. Not on the critical path to S3; content keeps using
+  the mocked screens. Pick it up when real screen recordings are needed.
+- Open: decide what happens to `Waitlist/` and `z-seed profiles images/` (untracked in the main checkout).
+
+**S2**
+- [x] `src/lib/flags.ts`: `FEATURES.{premium,tokens,leaderboard,motm,shirts,roleSwitcher,gpsCheckIn}`, all off unless
+  `NEXT_PUBLIC_FLAG_<NAME>=true` (set in Vercel + redeploy). Hidden: Premium gate/copy, tokens + `/wallet` (redirects to
+  profile), `/leaderboard` (404) and the Ranks/Wallet tabs, MotM, shirt teams + "Lock match & assign teams", the role
+  switcher (the feed is one page: "Post a game", "Your games", then all games), GPS + code check-in.
+- [x] Migration **0027_free_join_guests** (not yet in prod): `app_config.tokens_enabled` (default false, keep in step
+  with `NEXT_PUBLIC_FLAG_TOKENS`); `join_match` needs no Premium and no token; posting a game / adding a venue needs any
+  non-guest account; direct roster inserts closed (join via RPC only); `save_guest_details`; guests get a founding
+  number only when they keep their profile; `set_attendance` (organiser ticks from kickoff until the game is closed).
+  Settlement waits 24h after full time for anyone but the organiser; if nobody was ticked, the squad is credited, not
+  marked no-shows. Late drop-out (<12h) still counts as a missed game.
+- [x] Guest join (`GuestJoin.tsx`, `server/actions/guest.ts`): "I'm in" → first name + WhatsApp + POPIA tick
+  (+ Turnstile when `NEXT_PUBLIC_TURNSTILE_SITE_KEY` is set) → Supabase anonymous sign-in → on the roster.
+  `/m/<slug>` now sends everyone to the game page to tap "I'm in" (no signup).
+- [x] Keep profile (`KeepProfile.tsx`): Continue with Google (`linkIdentity`, same account) or "Email me a link"
+  (`updateUser({ email })`). `/login` also has an email magic link (existing accounts only while PRELAUNCH is on) and
+  Continue with Google (only shown when PRELAUNCH is off, because OAuth can't be limited to existing users).
+  Callback: `/auth/callback`.
+- [x] `supabase/tests/economy_test.sql`: the token scenarios 1–3 run with the tokens flag on; new 4–8 cover free join,
+  guests, token-less cancels, organiser ticks and the 24h wait. `run-local.sh` now loads every migration (0026 skipped:
+  needs pg_net/Vault). All pass locally (Postgres 15, no Docker).
+- PRELAUNCH gate is still on: signed-out visitors and guests only reach the waitlist (guests also their game pages
+  and `/auth/`), so none of this is visible in prod until S3 opens `/m/<slug>`.
+
+**Zoran, before S3 (one-time setup, all free):**
+1. OK applying migration 0027 to prod (Claude applies it with the Supabase tool once you say so).
+2. Supabase → Authentication → Sign In / Providers: turn on **Allow anonymous sign-ins** and **Allow manual linking**.
+3. Google: create an OAuth client in Google Cloud (Web; redirect URI `https://ujhbbwptsaefpzangvwa.supabase.co/auth/v1/callback`),
+   then paste the client ID + secret into Supabase → Providers → Google.
+4. Supabase → Authentication → URL Configuration: add `https://5sfindr.com/auth/callback` to the redirect URLs.
+5. Cloudflare Turnstile (free): create a widget for 5sfindr.com, put the site key in Vercel as
+   `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, and the secret in Supabase → Authentication → Attack Protection (CAPTCHA, Turnstile).
+   Turn both on together: with CAPTCHA on and no site key, guest join fails.
+6. Supabase's built-in email sender is rate-limited (a few emails an hour). Fine for testing; move magic links to
+   Resend in S4.
+- Not built (follow-ups): the organiser can't see guests' WhatsApp numbers in the app yet (`phone_number` stays
+  private per 0025). The S3 "WhatsApp group list" share message is where that belongs.
+
+## Next session → S3 (organiser soft launch) in PRODUCT-BRIEF.md
+Apply 0027 + the setup above first. Then S3: organiser signup path, open `/m/<slug>` to signed-out visitors under the
+gate, fast "post a game", the WhatsApp list share message, paid-court "who's paid", admin counts.
 Content runs alongside: each week, `/content-week` → Zoran reviews `REVIEW.md` → records → schedules.
 
 ## Working style

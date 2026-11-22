@@ -39,8 +39,8 @@ friends through football, and anyone who wants a quick game when their schedule 
 - Socials: TikTok `@5sfindr.com`, IG `@5sfindr.official`. About 0 followers, nothing to report yet.
 - Zoran: works **online only** (can't travel for now), **R0 marketing budget**, about 5–7 hours a day,
   and is a member of 2–3 social 5-a-side WhatsApp groups.
-- Code: sign-in is email + password only. `join_match` still requires Premium and a R20 token (S2 not
-  started). PRs #1–3 are applied to prod but not merged, so `main` is missing migrations 0019–0021.
+- Code (2026-11-23): S1 essentials + S2 built (see `LAUNCH-HANDOFF.md`). Joining and posting are free,
+  guests join with name + WhatsApp, extras sit behind flags. Migration 0027 still needs applying to prod.
 
 ## Locked decisions
 | Topic | Decision |
@@ -98,19 +98,19 @@ leaderboard, Man-of-the-Match, shirt colours, Player⇄Organizer switcher, GPS +
 metadata, pinch-zoom, 5sfindr.com on Vercel, Umami visits, seed bots removed.
 
 **S1 — Leftover clean-up**
-- [ ] Commit `PRODUCT-BRIEF.md`, `LAUNCH-HANDOFF.md`, `GROWTH-STRATEGY.md`. Decide what happens to `Waitlist/` (old page) and `z-seed profiles images/` (move into the demo setup)
-- [ ] Reconcile PRs #1–3 (migrations 0019–0021 are in prod but not in `main`)
-- [ ] Separate **demo** Supabase project holding the seed data, for filming videos
-- [ ] Umami funnel events: waitlist submit, browse, "I'm in", post game, share
+- [x] Commit `PRODUCT-BRIEF.md`, `LAUNCH-HANDOFF.md`, `GROWTH-STRATEGY.md`. (Still open: what happens to `Waitlist/` (old page) and `z-seed profiles images/`, both untracked in the main checkout)
+- [x] Reconcile PRs #1–3 (migrations 0019–0021 are in prod but not in `main`)
+- [ ] **Deferred (2026-11-23):** separate **demo** Supabase project holding the seed data, for filming videos. Not on the critical path; mocked screens cover content until then
+- [x] Umami funnel events: waitlist submit, browse, "I'm in", post game, share
 - [ ] By hand (Zoran): delete `seed-1.jpg` … `seed-30.jpg` from the `avatars` bucket
 
 **S2 — Cut the fat + join in 2 taps**
-- [ ] Expand `src/lib/flags.ts` (premium, tokens, leaderboard, motm, shirts, role switcher, GPS check-in)
-- [ ] Migration: `join_match` and match creation stop requiring Premium and a token (a token only when the tokens flag is on)
-- [ ] Hide everything listed above. The organiser ticks attendance
-- [ ] Guest join: Supabase anonymous sign-in + name + WhatsApp + POPIA consent + Turnstile
-- [ ] Continue with Google + linking it to the anonymous account. Magic-link fallback
-- [ ] Update `supabase/tests/economy_test.sql` for the new rules
+- [x] Expand `src/lib/flags.ts` (premium, tokens, leaderboard, motm, shirts, role switcher, GPS check-in)
+- [x] Migration: `join_match` and match creation stop requiring Premium and a token (a token only when the tokens flag is on)
+- [x] Hide everything listed above. The organiser ticks attendance
+- [x] Guest join: Supabase anonymous sign-in + name + WhatsApp + POPIA consent + Turnstile
+- [x] Continue with Google + linking it to the anonymous account. Magic-link fallback
+- [x] Update `supabase/tests/economy_test.sql` for the new rules
 
 **S3 — Organiser soft launch**
 - [ ] Gate: organisers can sign up (an "I run a game" path). **Anyone with a game's `/m/<slug>` link
