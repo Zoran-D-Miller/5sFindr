@@ -20,7 +20,7 @@ One episode a week, the **A** side of the weekly A/B test (the **B** side is a c
   When an episode is approved for a week, copy its folder into that week's `posts/` with the right NN and Day line, then run `npm run queue <week>`.
 
 ## Episode ideas
-1. **The Excuses** (built): four excuses in four minutes, one link, four strangers in.
+1. **The Excuses** (built, scheduled W49 Thu 3 Dec): four excuses in four minutes, one link, four strangers in.
 2. **The Ringer:** "my cousin's coming, he played semi-pro" → he never shows. One link fills the spot anyway.
 3. **The Cash Chase:** chasing R60 from four people for a week ("building now": who's-paid list).
 4. **The 11th Man:** eleven say yes to a five-a-side. The waiting list moves up when someone drops out.
