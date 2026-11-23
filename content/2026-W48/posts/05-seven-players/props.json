@@ -1,0 +1,61 @@
+{
+  "type": "carousel",
+  "id": "w48-05-seven-players",
+  "coord": "33.902° S, 18.409° E · SAT 18:30",
+  "slides": [
+    {
+      "kind": "cover",
+      "kicker": "CAPE TOWN 5s",
+      "headline": "The *7 players*\nin every\nCape Town 5s",
+      "sub": "Tag yours. Be honest about which one you are."
+    },
+    {
+      "kind": "point",
+      "n": "01",
+      "title": "The *“five minutes away”*",
+      "body": "Has been five minutes away since 18:10."
+    },
+    {
+      "kind": "point",
+      "n": "02",
+      "title": "The *keeper who won't stay*",
+      "body": "In goal for one minute. Then at striker."
+    },
+    {
+      "kind": "point",
+      "n": "03",
+      "title": "The *“next goal wins”* guy",
+      "body": "Says it at 3–0 down. Every week."
+    },
+    {
+      "kind": "point",
+      "n": "04",
+      "title": "The *bib collector*",
+      "body": "Washes them, brings them, gets no thanks."
+    },
+    {
+      "kind": "point",
+      "n": "05",
+      "title": "The *R60 mystery*",
+      "body": "Paid? Says yes. Nobody's sure."
+    },
+    {
+      "kind": "point",
+      "n": "06",
+      "title": "The *ringer's ringer*",
+      "body": "“My mate's coming.” Nobody has met this mate."
+    },
+    {
+      "kind": "point",
+      "n": "07",
+      "title": "The *organiser*",
+      "body": "Does all of the above. Holds the whole thing together."
+    },
+    {
+      "kind": "cta",
+      "headline": "Every game\nneeds an\n*organiser*.",
+      "body": "We're building a free tool to make their week easier. Cape Town first.",
+      "cta": "Get on the list · 5sfindr.com"
+    }
+  ]
+}

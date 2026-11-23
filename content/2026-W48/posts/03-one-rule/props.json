@@ -1,0 +1,135 @@
+{
+  "type": "short",
+  "id": "w48-03-one-rule",
+  "coord": "33.902° S, 18.409° E · FRI 19:00",
+  "hook": {
+    "text": "CAPE TOWN 5s.\n*ONE RULE.*",
+    "minSec": 1.8,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ],
+    "vo": "vo/03-hook.wav",
+    "voText": "Every five-a-side in Cape Town has one unwritten ~rule:pitch~."
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "LAST ONE",
+          "TO ARRIVE…"
+        ]
+      },
+      "caption": "Last one to arrive…",
+      "vo": "vo/03-b1.wav",
+      "minSec": 1.8,
+      "voText": "Last one to arrive…",
+      "sfx": [
+        {
+          "src": "hdd-seek",
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "1",
+        "label": "GOES IN GOAL",
+        "small": "NO ARGUMENTS"
+      },
+      "caption": "…goes in goal. No arguments.",
+      "vo": "vo/03-b2.wav",
+      "minSec": 2,
+      "voText": "…goes in ~goal:stutter~. No arguments.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "list",
+        "title": "THE OTHER RULES",
+        "items": [
+          "“Next goal wins” wins nothing",
+          "Keeper rotates. In theory.",
+          "Lost? You carry the bibs home"
+        ]
+      },
+      "caption": "Next goal wins means nothing. The keeper rotates… in theory. Lost? You carry the bibs.",
+      "vo": "vo/03-b3.wav",
+      "minSec": 3.4,
+      "voText": "Next goal wins means nothing. The keeper rotates… in theory. Lost? You carry the bibs.",
+      "sfx": [
+        {
+          "src": "data-chirp",
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "BUILDING NOW",
+        "screen": "feed",
+        "heading": "Friday near you",
+        "games": [
+          {
+            "day": "Fri 27 Nov",
+            "time": "18:30",
+            "title": "Green Point Urban Park",
+            "court": false,
+            "taken": 8,
+            "max": 10
+          },
+          {
+            "day": "Fri 27 Nov",
+            "time": "19:30",
+            "title": "Indoor court · Claremont",
+            "court": true,
+            "price": 60,
+            "taken": 6,
+            "max": 10
+          }
+        ]
+      },
+      "caption": "Want a game where you're not the last one in? We're building it.",
+      "vo": "vo/03-b4.wav",
+      "minSec": 2.8,
+      "voText": "Want a game where you're not the last one in? We're building it.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.6,
+          "vol": 0.6
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Get on the list · 5sfindr.com",
+    "vo": "vo/03-end.wav",
+    "voText": "Fives Finder. Free five-a-side in Cape Town. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}

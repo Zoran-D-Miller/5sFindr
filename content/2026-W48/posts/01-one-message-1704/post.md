@@ -1,16 +1,13 @@
 # 01 · 17:04. One message.
 
-_Sample for the new voice and hook style (made 21 Nov, ahead of the rest of W48). `/content-week 2026-W48` can keep it as
-post 01 or replace it._
-
 - **Day:** Thu 26 Nov
 - **Pillar:** Organiser pain (the game-day drop-out)
 - **Format:** Short
-- **Where and when (SAST):** TikTok 19:30 · IG Reel 19:30 · FB Reel (Business Suite)
+- **Where and when (SAST):** TikTok 19:30 · IG Reel 19:30 · FB Reel
 - **Footage:** mocked screens built from the app's real components (no AI footage, no real people)
-- **Status:** sample, waiting for Zoran's review
+- **Status:** draft, waiting for Zoran's review
 
-**Hook plan:** cold open on a time (17:04) with no context = curiosity gap. Stakes in the first line ("Thursday's game
+**Hook formula:** Cold detail. **Hook plan:** cold open on a time (17:04) with no context = curiosity gap. Stakes in the first line ("Thursday's game
 is dead"). The open loop ("what if one link…") pays off before the end card. One action at the end: 5sfindr.com.
 
 ## Voice lines (AI voice, see `content/VOICE.md`)

@@ -1,0 +1,49 @@
+{
+  "type": "carousel",
+  "id": "w48-08-make-friends-cape-town",
+  "coord": "33.925° S, 18.420° E · TUE 18:00",
+  "slides": [
+    {
+      "kind": "cover",
+      "kicker": "NEW IN CAPE TOWN",
+      "headline": "5 ways to\nmake friends\nin *Cape Town*",
+      "sub": "(One of them involves a ball.) Save this."
+    },
+    {
+      "kind": "point",
+      "n": "01",
+      "title": "Do a *sunrise hike*",
+      "body": "Lion's Head before work. Talk to whoever's at the top."
+    },
+    {
+      "kind": "point",
+      "n": "02",
+      "title": "Join a *run club*",
+      "body": "Sea Point promenade, any weekday evening. Same faces every week."
+    },
+    {
+      "kind": "point",
+      "n": "03",
+      "title": "Say yes to the *second* invite",
+      "body": "The first one is polite. The second one is real."
+    },
+    {
+      "kind": "point",
+      "n": "04",
+      "title": "Volunteer *once a month*",
+      "body": "Beach clean-ups, coaching kids, a food drive. Instant crew."
+    },
+    {
+      "kind": "point",
+      "n": "05",
+      "title": "Play *5-a-side*",
+      "body": "Ten people, one hour, same time next week. The fastest friends you'll make."
+    },
+    {
+      "kind": "cta",
+      "headline": "Come alone.\nLeave with\na *crew*.",
+      "body": "Free 5-a-side games in Cape Town, opening area by area. We're building it now.",
+      "cta": "Get on the list · 5sfindr.com"
+    }
+  ]
+}

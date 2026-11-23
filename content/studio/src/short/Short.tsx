@@ -112,7 +112,8 @@ export const Short: React.FC<ShortRenderProps> = (props) => {
         </Sequence>
       ))}
       <Sequence {...endSeq} name="end card">
-        <EndCard line={props.end?.line} cta={props.end?.cta} />
+        {/* Short coord: the full "CAPE TOWN · …" tag ran into the AI voice chip (top right). */}
+        <EndCard line={props.end?.line} cta={props.end?.cta} coord="33.92° S, 18.42° E" />
         {props.end?.vo && props._vo?.[props.beats.length + 1] && <Audio src={staticFile(props.end.vo)} />}
       </Sequence>
       {props.bed && (

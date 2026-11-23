@@ -1,0 +1,144 @@
+{
+  "type": "short",
+  "id": "w48-06-two-spots-11-minutes",
+  "coord": "33.902° S, 18.409° E · SUN 17:00",
+  "hook": {
+    "text": "2 SPOTS.\n*11 MINUTES.*",
+    "minSec": 1.6,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ],
+    "vo": "vo/06-hook.wav",
+    "voText": "Two spots. Eleven minutes. ~No:pitch~ group chat."
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "17:00 · TWO OUT",
+        "screen": "chat",
+        "group": "Sunday 5s ⚽",
+        "messages": [
+          {
+            "from": "Kyle",
+            "text": "out tonight sorry 🙏"
+          },
+          {
+            "from": "Sam",
+            "text": "me too, family thing"
+          },
+          {
+            "from": "Thabo",
+            "text": "ahh. anyone?",
+            "me": true
+          }
+        ]
+      },
+      "caption": "Five p.m. Two pull out. Kick-off's at six thirty.",
+      "vo": "vo/06-b1.wav",
+      "minSec": 2.4,
+      "voText": "Five p.m. Two pull out. Kick-off's at six thirty.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.4
+        },
+        {
+          "src": "im-alert",
+          "at": 1.1,
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "BUILDING NOW · ONE LINK",
+        "screen": "invite",
+        "organiser": "Thabo",
+        "venue": "Green Point Urban Park",
+        "area": "Green Point",
+        "kickoff": "Sunday 18:30",
+        "court": false,
+        "claimAt": 0.6
+      },
+      "caption": "So he shares one link. Players nearby see it… and claim a spot.",
+      "vo": "vo/06-b2.wav",
+      "minSec": 3,
+      "voText": "So he shares one link. Players nearby see it… and ~claim:stutter~ a spot.",
+      "sfx": [
+        {
+          "src": "data-chirp",
+          "vol": 0.5
+        },
+        {
+          "src": "im-alert",
+          "at": -0.8,
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "17:11",
+        "label": "GAME FULL",
+        "small": "10 / 10"
+      },
+      "caption": "Eleven minutes later… game full.",
+      "vo": "vo/06-b3.wav",
+      "minSec": 2,
+      "voText": "Eleven minutes later… game full.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "WE'RE",
+          "*BUILDING*",
+          "THIS."
+        ],
+        "small": "CAPE TOWN FIRST"
+      },
+      "caption": "That's what we're building. Cape Town first.",
+      "vo": "vo/06-b4.wav",
+      "minSec": 1.8,
+      "voText": "That's what we're building. Cape Town first.",
+      "sfx": [
+        {
+          "src": "servo",
+          "vol": 0.5
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Free for organisers · 5sfindr.com",
+    "vo": "vo/06-end.wav",
+    "voText": "Fives Finder. Free for organisers. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}
