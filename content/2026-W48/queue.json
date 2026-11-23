@@ -1,0 +1,1270 @@
+{
+  "week": "2026-W48",
+  "timezone": "Africa/Johannesburg",
+  "generated_at": "2026-11-22T14:22:46.552Z",
+  "approved": true,
+  "approved_at": "2026-11-23T14:29:13.789Z",
+  "approved_by": "Zoran (in chat)",
+  "approval_hash": "a597be44e49dd274f443be4d5133c44e3a9d8bbef696bdbef4f277e36d353f88",
+  "items": [
+    {
+      "id": "2026-W48/02/facebook",
+      "post": "02-organisers-week",
+      "platform": "facebook",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-26T12:30:00+02:00",
+      "run_at": "2026-11-26T12:30:00+02:00",
+      "caption": "Organisers: which day of this week is the worst for you? 👇\n\nMonday: who's in? Wednesday: still need 3. Thursday 17:04: two drop out. Friday: chasing R60s.\n\n5sFindr (said \"Fives Finder\") is a free tool for people who run 5-a-side in Cape Town: one link, a list that builds itself, spots filled from nearby. We're building it now. Organisers, get on the list: 5sfindr.com (link in bio)\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: One game. Five days of admin. An organiser's week in Cape Town, in 5 messages.",
+        "Monday: “Thursday 18:30, who's in?” Post the game. Watch 38 people read it.",
+        "Wednesday: “Still need 3. Anyone?” Copy the names into a numbered list. Again.",
+        "Thursday 17:04: “Sorry bru, can't make it.” Two drop out. Kick-off is in 86 minutes.",
+        "Friday: “Guys, R60 each for the court.” Three people pay. You chase the rest all weekend.",
+        "Comparison. This week: 5 days of messages, a list you keep by hand, begging for a sub, chasing cash. 5sFindr, building now: one link, a list that builds itself, spots filled from nearby, who's paid at a glance.",
+        "Run a game? Get your week back. Free for organisers, open fields or paid courts. 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/02-organisers-week/slides/01.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/01.jpg",
+          "sha256": "45086f1c3d6995de3b13f32f70db1b460d17e9a7a1290d7986f0c20f471dd255",
+          "file": "posts/02-organisers-week/publish/01.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/02.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/02.jpg",
+          "sha256": "225771274d4aa0cebded8d38cbb93d11949b7e2798372d3240db89b9b3ec0ce8",
+          "file": "posts/02-organisers-week/publish/02.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/03.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/03.jpg",
+          "sha256": "a77989ef5c5f438e258365f676c5a9bc820be7f98f05a60dff52314a51145deb",
+          "file": "posts/02-organisers-week/publish/03.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/04.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/04.jpg",
+          "sha256": "20efecf2d151e11f7fe39aaa5aa12ff36f371d51672cb587a9cc708d0fc4cdde",
+          "file": "posts/02-organisers-week/publish/04.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/05.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/05.jpg",
+          "sha256": "b04e152839304ce5a42beb558d4bd1dff0ac57242a4cad774150129ddfdd560b",
+          "file": "posts/02-organisers-week/publish/05.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/06.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/06.jpg",
+          "sha256": "ede93e6c89bdd2d1198e9f9e09816db01399a3f366fa6846244568bc9de4ae84",
+          "file": "posts/02-organisers-week/publish/06.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/07.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/07.jpg",
+          "sha256": "147ab819982088a114eee008b54e4d6cb3c6ee342b7a2fc5b81d955e2b96efe9",
+          "file": "posts/02-organisers-week/publish/07.jpg"
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/02/instagram",
+      "post": "02-organisers-week",
+      "platform": "instagram",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-26T12:30:00+02:00",
+      "run_at": "2026-11-26T12:30:00+02:00",
+      "caption": "Organisers: which day of this week is the worst for you? 👇\n\nMonday: who's in? Wednesday: still need 3. Thursday 17:04: two drop out. Friday: chasing R60s.\n\n5sFindr (said \"Fives Finder\") is a free tool for people who run 5-a-side in Cape Town: one link, a list that builds itself, spots filled from nearby. We're building it now. Organisers, get on the list: 5sfindr.com (link in bio)\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: One game. Five days of admin. An organiser's week in Cape Town, in 5 messages.",
+        "Monday: “Thursday 18:30, who's in?” Post the game. Watch 38 people read it.",
+        "Wednesday: “Still need 3. Anyone?” Copy the names into a numbered list. Again.",
+        "Thursday 17:04: “Sorry bru, can't make it.” Two drop out. Kick-off is in 86 minutes.",
+        "Friday: “Guys, R60 each for the court.” Three people pay. You chase the rest all weekend.",
+        "Comparison. This week: 5 days of messages, a list you keep by hand, begging for a sub, chasing cash. 5sFindr, building now: one link, a list that builds itself, spots filled from nearby, who's paid at a glance.",
+        "Run a game? Get your week back. Free for organisers, open fields or paid courts. 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/02-organisers-week/slides/01.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/01.jpg",
+          "sha256": "45086f1c3d6995de3b13f32f70db1b460d17e9a7a1290d7986f0c20f471dd255",
+          "file": "posts/02-organisers-week/publish/01.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/02.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/02.jpg",
+          "sha256": "225771274d4aa0cebded8d38cbb93d11949b7e2798372d3240db89b9b3ec0ce8",
+          "file": "posts/02-organisers-week/publish/02.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/03.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/03.jpg",
+          "sha256": "a77989ef5c5f438e258365f676c5a9bc820be7f98f05a60dff52314a51145deb",
+          "file": "posts/02-organisers-week/publish/03.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/04.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/04.jpg",
+          "sha256": "20efecf2d151e11f7fe39aaa5aa12ff36f371d51672cb587a9cc708d0fc4cdde",
+          "file": "posts/02-organisers-week/publish/04.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/05.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/05.jpg",
+          "sha256": "b04e152839304ce5a42beb558d4bd1dff0ac57242a4cad774150129ddfdd560b",
+          "file": "posts/02-organisers-week/publish/05.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/06.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/06.jpg",
+          "sha256": "ede93e6c89bdd2d1198e9f9e09816db01399a3f366fa6846244568bc9de4ae84",
+          "file": "posts/02-organisers-week/publish/06.jpg"
+        },
+        {
+          "path": "posts/02-organisers-week/slides/07.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/02-organisers-week/publish/07.jpg",
+          "sha256": "147ab819982088a114eee008b54e4d6cb3c6ee342b7a2fc5b81d955e2b96efe9",
+          "file": "posts/02-organisers-week/publish/07.jpg"
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/01/tiktok",
+      "post": "01-one-message-1704",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-26T19:30:00+02:00",
+      "run_at": "2026-11-26T19:00:00+02:00",
+      "caption": "17:04. You know the message 😮‍💨\n\nWhat's the latest anyone's ever pulled out on you? 👇\n\n5sFindr (said Fives Finder) is a free tool for people who run 5-a-side in Cape Town. We're building it now. Organisers, get on the list: 5sfindr.com\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text on black: 17:04. One message. A phone shows a football group chat: \"Kick-off 18:30, 10 confirmed\", then \"sorry bru, can't make it\" and \"same, work ran late\". A big number: 38 people in the group, 0 replies. A phone labelled \"building now, one link\" shows a game list filling up to full. Ends: 5sFindr logo, free for organisers, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/01-one-message-1704/w48-01-one-message-1704.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/01-one-message-1704/w48-01-one-message-1704.mp4",
+          "sha256": "147699588ca3d33007f1966eee087eb4ca8b50138a33c2ae4d669ac0620ccc48",
+          "file": "posts/01-one-message-1704/w48-01-one-message-1704.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/01-one-message-1704/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/01-one-message-1704/publish/cover.jpg",
+        "sha256": "4c80543586525f434d10b468c40a102c22eed22a887aaddf3d70fb6078e8f2bf",
+        "file": "posts/01-one-message-1704/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/01/facebook",
+      "post": "01-one-message-1704",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-26T19:30:00+02:00",
+      "run_at": "2026-11-26T19:30:00+02:00",
+      "caption": "17:04. One message. You know the one 😮‍💨\n\nWhat's the latest anyone's ever pulled out on you? 👇\n\n5sFindr (said “Fives Finder”) is a free tool for people who run 5-a-side in Cape Town, so a drop-out never kills the game. We're building it now. Organisers, get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text on black: 17:04. One message. A phone shows a football group chat: \"Kick-off 18:30, 10 confirmed\", then \"sorry bru, can't make it\" and \"same, work ran late\". A big number: 38 people in the group, 0 replies. A phone labelled \"building now, one link\" shows a game list filling up to full. Ends: 5sFindr logo, free for organisers, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/01-one-message-1704/w48-01-one-message-1704.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/01-one-message-1704/w48-01-one-message-1704.mp4",
+          "sha256": "147699588ca3d33007f1966eee087eb4ca8b50138a33c2ae4d669ac0620ccc48",
+          "file": "posts/01-one-message-1704/w48-01-one-message-1704.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/01-one-message-1704/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/01-one-message-1704/publish/cover.jpg",
+        "sha256": "4c80543586525f434d10b468c40a102c22eed22a887aaddf3d70fb6078e8f2bf",
+        "file": "posts/01-one-message-1704/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/01/instagram",
+      "post": "01-one-message-1704",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-26T19:30:00+02:00",
+      "run_at": "2026-11-26T19:30:00+02:00",
+      "caption": "17:04. One message. You know the one 😮‍💨\n\nWhat's the latest anyone's ever pulled out on you? 👇\n\n5sFindr (said “Fives Finder”) is a free tool for people who run 5-a-side in Cape Town, so a drop-out never kills the game. We're building it now. Organisers, get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text on black: 17:04. One message. A phone shows a football group chat: \"Kick-off 18:30, 10 confirmed\", then \"sorry bru, can't make it\" and \"same, work ran late\". A big number: 38 people in the group, 0 replies. A phone labelled \"building now, one link\" shows a game list filling up to full. Ends: 5sFindr logo, free for organisers, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/01-one-message-1704/w48-01-one-message-1704.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/01-one-message-1704/w48-01-one-message-1704.mp4",
+          "sha256": "147699588ca3d33007f1966eee087eb4ca8b50138a33c2ae4d669ac0620ccc48",
+          "file": "posts/01-one-message-1704/w48-01-one-message-1704.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/01-one-message-1704/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/01-one-message-1704/publish/cover.jpg",
+        "sha256": "4c80543586525f434d10b468c40a102c22eed22a887aaddf3d70fb6078e8f2bf",
+        "file": "posts/01-one-message-1704/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/03/tiktok",
+      "post": "03-one-rule",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-27T19:30:00+02:00",
+      "run_at": "2026-11-27T19:00:00+02:00",
+      "caption": "Every Cape Town 5s has one rule: last one to arrive goes in goal 🧤\n\nWhat's the unwritten rule at YOUR game? 👇\n\n5sFindr (said Fives Finder): free 5-a-side games in Cape Town, opening area by area. Get on the list: 5sfindr.com\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Cape Town 5s. One rule. Then: Last one to arrive… a big number 1: goes in goal, no arguments. A list of the other rules: next goal wins wins nothing, keeper rotates in theory, lost? you carry the bibs home. A phone labelled building now shows games near you on Friday at Green Point Urban Park and an indoor court in Claremont. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/03-one-rule/w48-03-one-rule.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/03-one-rule/w48-03-one-rule.mp4",
+          "sha256": "c9dd39ce4228716b07524f0cac8ae24ed4cba94c048eb43ccd2ac2d21a15e80e",
+          "file": "posts/03-one-rule/w48-03-one-rule.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/03-one-rule/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/03-one-rule/publish/cover.jpg",
+        "sha256": "36804482c8d65a8f6ce1004f59fb6bbc4fc9fdafffe10542a552548f1f8eaf8f",
+        "file": "posts/03-one-rule/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/03/facebook",
+      "post": "03-one-rule",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-27T19:30:00+02:00",
+      "run_at": "2026-11-27T19:30:00+02:00",
+      "caption": "Every Cape Town 5s has one unwritten rule: last one to arrive goes in goal 🧤\n\nNext goal wins means nothing. The keeper rotates (in theory). Lost? You carry the bibs home.\n\nWhat's the rule at YOUR game? 👇\n\n5sFindr (said \"Fives Finder\"): free 5-a-side games in Cape Town, opening area by area. Get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Cape Town 5s. One rule. Then: Last one to arrive… a big number 1: goes in goal, no arguments. A list of the other rules: next goal wins wins nothing, keeper rotates in theory, lost? you carry the bibs home. A phone labelled building now shows games near you on Friday at Green Point Urban Park and an indoor court in Claremont. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/03-one-rule/w48-03-one-rule.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/03-one-rule/w48-03-one-rule.mp4",
+          "sha256": "c9dd39ce4228716b07524f0cac8ae24ed4cba94c048eb43ccd2ac2d21a15e80e",
+          "file": "posts/03-one-rule/w48-03-one-rule.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/03-one-rule/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/03-one-rule/publish/cover.jpg",
+        "sha256": "36804482c8d65a8f6ce1004f59fb6bbc4fc9fdafffe10542a552548f1f8eaf8f",
+        "file": "posts/03-one-rule/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/03/instagram",
+      "post": "03-one-rule",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-27T19:30:00+02:00",
+      "run_at": "2026-11-27T19:30:00+02:00",
+      "caption": "Every Cape Town 5s has one unwritten rule: last one to arrive goes in goal 🧤\n\nNext goal wins means nothing. The keeper rotates (in theory). Lost? You carry the bibs home.\n\nWhat's the rule at YOUR game? 👇\n\n5sFindr (said \"Fives Finder\"): free 5-a-side games in Cape Town, opening area by area. Get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Cape Town 5s. One rule. Then: Last one to arrive… a big number 1: goes in goal, no arguments. A list of the other rules: next goal wins wins nothing, keeper rotates in theory, lost? you carry the bibs home. A phone labelled building now shows games near you on Friday at Green Point Urban Park and an indoor court in Claremont. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/03-one-rule/w48-03-one-rule.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/03-one-rule/w48-03-one-rule.mp4",
+          "sha256": "c9dd39ce4228716b07524f0cac8ae24ed4cba94c048eb43ccd2ac2d21a15e80e",
+          "file": "posts/03-one-rule/w48-03-one-rule.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/03-one-rule/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/03-one-rule/publish/cover.jpg",
+        "sha256": "36804482c8d65a8f6ce1004f59fb6bbc4fc9fdafffe10542a552548f1f8eaf8f",
+        "file": "posts/03-one-rule/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/05/facebook",
+      "post": "05-seven-players",
+      "platform": "facebook",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-28T12:30:00+02:00",
+      "run_at": "2026-11-28T12:30:00+02:00",
+      "caption": "The 7 players in every Cape Town 5s ⚽ Which one are you? Tag the rest 👇\n\n5sFindr (said \"Fives Finder\"): free 5-a-side games in Cape Town, and a free tool for the organiser who holds it all together. We're building it now. Get on the list: 5sfindr.com (link in bio)\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: The 7 players in every Cape Town 5s. Tag yours.",
+        "01. The “five minutes away”: has been five minutes away since 18:10.",
+        "02. The keeper who won't stay: in goal for one minute, then at striker.",
+        "03. The “next goal wins” guy: says it at 3–0 down, every week.",
+        "04. The bib collector: washes them, brings them, gets no thanks.",
+        "05. The R60 mystery: paid? Says yes. Nobody's sure.",
+        "06. The ringer's ringer: “my mate's coming.” Nobody has met this mate.",
+        "07. The organiser: does all of the above and holds the whole thing together.",
+        "Every game needs an organiser. We're building a free tool to make their week easier. Cape Town first. 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/05-seven-players/slides/01.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/01.jpg",
+          "sha256": "0ca275af6fea0be3f0eab3224e203451c8a3bc16d14c704ab29899494bda911c",
+          "file": "posts/05-seven-players/publish/01.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/02.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/02.jpg",
+          "sha256": "1eb79e4801105dd822f7f0cdb74fef497ad8fc7fdbdb64cfa602b4cb24490dea",
+          "file": "posts/05-seven-players/publish/02.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/03.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/03.jpg",
+          "sha256": "b13e5343ee59a00d67fb14e079e285e2ce3c947e96236b998d60b25566aec629",
+          "file": "posts/05-seven-players/publish/03.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/04.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/04.jpg",
+          "sha256": "5575ce7145c0e59e413696388d406998520be3a6876975c4d81bbd4298cc8c48",
+          "file": "posts/05-seven-players/publish/04.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/05.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/05.jpg",
+          "sha256": "f44670bae952a9ffccb25e683d9ac3259dec585b4cd153e966ec5493c160f3ea",
+          "file": "posts/05-seven-players/publish/05.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/06.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/06.jpg",
+          "sha256": "99ec6712f574c68f6e3298dd12e848781d9d40018035338b5a8133fb61f2949b",
+          "file": "posts/05-seven-players/publish/06.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/07.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/07.jpg",
+          "sha256": "18516ed657b0f3b1e05de2d4b7a3cd4474814e6f4e964fa1a26e826ec0da3cfb",
+          "file": "posts/05-seven-players/publish/07.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/08.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/08.jpg",
+          "sha256": "21f4190ad60f344314791ab4b9af446ee975ff24261f1a665fed66f272ebbada",
+          "file": "posts/05-seven-players/publish/08.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/09.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/09.jpg",
+          "sha256": "9dbe224b372208943030223edca06924c10e3cd30db5ff70ab0b4aff034cc172",
+          "file": "posts/05-seven-players/publish/09.jpg"
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/05/instagram",
+      "post": "05-seven-players",
+      "platform": "instagram",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-11-28T12:30:00+02:00",
+      "run_at": "2026-11-28T12:30:00+02:00",
+      "caption": "The 7 players in every Cape Town 5s ⚽ Which one are you? Tag the rest 👇\n\n5sFindr (said \"Fives Finder\"): free 5-a-side games in Cape Town, and a free tool for the organiser who holds it all together. We're building it now. Get on the list: 5sfindr.com (link in bio)\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: The 7 players in every Cape Town 5s. Tag yours.",
+        "01. The “five minutes away”: has been five minutes away since 18:10.",
+        "02. The keeper who won't stay: in goal for one minute, then at striker.",
+        "03. The “next goal wins” guy: says it at 3–0 down, every week.",
+        "04. The bib collector: washes them, brings them, gets no thanks.",
+        "05. The R60 mystery: paid? Says yes. Nobody's sure.",
+        "06. The ringer's ringer: “my mate's coming.” Nobody has met this mate.",
+        "07. The organiser: does all of the above and holds the whole thing together.",
+        "Every game needs an organiser. We're building a free tool to make their week easier. Cape Town first. 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/05-seven-players/slides/01.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/01.jpg",
+          "sha256": "0ca275af6fea0be3f0eab3224e203451c8a3bc16d14c704ab29899494bda911c",
+          "file": "posts/05-seven-players/publish/01.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/02.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/02.jpg",
+          "sha256": "1eb79e4801105dd822f7f0cdb74fef497ad8fc7fdbdb64cfa602b4cb24490dea",
+          "file": "posts/05-seven-players/publish/02.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/03.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/03.jpg",
+          "sha256": "b13e5343ee59a00d67fb14e079e285e2ce3c947e96236b998d60b25566aec629",
+          "file": "posts/05-seven-players/publish/03.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/04.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/04.jpg",
+          "sha256": "5575ce7145c0e59e413696388d406998520be3a6876975c4d81bbd4298cc8c48",
+          "file": "posts/05-seven-players/publish/04.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/05.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/05.jpg",
+          "sha256": "f44670bae952a9ffccb25e683d9ac3259dec585b4cd153e966ec5493c160f3ea",
+          "file": "posts/05-seven-players/publish/05.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/06.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/06.jpg",
+          "sha256": "99ec6712f574c68f6e3298dd12e848781d9d40018035338b5a8133fb61f2949b",
+          "file": "posts/05-seven-players/publish/06.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/07.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/07.jpg",
+          "sha256": "18516ed657b0f3b1e05de2d4b7a3cd4474814e6f4e964fa1a26e826ec0da3cfb",
+          "file": "posts/05-seven-players/publish/07.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/08.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/08.jpg",
+          "sha256": "21f4190ad60f344314791ab4b9af446ee975ff24261f1a665fed66f272ebbada",
+          "file": "posts/05-seven-players/publish/08.jpg"
+        },
+        {
+          "path": "posts/05-seven-players/slides/09.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/05-seven-players/publish/09.jpg",
+          "sha256": "9dbe224b372208943030223edca06924c10e3cd30db5ff70ab0b4aff034cc172",
+          "file": "posts/05-seven-players/publish/09.jpg"
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/04/tiktok",
+      "post": "04-pov-saturday",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-28T19:30:00+02:00",
+      "run_at": "2026-11-28T19:00:00+02:00",
+      "caption": "New in Cape Town and your boots are still in the bag? 👟\n\nSend this to someone who just moved here 👇\n\n5sFindr (said Fives Finder): free 5-a-side games in Cape Town, opening area by area. Get on the list: 5sfindr.com\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: POV: new in Cape Town. Saturday. A list of searches: 5-a-side near me, football Cape Town join, make friends Cape Town. A big zero: invites, boots still in the bag. A phone labelled building now shows games tonight near you at Green Point Urban Park and a Sea Point field. Text: Come alone. Leave with a crew. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/04-pov-saturday/w48-04-pov-saturday.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/04-pov-saturday/w48-04-pov-saturday.mp4",
+          "sha256": "e0ecd89e9a58eaf682b32ccabf66a7431c26f43c56e9889e7fb3e0fde5712fbf",
+          "file": "posts/04-pov-saturday/w48-04-pov-saturday.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/04-pov-saturday/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/04-pov-saturday/publish/cover.jpg",
+        "sha256": "caa8a43a22a7a3d0a7873c983f04ddbd622e1766f12a7be1e03157b16829ccbc",
+        "file": "posts/04-pov-saturday/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/04/facebook",
+      "post": "04-pov-saturday",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-28T19:30:00+02:00",
+      "run_at": "2026-11-28T19:30:00+02:00",
+      "caption": "New in Cape Town. Saturday. No plans. Boots still in the bag 👟\n\nWe're building 5sFindr (said \"Fives Finder\") so the games find you: pick your area, see who's short tonight, come alone and leave with a crew. Free, opening area by area.\n\nSend this to someone who just moved here 👇\n\nGet on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: POV: new in Cape Town. Saturday. A list of searches: 5-a-side near me, football Cape Town join, make friends Cape Town. A big zero: invites, boots still in the bag. A phone labelled building now shows games tonight near you at Green Point Urban Park and a Sea Point field. Text: Come alone. Leave with a crew. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/04-pov-saturday/w48-04-pov-saturday.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/04-pov-saturday/w48-04-pov-saturday.mp4",
+          "sha256": "e0ecd89e9a58eaf682b32ccabf66a7431c26f43c56e9889e7fb3e0fde5712fbf",
+          "file": "posts/04-pov-saturday/w48-04-pov-saturday.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/04-pov-saturday/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/04-pov-saturday/publish/cover.jpg",
+        "sha256": "caa8a43a22a7a3d0a7873c983f04ddbd622e1766f12a7be1e03157b16829ccbc",
+        "file": "posts/04-pov-saturday/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/04/instagram",
+      "post": "04-pov-saturday",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-28T19:30:00+02:00",
+      "run_at": "2026-11-28T19:30:00+02:00",
+      "caption": "New in Cape Town. Saturday. No plans. Boots still in the bag 👟\n\nWe're building 5sFindr (said \"Fives Finder\") so the games find you: pick your area, see who's short tonight, come alone and leave with a crew. Free, opening area by area.\n\nSend this to someone who just moved here 👇\n\nGet on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: POV: new in Cape Town. Saturday. A list of searches: 5-a-side near me, football Cape Town join, make friends Cape Town. A big zero: invites, boots still in the bag. A phone labelled building now shows games tonight near you at Green Point Urban Park and a Sea Point field. Text: Come alone. Leave with a crew. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/04-pov-saturday/w48-04-pov-saturday.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/04-pov-saturday/w48-04-pov-saturday.mp4",
+          "sha256": "e0ecd89e9a58eaf682b32ccabf66a7431c26f43c56e9889e7fb3e0fde5712fbf",
+          "file": "posts/04-pov-saturday/w48-04-pov-saturday.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/04-pov-saturday/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/04-pov-saturday/publish/cover.jpg",
+        "sha256": "caa8a43a22a7a3d0a7873c983f04ddbd622e1766f12a7be1e03157b16829ccbc",
+        "file": "posts/04-pov-saturday/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/06/tiktok",
+      "post": "06-two-spots-11-minutes",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-29T19:30:00+02:00",
+      "run_at": "2026-11-29T19:00:00+02:00",
+      "caption": "2 spots. 11 minutes. No group chat begging ⏱️\n\nOrganisers: how long does it take YOU to find a sub? 👇\n\n5sFindr (said Fives Finder) is a free tool for people who run 5-a-side in Cape Town. We're building it now. Get on the list: 5sfindr.com\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: 2 spots. 11 minutes. A phone shows a group chat at 17:00 where two players pull out. A phone labelled building now, one link, shows an invite page for a game at Green Point Urban Park, and the claim button is tapped. A big 17:11: game full, 10 of 10. Text: We're building this. Cape Town first. Ends: free for organisers, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/06-two-spots-11-minutes/w48-06-two-spots-11-minutes.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/06-two-spots-11-minutes/w48-06-two-spots-11-minutes.mp4",
+          "sha256": "e766cbaa3772463a133b5d39fbd1bc1e967b89ee64de08772287daf84faf99d9",
+          "file": "posts/06-two-spots-11-minutes/w48-06-two-spots-11-minutes.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/06-two-spots-11-minutes/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/06-two-spots-11-minutes/publish/cover.jpg",
+        "sha256": "af167bc3fff458579d135f0ca93f67cc14083b8b4f6b204455481dbcc1b6bf85",
+        "file": "posts/06-two-spots-11-minutes/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/06/facebook",
+      "post": "06-two-spots-11-minutes",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-29T19:30:00+02:00",
+      "run_at": "2026-11-29T19:30:00+02:00",
+      "caption": "2 spots. 11 minutes. No group chat begging ⏱️\n\nTwo pull out at 17:00. You share one link, players nearby claim the spots, and the game's full by 17:11. That's what we're building.\n\nOrganisers: how long does it take you to find a sub? 👇\n\n5sFindr (said \"Fives Finder\") is free for organisers in Cape Town. Get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: 2 spots. 11 minutes. A phone shows a group chat at 17:00 where two players pull out. A phone labelled building now, one link, shows an invite page for a game at Green Point Urban Park, and the claim button is tapped. A big 17:11: game full, 10 of 10. Text: We're building this. Cape Town first. Ends: free for organisers, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/06-two-spots-11-minutes/w48-06-two-spots-11-minutes.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/06-two-spots-11-minutes/w48-06-two-spots-11-minutes.mp4",
+          "sha256": "e766cbaa3772463a133b5d39fbd1bc1e967b89ee64de08772287daf84faf99d9",
+          "file": "posts/06-two-spots-11-minutes/w48-06-two-spots-11-minutes.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/06-two-spots-11-minutes/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/06-two-spots-11-minutes/publish/cover.jpg",
+        "sha256": "af167bc3fff458579d135f0ca93f67cc14083b8b4f6b204455481dbcc1b6bf85",
+        "file": "posts/06-two-spots-11-minutes/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/06/instagram",
+      "post": "06-two-spots-11-minutes",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-29T19:30:00+02:00",
+      "run_at": "2026-11-29T19:30:00+02:00",
+      "caption": "2 spots. 11 minutes. No group chat begging ⏱️\n\nTwo pull out at 17:00. You share one link, players nearby claim the spots, and the game's full by 17:11. That's what we're building.\n\nOrganisers: how long does it take you to find a sub? 👇\n\n5sFindr (said \"Fives Finder\") is free for organisers in Cape Town. Get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: 2 spots. 11 minutes. A phone shows a group chat at 17:00 where two players pull out. A phone labelled building now, one link, shows an invite page for a game at Green Point Urban Park, and the claim button is tapped. A big 17:11: game full, 10 of 10. Text: We're building this. Cape Town first. Ends: free for organisers, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/06-two-spots-11-minutes/w48-06-two-spots-11-minutes.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/06-two-spots-11-minutes/w48-06-two-spots-11-minutes.mp4",
+          "sha256": "e766cbaa3772463a133b5d39fbd1bc1e967b89ee64de08772287daf84faf99d9",
+          "file": "posts/06-two-spots-11-minutes/w48-06-two-spots-11-minutes.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/06-two-spots-11-minutes/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/06-two-spots-11-minutes/publish/cover.jpg",
+        "sha256": "af167bc3fff458579d135f0ca93f67cc14083b8b4f6b204455481dbcc1b6bf85",
+        "file": "posts/06-two-spots-11-minutes/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/07/tiktok",
+      "post": "07-stop-adding-people",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-11-30T19:30:00+02:00",
+      "run_at": "2026-11-30T19:00:00+02:00",
+      "caption": "Stop adding people to your 5s group chat 🙅\n\n38 members. 6 actually play. Sound familiar? 👇\n\nWe're building 5sFindr (said Fives Finder): a list, a waiting list and one link for subs. Free for organisers in Cape Town. 5sfindr.com\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Stop adding people to your group chat. A big 38: members, 6 play. A phone shows a group chat: Thursday 18:30 who's in, then “who's this?”, “can someone remove me pls”, a laughing emoji. A list: what a game needs: a list not a chat, a waiting list, one link for subs. A phone labelled building now shows a game list filling to full. Ends: free for organisers, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/07-stop-adding-people/w48-07-stop-adding-people.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/07-stop-adding-people/w48-07-stop-adding-people.mp4",
+          "sha256": "ebfec231e825f3c381d840900a7806f6e8c4e7eb8ddee93e5d5d59a5b98ff848",
+          "file": "posts/07-stop-adding-people/w48-07-stop-adding-people.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/07-stop-adding-people/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/07-stop-adding-people/publish/cover.jpg",
+        "sha256": "e04c56ae3555f45b8db7dbbe2e9bad3790414313604285bcc36c8cc106a5dbbd",
+        "file": "posts/07-stop-adding-people/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/07/facebook",
+      "post": "07-stop-adding-people",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-30T19:30:00+02:00",
+      "run_at": "2026-11-30T19:30:00+02:00",
+      "caption": "Stop adding people to your 5s group chat 🙅\n\n38 members. 6 actually play. Every new name makes it louder, not fuller.\n\nA game needs a list, a waiting list and one link for subs. That's what we're building: 5sFindr (said \"Fives Finder\"), free for organisers in Cape Town.\n\nHow many people are in YOUR group? 👇\n\nOrganisers, get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Stop adding people to your group chat. A big 38: members, 6 play. A phone shows a group chat: Thursday 18:30 who's in, then “who's this?”, “can someone remove me pls”, a laughing emoji. A list: what a game needs: a list not a chat, a waiting list, one link for subs. A phone labelled building now shows a game list filling to full. Ends: free for organisers, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/07-stop-adding-people/w48-07-stop-adding-people.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/07-stop-adding-people/w48-07-stop-adding-people.mp4",
+          "sha256": "ebfec231e825f3c381d840900a7806f6e8c4e7eb8ddee93e5d5d59a5b98ff848",
+          "file": "posts/07-stop-adding-people/w48-07-stop-adding-people.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/07-stop-adding-people/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/07-stop-adding-people/publish/cover.jpg",
+        "sha256": "e04c56ae3555f45b8db7dbbe2e9bad3790414313604285bcc36c8cc106a5dbbd",
+        "file": "posts/07-stop-adding-people/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/07/instagram",
+      "post": "07-stop-adding-people",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-11-30T19:30:00+02:00",
+      "run_at": "2026-11-30T19:30:00+02:00",
+      "caption": "Stop adding people to your 5s group chat 🙅\n\n38 members. 6 actually play. Every new name makes it louder, not fuller.\n\nA game needs a list, a waiting list and one link for subs. That's what we're building: 5sFindr (said \"Fives Finder\"), free for organisers in Cape Town.\n\nHow many people are in YOUR group? 👇\n\nOrganisers, get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: Stop adding people to your group chat. A big 38: members, 6 play. A phone shows a group chat: Thursday 18:30 who's in, then “who's this?”, “can someone remove me pls”, a laughing emoji. A list: what a game needs: a list not a chat, a waiting list, one link for subs. A phone labelled building now shows a game list filling to full. Ends: free for organisers, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/07-stop-adding-people/w48-07-stop-adding-people.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/07-stop-adding-people/w48-07-stop-adding-people.mp4",
+          "sha256": "ebfec231e825f3c381d840900a7806f6e8c4e7eb8ddee93e5d5d59a5b98ff848",
+          "file": "posts/07-stop-adding-people/w48-07-stop-adding-people.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/07-stop-adding-people/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/07-stop-adding-people/publish/cover.jpg",
+        "sha256": "e04c56ae3555f45b8db7dbbe2e9bad3790414313604285bcc36c8cc106a5dbbd",
+        "file": "posts/07-stop-adding-people/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/08/facebook",
+      "post": "08-make-friends-cape-town",
+      "platform": "facebook",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-12-01T12:30:00+02:00",
+      "run_at": "2026-12-01T12:30:00+02:00",
+      "caption": "New to Cape Town? 5 ways to make friends here 📌 Save this, and send it to someone who just moved.\n\n1. Do a sunrise hike\n2. Join a run club\n3. Say yes to the second invite\n4. Volunteer once a month\n5. Play 5-a-side\n\nWhich one worked for you? 👇\n\n5sFindr (said \"Fives Finder\"): free 5-a-side games in Cape Town, opening area by area. Get on the list: 5sfindr.com (link in bio)\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: 5 ways to make friends in Cape Town. One of them involves a ball. Save this.",
+        "01. Do a sunrise hike: Lion's Head before work. Talk to whoever's at the top.",
+        "02. Join a run club: Sea Point promenade, any weekday evening. Same faces every week.",
+        "03. Say yes to the second invite: the first one is polite, the second one is real.",
+        "04. Volunteer once a month: beach clean-ups, coaching kids, a food drive. Instant crew.",
+        "05. Play 5-a-side: ten people, one hour, same time next week. The fastest friends you'll make.",
+        "Come alone. Leave with a crew. Free 5-a-side games in Cape Town, opening area by area, building now. 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/08-make-friends-cape-town/slides/01.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/01.jpg",
+          "sha256": "9edaf4d688b5a8aaf83911e519bd6d33f0568851555db02f77573da1af7526c7",
+          "file": "posts/08-make-friends-cape-town/publish/01.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/02.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/02.jpg",
+          "sha256": "f0364a300611c0d89dd36084032558cc2f9218677baf7f45ace23bf9b8d815f4",
+          "file": "posts/08-make-friends-cape-town/publish/02.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/03.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/03.jpg",
+          "sha256": "71829151cf2d5da326fd5ba1f00dcea96d3ec6b68194444a4deb9f535c49064b",
+          "file": "posts/08-make-friends-cape-town/publish/03.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/04.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/04.jpg",
+          "sha256": "2e96a0cfb08cc48c0fe5bb396222a037b07e084dd0b1a181e19a2a527e5cc07f",
+          "file": "posts/08-make-friends-cape-town/publish/04.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/05.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/05.jpg",
+          "sha256": "d657a3e98cce914ae2e143639d78ec48ff43a69cd12a1dea5b2d0dbd9fc045ab",
+          "file": "posts/08-make-friends-cape-town/publish/05.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/06.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/06.jpg",
+          "sha256": "7d96ceee8f737114f73988503a27464aa3ac21c081301a6a22d73564fe47a261",
+          "file": "posts/08-make-friends-cape-town/publish/06.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/07.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/07.jpg",
+          "sha256": "312100627d4146d018102068734d747626ad65b73e9a4791cf035bbfb5947ea5",
+          "file": "posts/08-make-friends-cape-town/publish/07.jpg"
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/08/instagram",
+      "post": "08-make-friends-cape-town",
+      "platform": "instagram",
+      "kind": "carousel",
+      "mode": "publish",
+      "at": "2026-12-01T12:30:00+02:00",
+      "run_at": "2026-12-01T12:30:00+02:00",
+      "caption": "New to Cape Town? 5 ways to make friends here 📌 Save this, and send it to someone who just moved.\n\n1. Do a sunrise hike\n2. Join a run club\n3. Say yes to the second invite\n4. Volunteer once a month\n5. Play 5-a-side\n\nWhich one worked for you? 👇\n\n5sFindr (said \"Fives Finder\"): free 5-a-side games in Cape Town, opening area by area. Get on the list: 5sfindr.com (link in bio)\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": [
+        "Cover: 5 ways to make friends in Cape Town. One of them involves a ball. Save this.",
+        "01. Do a sunrise hike: Lion's Head before work. Talk to whoever's at the top.",
+        "02. Join a run club: Sea Point promenade, any weekday evening. Same faces every week.",
+        "03. Say yes to the second invite: the first one is polite, the second one is real.",
+        "04. Volunteer once a month: beach clean-ups, coaching kids, a food drive. Instant crew.",
+        "05. Play 5-a-side: ten people, one hour, same time next week. The fastest friends you'll make.",
+        "Come alone. Leave with a crew. Free 5-a-side games in Cape Town, opening area by area, building now. 5sfindr.com."
+      ],
+      "media": [
+        {
+          "path": "posts/08-make-friends-cape-town/slides/01.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/01.jpg",
+          "sha256": "9edaf4d688b5a8aaf83911e519bd6d33f0568851555db02f77573da1af7526c7",
+          "file": "posts/08-make-friends-cape-town/publish/01.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/02.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/02.jpg",
+          "sha256": "f0364a300611c0d89dd36084032558cc2f9218677baf7f45ace23bf9b8d815f4",
+          "file": "posts/08-make-friends-cape-town/publish/02.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/03.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/03.jpg",
+          "sha256": "71829151cf2d5da326fd5ba1f00dcea96d3ec6b68194444a4deb9f535c49064b",
+          "file": "posts/08-make-friends-cape-town/publish/03.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/04.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/04.jpg",
+          "sha256": "2e96a0cfb08cc48c0fe5bb396222a037b07e084dd0b1a181e19a2a527e5cc07f",
+          "file": "posts/08-make-friends-cape-town/publish/04.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/05.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/05.jpg",
+          "sha256": "d657a3e98cce914ae2e143639d78ec48ff43a69cd12a1dea5b2d0dbd9fc045ab",
+          "file": "posts/08-make-friends-cape-town/publish/05.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/06.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/06.jpg",
+          "sha256": "7d96ceee8f737114f73988503a27464aa3ac21c081301a6a22d73564fe47a261",
+          "file": "posts/08-make-friends-cape-town/publish/06.jpg"
+        },
+        {
+          "path": "posts/08-make-friends-cape-town/slides/07.png",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/08-make-friends-cape-town/publish/07.jpg",
+          "sha256": "312100627d4146d018102068734d747626ad65b73e9a4791cf035bbfb5947ea5",
+          "file": "posts/08-make-friends-cape-town/publish/07.jpg"
+        }
+      ],
+      "cover": null,
+      "ai_label": false,
+      "ai_reason": null,
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/09/tiktok",
+      "post": "09-not-yet",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-12-01T19:30:00+02:00",
+      "run_at": "2026-12-01T19:00:00+02:00",
+      "caption": "Your area isn't open yet 🔒\n\nEvery Cape Town area unlocks at 50 players + 3 weekly games. Which area should open first? 👇\n\n5sFindr (said Fives Finder): free 5-a-side games in Cape Town. Get on the list and pick your area: 5sfindr.com\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: coordinates 33.91° S, 18.38° E, not yet. Text: City Bowl. Woodstock. Claremont. Locked. A big 50: players, plus 3 weekly games. A list: who opens it: players who join the list, organisers who bring a game, nobody can buy it open. Text: Pick your area. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/09-not-yet/w48-09-not-yet.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/09-not-yet/w48-09-not-yet.mp4",
+          "sha256": "b4a7e7a625e951aa598f77427bd143b209e0e27ba77edcd2ad7da59bb3f30146",
+          "file": "posts/09-not-yet/w48-09-not-yet.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/09-not-yet/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/09-not-yet/publish/cover.jpg",
+        "sha256": "59ff21a2af4ea70a524bf0058791c392c8996f45ab6bd5d12d5916fa31c6c41f",
+        "file": "posts/09-not-yet/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/09/facebook",
+      "post": "09-not-yet",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-12-01T19:30:00+02:00",
+      "run_at": "2026-12-01T19:30:00+02:00",
+      "caption": "Your area isn't open yet 🔒\n\nEvery Cape Town area on 5sFindr (said \"Fives Finder\") starts locked and opens at 50 players + 3 weekly games. Players join the list, organisers bring a game, and nobody can buy it open.\n\nWhich area should open first? 👇\n\nFree 5-a-side games in Cape Town. Get on the list and pick your area: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: coordinates 33.91° S, 18.38° E, not yet. Text: City Bowl. Woodstock. Claremont. Locked. A big 50: players, plus 3 weekly games. A list: who opens it: players who join the list, organisers who bring a game, nobody can buy it open. Text: Pick your area. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/09-not-yet/w48-09-not-yet.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/09-not-yet/w48-09-not-yet.mp4",
+          "sha256": "b4a7e7a625e951aa598f77427bd143b209e0e27ba77edcd2ad7da59bb3f30146",
+          "file": "posts/09-not-yet/w48-09-not-yet.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/09-not-yet/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/09-not-yet/publish/cover.jpg",
+        "sha256": "59ff21a2af4ea70a524bf0058791c392c8996f45ab6bd5d12d5916fa31c6c41f",
+        "file": "posts/09-not-yet/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/09/instagram",
+      "post": "09-not-yet",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-12-01T19:30:00+02:00",
+      "run_at": "2026-12-01T19:30:00+02:00",
+      "caption": "Your area isn't open yet 🔒\n\nEvery Cape Town area on 5sFindr (said \"Fives Finder\") starts locked and opens at 50 players + 3 weekly games. Players join the list, organisers bring a game, and nobody can buy it open.\n\nWhich area should open first? 👇\n\nFree 5-a-side games in Cape Town. Get on the list and pick your area: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: coordinates 33.91° S, 18.38° E, not yet. Text: City Bowl. Woodstock. Claremont. Locked. A big 50: players, plus 3 weekly games. A list: who opens it: players who join the list, organisers who bring a game, nobody can buy it open. Text: Pick your area. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/09-not-yet/w48-09-not-yet.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/09-not-yet/w48-09-not-yet.mp4",
+          "sha256": "b4a7e7a625e951aa598f77427bd143b209e0e27ba77edcd2ad7da59bb3f30146",
+          "file": "posts/09-not-yet/w48-09-not-yet.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/09-not-yet/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/09-not-yet/publish/cover.jpg",
+        "sha256": "59ff21a2af4ea70a524bf0058791c392c8996f45ab6bd5d12d5916fa31c6c41f",
+        "file": "posts/09-not-yet/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/10/tiktok",
+      "post": "10-one-list",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-12-02T19:30:00+02:00",
+      "run_at": "2026-12-02T19:00:00+02:00",
+      "caption": "What if every 5-a-side in Cape Town was in one list? 📋\n\nOpen fields and courts, the time, and how many spots are left. No group chat to get into.\n\nWould you use it? 👇 5sFindr (said Fives Finder) is building it now. Get on the list: 5sfindr.com\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: What if every Cape Town 5s was in one… then: …list. A phone labelled building now shows games this week near you: Green Point Urban Park open field, an indoor court in Claremont at R60, a Sea Point field. A big R0: open fields, courts: share shown up front. Text: No group chat to get into. Just play. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/10-one-list/w48-10-one-list.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/10-one-list/w48-10-one-list.mp4",
+          "sha256": "27719913cc5efe4e82b6a6ef1fdf75560e908300b6d68d874362800e102ddfa7",
+          "file": "posts/10-one-list/w48-10-one-list.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/10-one-list/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/10-one-list/publish/cover.jpg",
+        "sha256": "824c12414123160b9359923bc70187dea6d74e33bf69e494c541ead16a2f2238",
+        "file": "posts/10-one-list/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/10/facebook",
+      "post": "10-one-list",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-12-02T19:30:00+02:00",
+      "run_at": "2026-12-02T19:30:00+02:00",
+      "caption": "What if every 5-a-side in Cape Town was in one list? 📋\n\nOpen fields and courts, the day and time, and how many spots are left. Free on open fields. On courts, your share is shown up front. No group chat to get into.\n\nWe're building it now: 5sFindr (said \"Fives Finder\").\n\nWould you use it? 👇 Get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: What if every Cape Town 5s was in one… then: …list. A phone labelled building now shows games this week near you: Green Point Urban Park open field, an indoor court in Claremont at R60, a Sea Point field. A big R0: open fields, courts: share shown up front. Text: No group chat to get into. Just play. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/10-one-list/w48-10-one-list.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/10-one-list/w48-10-one-list.mp4",
+          "sha256": "27719913cc5efe4e82b6a6ef1fdf75560e908300b6d68d874362800e102ddfa7",
+          "file": "posts/10-one-list/w48-10-one-list.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/10-one-list/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/10-one-list/publish/cover.jpg",
+        "sha256": "824c12414123160b9359923bc70187dea6d74e33bf69e494c541ead16a2f2238",
+        "file": "posts/10-one-list/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W48/10/instagram",
+      "post": "10-one-list",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-12-02T19:30:00+02:00",
+      "run_at": "2026-12-02T19:30:00+02:00",
+      "caption": "What if every 5-a-side in Cape Town was in one list? 📋\n\nOpen fields and courts, the day and time, and how many spots are left. Free on open fields. On courts, your share is shown up front. No group chat to get into.\n\nWe're building it now: 5sFindr (said \"Fives Finder\").\n\nWould you use it? 👇 Get on the list: 5sfindr.com (link in bio)\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #newincapetown #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#newincapetown",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Big text: What if every Cape Town 5s was in one… then: …list. A phone labelled building now shows games this week near you: Green Point Urban Park open field, an indoor court in Claremont at R60, a Sea Point field. A big R0: open fields, courts: share shown up front. Text: No group chat to get into. Just play. Ends: 5sFindr, get on the list, 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/10-one-list/w48-10-one-list.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/10-one-list/w48-10-one-list.mp4",
+          "sha256": "27719913cc5efe4e82b6a6ef1fdf75560e908300b6d68d874362800e102ddfa7",
+          "file": "posts/10-one-list/w48-10-one-list.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/10-one-list/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W48/10-one-list/publish/cover.jpg",
+        "sha256": "824c12414123160b9359923bc70187dea6d74e33bf69e494c541ead16a2f2238",
+        "file": "posts/10-one-list/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    }
+  ]
+}
