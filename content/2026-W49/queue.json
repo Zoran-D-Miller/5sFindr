@@ -1,0 +1,120 @@
+{
+  "week": "2026-W49",
+  "timezone": "Africa/Johannesburg",
+  "generated_at": "2026-11-23T14:36:50.628Z",
+  "approved": true,
+  "approved_at": "2026-11-23T14:37:08.246Z",
+  "approved_by": "Zoran (in chat)",
+  "approval_hash": "3f7e7be3ba702c18b154a16a078427666e41e8ffe79acaf450a71cc39a5aa625",
+  "items": [
+    {
+      "id": "2026-W49/01/tiktok",
+      "post": "01-dropout-ep1-excuses",
+      "platform": "tiktok",
+      "kind": "reel",
+      "mode": "draft",
+      "at": "2026-12-03T19:00:00+02:00",
+      "run_at": "2026-12-03T18:30:00+02:00",
+      "caption": "Every Thursday at 17:00 😐 Episode 1 of The 17:00 Dropout.\n\nOne 5sFindr (said Fives Finder) link and the spots fill. Free for organisers in Cape Town. AI voiceover.\n\nAI voiceover.\n\n#capetown #5aside #capetownfootball #fivesfootball #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#5aside",
+        "#capetownfootball",
+        "#fivesfootball",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Title: The 17:00 Dropout, episode 1. A group chat at 17:00 fills with excuses: a sick cat, a car that won't start, a mom who said no, and \"busy\". Big number 4: out, kickoff in 90 minutes. A 5sFindr invite page, Claim your spot is tapped, and the roster fills from 6 to 10: Game on. Text: Next week, the ringer. End card 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/01-dropout-ep1-excuses/dropout-ep1-excuses.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W49/01-dropout-ep1-excuses/dropout-ep1-excuses.mp4",
+          "sha256": "038541b46038101e3daf0e5d84fd31b043f9013d30c43199f219fe079104fab7",
+          "file": "posts/01-dropout-ep1-excuses/dropout-ep1-excuses.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/01-dropout-ep1-excuses/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W49/01-dropout-ep1-excuses/publish/cover.jpg",
+        "sha256": "69471f6170099c5aaa14f86249205d2c6d15be73fbaa7fc2ecd3151f79f23bb2",
+        "file": "posts/01-dropout-ep1-excuses/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W49/01/facebook",
+      "post": "01-dropout-ep1-excuses",
+      "platform": "facebook",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-12-03T19:30:00+02:00",
+      "run_at": "2026-12-03T19:30:00+02:00",
+      "caption": "The 17:00 Dropout, episode 1: the excuses. 😐\n\nSick cat. Dead car. \"Busy.\" Sound familiar? Drop one 5sFindr link and anyone nearby can claim the spot.\n\nFree for organisers in Cape Town. Next week: the ringer. Follow so you don't miss it.\n\nAI voiceover.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Title: The 17:00 Dropout, episode 1. A group chat at 17:00 fills with excuses: a sick cat, a car that won't start, a mom who said no, and \"busy\". Big number 4: out, kickoff in 90 minutes. A 5sFindr invite page, Claim your spot is tapped, and the roster fills from 6 to 10: Game on. Text: Next week, the ringer. End card 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/01-dropout-ep1-excuses/dropout-ep1-excuses.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W49/01-dropout-ep1-excuses/dropout-ep1-excuses.mp4",
+          "sha256": "038541b46038101e3daf0e5d84fd31b043f9013d30c43199f219fe079104fab7",
+          "file": "posts/01-dropout-ep1-excuses/dropout-ep1-excuses.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/01-dropout-ep1-excuses/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W49/01-dropout-ep1-excuses/publish/cover.jpg",
+        "sha256": "69471f6170099c5aaa14f86249205d2c6d15be73fbaa7fc2ecd3151f79f23bb2",
+        "file": "posts/01-dropout-ep1-excuses/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    },
+    {
+      "id": "2026-W49/01/instagram",
+      "post": "01-dropout-ep1-excuses",
+      "platform": "instagram",
+      "kind": "reel",
+      "mode": "publish",
+      "at": "2026-12-03T19:30:00+02:00",
+      "run_at": "2026-12-03T19:30:00+02:00",
+      "caption": "The 17:00 Dropout, episode 1: the excuses. 😐\n\nSick cat. Dead car. \"Busy.\" Sound familiar? Drop one 5sFindr link and anyone nearby can claim the spot.\n\nFree for organisers in Cape Town. Next week: the ringer. Follow so you don't miss it.\n\nAI voiceover.\n\nAI voiceover.\n\n#capetown #capetownfootball #5aside #fivesfootball #capetownlife #football #5sfindr",
+      "hashtags": [
+        "#capetown",
+        "#capetownfootball",
+        "#5aside",
+        "#fivesfootball",
+        "#capetownlife",
+        "#football",
+        "#5sfindr"
+      ],
+      "alt_text": "Vertical video. Title: The 17:00 Dropout, episode 1. A group chat at 17:00 fills with excuses: a sick cat, a car that won't start, a mom who said no, and \"busy\". Big number 4: out, kickoff in 90 minutes. A 5sFindr invite page, Claim your spot is tapped, and the roster fills from 6 to 10: Game on. Text: Next week, the ringer. End card 5sfindr.com.",
+      "media": [
+        {
+          "path": "posts/01-dropout-ep1-excuses/dropout-ep1-excuses.mp4",
+          "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W49/01-dropout-ep1-excuses/dropout-ep1-excuses.mp4",
+          "sha256": "038541b46038101e3daf0e5d84fd31b043f9013d30c43199f219fe079104fab7",
+          "file": "posts/01-dropout-ep1-excuses/dropout-ep1-excuses.mp4"
+        }
+      ],
+      "cover": {
+        "path": "posts/01-dropout-ep1-excuses/cover.png",
+        "url": "https://ujhbbwptsaefpzangvwa.supabase.co/storage/v1/object/public/content-media/2026-W49/01-dropout-ep1-excuses/publish/cover.jpg",
+        "sha256": "69471f6170099c5aaa14f86249205d2c6d15be73fbaa7fc2ecd3151f79f23bb2",
+        "file": "posts/01-dropout-ep1-excuses/publish/cover.jpg"
+      },
+      "ai_label": true,
+      "ai_reason": "AI voiceover (Chatterbox (bm_george timbre))",
+      "excluded": false
+    }
+  ]
+}
