@@ -9,6 +9,18 @@ You are making next week's organic social content for 5sFindr (said "Fives Finde
 
 Arguments: `$ARGUMENTS`. If they start with `approve`, skip to **§7 Approve**. If no week is given, use the next ISO week (`python3 -c "import datetime as d; t=d.date.today()+d.timedelta(7); print('%d-W%02d'%t.isocalendar()[:2])"`).
 
+## 0. Where files go (Zoran's rule: nothing outside `5sFindr PWA/`)
+
+Every file and folder this batch makes stays inside the `5sFindr PWA` folder. Never create anything in `Claude Code Projects/` next to it, and never in `/tmp` or a scratchpad if it's meant to survive.
+
+- **Repo root**, from any checkout or worktree: `ROOT="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"`. Use `$ROOT` for paths instead of `../`, because inside a worktree `../` points at the wrong place.
+- **A separate checkout for the week** (only if you need one): `git -C "$ROOT" worktree add "$ROOT/.claude/named-worktrees/5sFindr-<week>" -b content-<week> origin/main`. Never `../5sFindr-<name>`. If you're already in the app's session worktree (`.claude/worktrees/…`), just work there.
+- **Week content**: `content/<week>/` in the checkout you're working in (that's where `voice`, `render-week`, `queue` and `approve` write anyway).
+- **Logs from background jobs** (npm install, voice, render): `mkdir -p "$ROOT/.claude/logs" && … > "$ROOT/.claude/logs/<week>-<step>.log" 2>&1`. Never `../<name>.log`.
+- **Scratch output** you'll throw away: the session scratchpad. Anything Zoran should see goes in `content/<week>/`.
+
+A guard hook blocks commands that would create 5sFindr files outside the project. If it blocks you, fix the path; don't work around it.
+
 ## 1. Load context (read, don't skim)
 
 - `LAUNCH-HANDOFF.md` (latest update: what's live, what's not) and `PRODUCT-BRIEF.md` (locked decisions, which S-sessions shipped).
@@ -41,7 +53,7 @@ Caption rules: the first line echoes the hook, so the caption keeps the mystery 
 cd content/studio && npm install && npm run voice <week> && node scripts/render-week.mjs <week> --preview
 ```
 
-(First time on a machine: `npm run voice:setup`, then `npm run voice:setup -- --chatterbox`.) The voice settings live in `content/voice.json` (see `content/VOICE.md`). The default is Chatterbox + the robot narrator + the "machine" bed. It takes ~10–15 minutes for a week, so run `npm run voice` in the background. It prints which words it glitched. After it, read every `⚠ … may be off. Heard: "…"` line (the check runs on the clean line, before the glitches): listen to that WAV and, if it really is off, reword the `voText` (same text gives the same take) and re-run. Also listen to each finished short once: the hook, the reveal and the CTA must be clear through the glitches and effects. If a glitch eats a key word, move the `~mark~` or reword. When Zoran approves a take, copy the printed glitches into `~word:kind~` marks so a re-render sounds the same. If Chatterbox isn't set up, fall back with `--engine kokoro` and say so in REVIEW.md. Look at every slide and preview still: text fits, nothing overlaps the TikTok/Reels UI zones (bottom ~430 px, right ~150 px), the hook is readable at frame 0, the plain line is present, and the AI VOICE chip doesn't cover anything. Fix and re-run. Then render everything: `node scripts/render-week.mjs <week>` (run it in the background; ~1–2 minutes per short on this Mac).
+(First time on a machine: `npm run voice:setup`, then `npm run voice:setup -- --chatterbox`.) The voice settings live in `content/voice.json` (see `content/VOICE.md`). The default is Chatterbox + the robot narrator + the "machine" bed. It takes ~10–15 minutes for a week, so run `npm run voice` in the background, logging to `$ROOT/.claude/logs/<week>-voice.log` (see §0). It prints which words it glitched. After it, read every `⚠ … may be off. Heard: "…"` line (the check runs on the clean line, before the glitches): listen to that WAV and, if it really is off, reword the `voText` (same text gives the same take) and re-run. Also listen to each finished short once: the hook, the reveal and the CTA must be clear through the glitches and effects. If a glitch eats a key word, move the `~mark~` or reword. When Zoran approves a take, copy the printed glitches into `~word:kind~` marks so a re-render sounds the same. If Chatterbox isn't set up, fall back with `--engine kokoro` and say so in REVIEW.md. Look at every slide and preview still: text fits, nothing overlaps the TikTok/Reels UI zones (bottom ~430 px, right ~150 px), the hook is readable at frame 0, the plain line is present, and the AI VOICE chip doesn't cover anything. Fix and re-run. Then render everything: `node scripts/render-week.mjs <week>` (run it in the background, logging to `$ROOT/.claude/logs/<week>-render.log`; ~1–2 minutes per short on this Mac).
 
 ## 5. Queue
 
