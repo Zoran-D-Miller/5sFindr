@@ -1,0 +1,43 @@
+{
+  "type": "carousel",
+  "id": "w49-08-first-message",
+  "coord": "33.925° S, 18.420° E · TUE 12:30",
+  "slides": [
+    {
+      "kind": "cover",
+      "kicker": "NEW IN CAPE TOWN",
+      "headline": "What to say\nin your first\n*5s group chat*",
+      "sub": "Copy, paste, play. Save this."
+    },
+    {
+      "kind": "point",
+      "n": "01",
+      "title": "The *intro*",
+      "body": "“Hi all, I'm new in Cape Town. Happy to play anywhere, any position.”"
+    },
+    {
+      "kind": "point",
+      "n": "02",
+      "title": "The *yes*",
+      "body": "“I'm in for Thursday. See you at 18:20.” A time beats a thumbs-up."
+    },
+    {
+      "kind": "point",
+      "n": "03",
+      "title": "The *honest out*",
+      "body": "“Can't make it, sorry. Telling you now so you can fill it.” Before 12:00, not at 17:00."
+    },
+    {
+      "kind": "point",
+      "n": "04",
+      "title": "The *after*",
+      "body": "“Good game, lads. Same time next week?” This is how you become a regular."
+    },
+    {
+      "kind": "cta",
+      "headline": "Say these four.\nYou're a\n*regular*.",
+      "body": "Free 5-a-side games in Cape Town, opening area by area.",
+      "cta": "Get on the list · 5sfindr.com"
+    }
+  ]
+}

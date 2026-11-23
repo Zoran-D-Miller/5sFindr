@@ -1,0 +1,155 @@
+{
+  "type": "short",
+  "id": "w49-07-twelve-said-yes",
+  "coord": "33.902° S, 18.409° E · MON 18:30",
+  "hook": {
+    "text": "12 SAID YES.\n*7 CAME.*",
+    "minSec": 1.6,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ],
+    "vo": "vo/07-hook.wav",
+    "voText": "Twelve said yes. ~Seven:tapestop~ came."
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "MONDAY 5s · 18:31",
+        "screen": "chat",
+        "group": "Monday 5s ⚽",
+        "messages": [
+          {
+            "from": "Thabo",
+            "text": "we're 7 😐 where is everyone",
+            "me": true
+          },
+          {
+            "from": "Yusuf",
+            "text": "parking"
+          },
+          {
+            "from": "Liam",
+            "text": "forgot it was today 🙈"
+          }
+        ]
+      },
+      "caption": "Eighteen thirty-one. Where is everyone?",
+      "vo": "vo/07-b1.wav",
+      "minSec": 2.6,
+      "voText": "Eighteen thirty-one. Where is everyone?",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.3
+        },
+        {
+          "src": "im-alert",
+          "at": 1.2,
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "A YES IN",
+          "A CHAT IS",
+          "*A MAYBE.*"
+        ]
+      },
+      "caption": "A yes in a group chat… is a maybe.",
+      "vo": "vo/07-b2.wav",
+      "minSec": 2,
+      "voText": "A yes in a group chat… is a maybe.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "list",
+        "title": "WHAT WE'RE BUILDING",
+        "items": [
+          "A real list, not a thumbs-up",
+          "A waiting list that moves up",
+          "Tick who showed up"
+        ]
+      },
+      "caption": "A real list. A waiting list that moves up. And you tick who actually showed up.",
+      "vo": "vo/07-b3.wav",
+      "minSec": 3,
+      "voText": "A real list. A waiting list that moves up. And you tick who actually showed up.",
+      "sfx": [
+        {
+          "src": "relay",
+          "vol": 0.5
+        },
+        {
+          "src": "data-chirp",
+          "at": 1.4,
+          "vol": 0.4
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "COMING SOON",
+        "screen": "fill",
+        "title": "Monday 5s",
+        "kickoff": "Mon 18:30",
+        "max": 10,
+        "startTaken": 7,
+        "names": [
+          "Zaid",
+          "Bongani",
+          "Ethan"
+        ],
+        "endLabel": "FULL"
+      },
+      "caption": "So ten means ten. Coming soon.",
+      "vo": "vo/07-b4.wav",
+      "minSec": 2.6,
+      "voText": "So ten means ten. Coming soon.",
+      "sfx": [
+        {
+          "src": "servo",
+          "vol": 0.4
+        },
+        {
+          "src": "im-alert",
+          "at": -0.6,
+          "vol": 0.6
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Free for organisers · 5sfindr.com",
+    "vo": "vo/07-end.wav",
+    "voText": "Fives Finder. Free for organisers. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}

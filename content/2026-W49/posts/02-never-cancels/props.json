@@ -1,0 +1,55 @@
+{
+  "type": "carousel",
+  "id": "w49-02-never-cancels",
+  "coord": "33.902° S, 18.409° E · THU 18:30",
+  "slides": [
+    {
+      "kind": "cover",
+      "kicker": "FOR ORGANISERS",
+      "headline": "Run a 5s that\n*never*\ncancels.",
+      "sub": "6 habits from organisers who play every week. Save this."
+    },
+    {
+      "kind": "point",
+      "n": "01",
+      "title": "Same day. *Same time.*",
+      "body": "A fixed slot becomes a habit. Habits don't cancel."
+    },
+    {
+      "kind": "point",
+      "n": "02",
+      "title": "Invite *12* for 10 spots",
+      "body": "Two always drop. Plan for it, don't panic about it."
+    },
+    {
+      "kind": "point",
+      "n": "03",
+      "title": "Keep a *waiting list*",
+      "body": "Names 11 and 12 move up the second someone pulls out."
+    },
+    {
+      "kind": "point",
+      "n": "04",
+      "title": "Court money *up front*",
+      "body": "Collect before kick-off, not after. No chasing all week."
+    },
+    {
+      "kind": "point",
+      "n": "05",
+      "title": "One link for *subs*",
+      "body": "Share it outside the group when you're short."
+    },
+    {
+      "kind": "point",
+      "n": "06",
+      "title": "Notice who *shows up*",
+      "body": "Your regulars are gold. Ask them first next week."
+    },
+    {
+      "kind": "cta",
+      "headline": "We're building\nall six into\n*one link*.",
+      "body": "Free for organisers in Cape Town. Coming soon.",
+      "cta": "Free for organisers · 5sfindr.com"
+    }
+  ]
+}

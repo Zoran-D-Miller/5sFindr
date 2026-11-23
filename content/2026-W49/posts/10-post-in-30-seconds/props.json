@@ -1,0 +1,150 @@
+{
+  "type": "short",
+  "id": "w49-10-post-in-30-seconds",
+  "coord": "33.902° S, 18.409° E · WED 19:00",
+  "hook": {
+    "text": "POV: YOU POST\nA GAME IN\n*30 SECONDS.*",
+    "minSec": 1.8,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ],
+    "vo": "vo/10-hook.wav",
+    "voText": "You run Wednesday's game. Posting it takes… ~thirty:stutter~ seconds."
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "list",
+        "title": "NEW GAME",
+        "items": [
+          "Where: Green Point Urban Park",
+          "When: Wed 18:30",
+          "Spots: 10 · open field, free"
+        ]
+      },
+      "caption": "Where. When. How many spots. That's the form.",
+      "vo": "vo/10-b1.wav",
+      "minSec": 2.8,
+      "voText": "Where. When. How many spots. That's the form.",
+      "sfx": [
+        {
+          "src": "relay",
+          "vol": 0.5
+        },
+        {
+          "src": "relay",
+          "at": 0.9,
+          "vol": 0.5
+        },
+        {
+          "src": "relay",
+          "at": 1.8,
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "COMING SOON · YOUR LINK",
+        "screen": "invite",
+        "organiser": "Bongani",
+        "venue": "Green Point Urban Park",
+        "area": "Green Point",
+        "kickoff": "Wednesday 18:30",
+        "court": false,
+        "claimAt": 0.7
+      },
+      "caption": "You get one link. Drop it in the group, or anywhere.",
+      "vo": "vo/10-b2.wav",
+      "minSec": 3,
+      "voText": "You get one link. Drop it in the group, or anywhere.",
+      "sfx": [
+        {
+          "src": "data-chirp",
+          "vol": 0.5
+        },
+        {
+          "src": "im-alert",
+          "at": -0.7,
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "COMING SOON",
+        "screen": "fill",
+        "title": "Wednesday 5s",
+        "kickoff": "Wed 18:30",
+        "max": 10,
+        "startTaken": 6,
+        "names": [
+          "Kyle",
+          "Ahmed",
+          "Sam",
+          "Pieter"
+        ],
+        "endLabel": "FULL"
+      },
+      "caption": "Names fill in by themselves. No numbered list.",
+      "vo": "vo/10-b3.wav",
+      "minSec": 2.8,
+      "voText": "Names fill in by themselves. No numbered list.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": 0.5,
+          "vol": 0.5
+        },
+        {
+          "src": "im-alert",
+          "at": 1.3,
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "0:30",
+        "label": "TO POST",
+        "small": "FREE FOR ORGANISERS · COMING SOON"
+      },
+      "caption": "Thirty seconds. Free. Coming soon.",
+      "vo": "vo/10-b4.wav",
+      "minSec": 2,
+      "voText": "Thirty seconds. Free. Coming soon.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.5
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Free for organisers · 5sfindr.com",
+    "vo": "vo/10-end.wav",
+    "voText": "Fives Finder. Free for organisers. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}
