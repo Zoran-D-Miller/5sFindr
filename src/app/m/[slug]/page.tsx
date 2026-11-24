@@ -6,6 +6,8 @@ import { loadInvite, inviteWhen, spotsLabel } from "@/lib/invite";
 import { Avatar } from "@/components/ui/Avatar";
 import { PlayerActions } from "@/components/match/PlayerActions";
 import { KeepProfile } from "@/components/match/KeepProfile";
+import { StillComing } from "@/components/match/StillComing";
+import { ConfirmFromEmail } from "@/components/match/ConfirmFromEmail";
 import type { ParticipantStatus } from "@/lib/types";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -24,7 +26,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 // Public invite: anyone with the link sees the game and taps "I'm in"
 // (guest join: first name + WhatsApp). Open under the pre-launch gate.
-export default async function MatchInvitePage({ params }: { params: { slug: string } }) {
+export default async function MatchInvitePage({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { c?: string };
+}) {
   const match = await loadInvite(params.slug);
   if (!match) notFound();
 
@@ -33,17 +41,25 @@ export default async function MatchInvitePage({ params }: { params: { slug: stri
   const uid = user?.id ?? null;
 
   let myStatus: ParticipantStatus | null = null;
+  let myConfirmed = false;
+  let myReleased = false;
   if (uid) {
     const { data } = await supabase
       .from("match_players")
-      .select("status")
+      .select("status, confirmed_at, released_at")
       .eq("match_id", match.id)
       .eq("user_id", uid)
-      .maybeSingle<{ status: ParticipantStatus }>();
+      .maybeSingle<{ status: ParticipantStatus; confirmed_at: string | null; released_at: string | null }>();
     myStatus = data?.status ?? null;
+    myConfirmed = !!data?.confirmed_at;
+    myReleased = data?.status === "cancelled_early" && !!data?.released_at;
   }
 
   const isOrganizer = uid === match.organizer_id;
+  // S4: "Still coming?" in the 24h before kickoff.
+  const msToKickoff = new Date(match.kickoff_at).getTime() - Date.now();
+  const askNow = !isOrganizer && myStatus === "accepted" && !myConfirmed &&
+    msToKickoff > 0 && msToKickoff <= 24 * 3_600_000 && (match.status === "open" || match.status === "full");
   const inGame = myStatus === "requested" || myStatus === "accepted" || myStatus === "attended";
   const taken = match.players.length;
   const left = Math.max(0, match.max_players - taken);
@@ -109,6 +125,15 @@ export default async function MatchInvitePage({ params }: { params: { slug: stri
       </div>
 
       <div className="mt-6 space-y-4">
+        {searchParams.c && <ConfirmFromEmail token={searchParams.c} />}
+        {!searchParams.c && askNow && (
+          <StillComing matchId={match.id} kickoffIso={match.kickoff_at} confirmed={false} />
+        )}
+        {!searchParams.c && myReleased && (
+          <p className="rounded-2xl border border-yellow-400/40 bg-yellow-400/10 p-3 text-center text-sm text-white/80">
+            Your spot was freed because it wasn’t confirmed in time. Tap “I’m in” if there’s still room.
+          </p>
+        )}
         {isOrganizer ? (
           <Link href={`/matches/${match.id}`} className="btn-primary block w-full text-center">
             Manage your game

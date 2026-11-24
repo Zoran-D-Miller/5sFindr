@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { showUp } from "@/lib/showUp";
 
-// Reliability score pill with a tap/hover micro-dashboard:
-// [Games Played] vs [Games Missed/Bailed/Ghosted].
+// Show-up rate pill (S4) with a tap/hover micro-dashboard:
+// [Games Played] vs [Games Missed / late drop-outs].
 export function ReliabilityBadge({
   score,
   gamesPlayed,
@@ -14,6 +15,7 @@ export function ReliabilityBadge({
   gamesMissed: number;
 }) {
   const [open, setOpen] = useState(false);
+  const rate = showUp(gamesPlayed, gamesMissed);
   const tone =
     score >= 85 ? "text-pitch" : score >= 60 ? "text-yellow-400" : "text-red-400";
 
@@ -26,8 +28,8 @@ export function ReliabilityBadge({
         onMouseLeave={() => setOpen(false)}
         className="inline-flex items-center gap-1.5 rounded-full border border-ink-600 bg-ink-800 px-3 py-1 text-sm font-semibold"
       >
-        <span className="text-white/50">Reliability</span>
-        <span className={tone}>{Math.round(score)}</span>
+        <span className="text-white/50">Shows up</span>
+        <span className={rate.pct === null ? "text-white/70" : tone}>{rate.label}</span>
       </button>
 
       {open && (
@@ -37,9 +39,10 @@ export function ReliabilityBadge({
             <span className="font-bold text-pitch">{gamesPlayed}</span>
           </div>
           <div className="mt-1.5 flex items-center justify-between text-sm">
-            <span className="text-white/60">Missed / ghosted</span>
+            <span className="text-white/60">Missed / late drop-out</span>
             <span className="font-bold text-red-400">{gamesMissed}</span>
           </div>
+          <p className="mt-2 text-xs text-white/40">{rate.detail}. The organiser ticks who showed up.</p>
           <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink-600">
             <div
               className="h-full bg-pitch"

@@ -59,7 +59,7 @@ export function OrganizerControls({
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold">{r.name}</p>
                   <p className="text-xs text-white/40">
-                    Skill {r.skill_level} · Reliability {Math.round(r.reliability_score)}
+                    Skill {r.skill_level} · Shows up {Math.round(r.reliability_score)}%
                   </p>
                 </div>
                 <button
