@@ -214,13 +214,14 @@ linked to the FB Page.
   guests / organisers, unlock progress per launch area (waitlist players vs 50, games ±7 days vs 3), and a table by
   area and role. Counts only. Area mapping is `src/lib/areas.ts` (same as the 06:00 digest).
 - **Migration 0028_organiser_launch** (`series_id`, `match_payment_info`, `paid_claimed_at` / `paid_confirmed_at`,
-  `claim_paid`, `confirm_paid`): tested locally (scenario 9, all 10 scenarios pass). **Must be applied to prod before
-  the S3 PR merges**: the game page reads the new columns.
+  `claim_paid`, `confirm_paid`): tested locally (scenario 9, all 10 scenarios pass). **Applied to prod 2026-11-24**
+  with Zoran's OK and checked (columns, RLS, grants). Note: like the rest of a live game's roster, the paid
+  timestamps are readable through the API by anyone with the link (not shown anywhere public); payment details are not.
 - Checked in a local preview against prod data (read-only): `/m/<slug>` and `/organise` open signed-out, `/feed`
   still redirects to the waitlist, the preview image renders.
 
 **Zoran, for S3:**
-1. OK applying 0028 to prod, then merge the S3 PR.
+1. ~~OK applying 0028 to prod~~ Done 2026-11-24. Merge the S3 PR (#20).
 2. Vercel → Settings → Environment Variables: `ADMIN_EMAILS` = your email (Production), then redeploy.
 3. The S2 setup list above (anonymous sign-ins, manual linking, Google, redirect URL, Turnstile) is still needed for
    "I'm in" and Google to work. Until then, organisers can use the email link on `/organise`.
