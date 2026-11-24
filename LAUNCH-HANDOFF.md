@@ -256,11 +256,14 @@ linked to the FB Page.
   becomes accepted; `confirm_spot`, `confirm_spot_by_token` (anon OK), `run_checkins`, `release_unconfirmed_spot`,
   `claim_checkin_emails` (service role only), `private.checkins_tick`). Backfill on apply: organisers' seats and seats
   on games in the next 24h count as confirmed, so nobody is freed by surprise. Tested locally: new scenario 10, all
-  scenarios 1–10 pass. **Not applied to prod yet: needs Zoran's OK.** No real email has been sent.
+  scenarios 1–10 pass. **Applied to prod 2026-11-24** with Zoran's OK and checked: columns, trigger, RLS on
+  `match_checkins` (no grants), function grants (sweep/claim not callable by anon/authenticated), cron job
+  `no-show-checkins` active every 10 min. The security advisor shows only the intended new items (`match_checkins` RLS
+  with no policy, like `app_config`; `confirm_spot_by_token` callable signed out). No real email has been sent.
 
 **Zoran, for S4 (one-time setup, all free):**
-1. OK applying migration 0029 to prod (it also schedules the `no-show-checkins` cron job). Until 0029 is in prod,
-   merging this PR breaks the game pages (they read the new columns), so apply first, then merge.
+1. ~~OK applying migration 0029 to prod~~ Done 2026-11-24 (the cron job runs; with no Vault secret it only asks
+   in-app and frees spots, no emails). Merge the S4 PR (#21).
 2. Resend: sign up at resend.com (free plan) → Domains → Add `5sfindr.com` (region: any; EU/Ireland is closest).
 3. Vercel → the 5sfindr.com domain → DNS records: add exactly the records Resend shows (an MX + TXT on the `send`
    subdomain for SPF, a TXT `resend._domainkey` for DKIM; optionally a TXT `_dmarc` = `v=DMARC1; p=none;`). Back in
