@@ -50,6 +50,8 @@ export interface DrawerProfile {
   neighborhood: string | null;
   preferred_positions: Position[];
   reliability_score: number;
+  games_played: number;
+  games_missed: number;
   motm_count: number;
   founding_number: number | null;
   created_at: string;

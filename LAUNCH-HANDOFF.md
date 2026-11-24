@@ -226,10 +226,64 @@ linked to the FB Page.
 3. The S2 setup list above (anonymous sign-ins, manual linking, Google, redirect URL, Turnstile) is still needed for
    "I'm in" and Google to work. Until then, organisers can use the email link on `/organise`.
 
-## Next session → S4 (no-show tools) in PRODUCT-BRIEF.md
-Resend email from `hello@5sfindr.com`, "still coming?" at 24h/3h, auto-release of unconfirmed spots, show-up rate on
-profiles. Outreach to organisers (GROWTH-STRATEGY.md §12) can start once S3 is live.
-Content runs alongside: each week, `/content-week` → Zoran reviews `REVIEW.md` → records → schedules.
+## Update 2026-11-24: S4 built (no-show tools), branch `claude/s4-no-show-tools-9b84f6`
+- [x] **Email:** `src/server/email.ts` sends through Resend's HTTP API (batch, no SDK) from `hello@5sfindr.com`
+  (`EMAIL_FROM` overrides). No `RESEND_API_KEY` → nothing is sent, so previews/dev can't email anyone. Free tier:
+  100 emails/day, 3,000/month. Supabase's magic-link/auth emails move to Resend by **SMTP settings only** (no code).
+- [x] **"Still coming?"** for accepted players (never the organiser's own Captain seat): a **24h** ask (only if they
+  joined more than 24h before kickoff) and a **3h last call** (only if still unconfirmed). One confirmation is enough;
+  joining or being accepted less than 3h before kickoff counts as confirmed. Players with an email get it by email
+  (button → `/m/<slug>?c=<token>`, which confirms in the browser, so link scanners don't; works signed out). Everyone,
+  guests with only WhatsApp included, sees a "Still coming? · Yes, I'm coming" card on the game page and `/m/` page
+  for the 24h before kickoff.
+- [x] **Auto-release:** still unconfirmed **90 min before kickoff** (and at least 45 min after the 3h last call went
+  out, in case a cron run was late) → the spot is freed: status `cancelled_early` + `released_at`, a committed token
+  is refunded (token-safe like `cancel_participation`; tokens are off anyway), a full game reopens. It is **not** a
+  missed game. The organiser sees "Coming ✓ / Not confirmed" next to each player in the 24h window and "Freed (didn't
+  confirm): Sam. Share the game again…"; the player sees why and can tap "I'm in" again if there's room.
+- [x] **Show-up rate on profiles:** "Shows up 90%" (+ "Showed up 9 of 10 games") on your profile, the player drawer and
+  join requests. It's `games_played / (played + missed)` (= `reliability_score`), fed by the organiser's ticks
+  (`set_attendance`) and settled games; late drop-outs (<12h) count as missed, freed spots don't. No games → "New player".
+- **Scheduling: pg_cron, not Vercel Cron.** Vercel's free plan only runs crons once a day, too coarse for 24h/3h/90-min
+  windows; pg_cron is already in use (0008 settlement, 0026 publisher backup) and so are pg_net + Vault (0026). Job
+  `no-show-checkins` runs every 10 min: `public.run_checkins()` does the asks and releases in SQL (works even if Vercel
+  is down), then, only if an email is due, pings `https://5sfindr.com/api/cron/checkins` with the Vault secret
+  `checkins_cron_secret`. That route (bearer `CHECKINS_CRON_SECRET`) claims up to 50 due emails and sends them in one
+  Resend batch. Claimed = marked sent first, so nothing goes twice; a failed send isn't retried (the in-app card still
+  asks). Kill switch: `select cron.unschedule('no-show-checkins');`
+- **Migration 0029_no_show_tools** (`match_players.confirmed_at` / `released_at`; `match_checkins` holds the email
+  tokens, no grants, because rosters are readable by anyone with the link; trigger resets the check-in whenever a seat
+  becomes accepted; `confirm_spot`, `confirm_spot_by_token` (anon OK), `run_checkins`, `release_unconfirmed_spot`,
+  `claim_checkin_emails` (service role only), `private.checkins_tick`). Backfill on apply: organisers' seats and seats
+  on games in the next 24h count as confirmed, so nobody is freed by surprise. Tested locally: new scenario 10, all
+  scenarios 1–10 pass. **Applied to prod 2026-11-24** with Zoran's OK and checked: columns, trigger, RLS on
+  `match_checkins` (no grants), function grants (sweep/claim not callable by anon/authenticated), cron job
+  `no-show-checkins` active every 10 min. The security advisor shows only the intended new items (`match_checkins` RLS
+  with no policy, like `app_config`; `confirm_spot_by_token` callable signed out). No real email has been sent.
+
+**Zoran, for S4 (one-time setup, all free):**
+1. ~~OK applying migration 0029 to prod~~ Done 2026-11-24 (the cron job runs; with no Vault secret it only asks
+   in-app and frees spots, no emails). Merge the S4 PR (#21).
+2. Resend: sign up at resend.com (free plan) → Domains → Add `5sfindr.com` (region: any; EU/Ireland is closest).
+3. Vercel → the 5sfindr.com domain → DNS records: add exactly the records Resend shows (an MX + TXT on the `send`
+   subdomain for SPF, a TXT `resend._domainkey` for DKIM; optionally a TXT `_dmarc` = `v=DMARC1; p=none;`). Back in
+   Resend, click Verify (usually a few minutes).
+4. Resend → API Keys → create one with "Sending access" for 5sfindr.com. In Vercel → Settings → Environment Variables
+   (Production): `RESEND_API_KEY` = that key. Optional: `EMAIL_FROM` (default `5sFindr <hello@5sfindr.com>`).
+5. Make a long random secret (e.g. `openssl rand -hex 32`). Put it in Vercel as `CHECKINS_CRON_SECRET` (Production),
+   and in Supabase → SQL editor: `select vault.create_secret('<the secret>', 'checkins_cron_secret');`
+   Then redeploy in Vercel. (No secret = asks and releases still run, the app card still asks, but no emails go out.)
+6. Supabase → Authentication → Emails → SMTP Settings → enable custom SMTP: host `smtp.resend.com`, port `465`,
+   username `resend`, password = a Resend API key, sender `hello@5sfindr.com`, sender name `5sFindr`. Then raise the
+   email rate limit under Authentication → Rate Limits (Resend free = 100/day across both uses).
+7. Smoke test after deploy (sends a real email, so only when you're ready): join a test game with an account whose
+   email you own, then in the SQL editor move that game to ~20h out and run `select public.run_checkins();` and
+   `select private.checkins_tick();`.
+
+## Next session → S5 (unlock mechanics + landing redesign) in PRODUCT-BRIEF.md
+Area progress board ("Sea Point 38/50"), Founding Member numbers, referrals that move your area closer to unlocking;
+landing page in the "Open door, inner circle" style. Outreach to organisers (GROWTH-STRATEGY.md §12) can start once S3
+is live. Content runs alongside: each week, `/content-week` → Zoran reviews `REVIEW.md` → records → schedules.
 
 ## Working style
 - The user starts a fresh session every couple of prompts. Keep this file current; don't re-derive context.

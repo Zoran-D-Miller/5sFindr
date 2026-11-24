@@ -70,3 +70,27 @@ export async function cancelMatch(
   refresh(matchId);
   return { ok: true };
 }
+
+// S4 "Still coming?": the player confirms their spot from the game page.
+export async function confirmSpot(
+  matchId: string,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const supabase = createClient();
+  const { error } = await supabase.rpc("confirm_spot", { p_match_id: matchId });
+  if (error) return { ok: false, error: friendly(error.message) };
+  refresh(matchId);
+  return { ok: true };
+}
+
+export type TokenConfirm = "confirmed" | "released" | "gone";
+
+// From the email button (/m/<slug>?c=<token>). Works signed out: the token
+// is the secret. Runs from the page's client component, so link scanners
+// that only fetch the URL don't confirm anyone.
+export async function confirmSpotByToken(token: string): Promise<TokenConfirm> {
+  if (!/^[0-9a-f-]{36}$/i.test(token)) return "gone";
+  const supabase = createClient();
+  const { data, error } = await supabase.rpc("confirm_spot_by_token", { p_token: token });
+  if (error || !data) return "gone";
+  return ((data as { result?: TokenConfirm }).result ?? "gone") as TokenConfirm;
+}

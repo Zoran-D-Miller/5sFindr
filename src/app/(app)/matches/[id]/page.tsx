@@ -17,6 +17,7 @@ import { KeepProfile } from "@/components/match/KeepProfile";
 import { TrackEvent } from "@/components/analytics/TrackEvent";
 import { PaymentPanel } from "@/components/match/PaymentPanel";
 import { WhoPaidPanel } from "@/components/match/WhoPaidPanel";
+import { StillComing } from "@/components/match/StillComing";
 import type { MatchStatus, JoinMode, VenueType, RosterEntry } from "@/lib/types";
 
 interface MatchRow {
@@ -45,6 +46,8 @@ interface RawRosterRow {
   position: RosterEntry["position"];
   paid_claimed_at: string | null;
   paid_confirmed_at: string | null;
+  confirmed_at: string | null;
+  released_at: string | null;
   profile: { name: string; skill_level: number; reliability_score: number } | null;
 }
 
@@ -126,7 +129,7 @@ export default async function MatchLobbyPage({
     await Promise.all([
       supabase
         .from("match_players")
-        .select("user_id, status, team_color, position, paid_claimed_at, paid_confirmed_at, profile:profiles(name, skill_level, reliability_score)")
+        .select("user_id, status, team_color, position, paid_claimed_at, paid_confirmed_at, confirmed_at, released_at, profile:profiles(name, skill_level, reliability_score)")
         .eq("match_id", matchId)
         .returns<RawRosterRow[]>(),
       uid && FEATURES.tokens
@@ -171,6 +174,14 @@ export default async function MatchLobbyPage({
       claimed: !!r.paid_claimed_at,
       confirmed: !!r.paid_confirmed_at,
     }));
+  // S4 "Still coming?": the 24h before kickoff, accepted players confirm;
+  // unconfirmed spots are freed 90 min before kickoff (migration 0029).
+  const msToKickoff = new Date(match.kickoff_at).getTime() - now;
+  const checkinOpen = msToKickoff > 0 && msToKickoff <= 24 * 3_600_000 &&
+    (match.status === "open" || match.status === "full");
+  const confirmedIds = new Set((rawRoster ?? []).filter((r) => r.confirmed_at).map((r) => r.user_id));
+  const released = (rawRoster ?? []).filter((r) => r.status === "cancelled_early" && r.released_at);
+  const iWasReleased = !!myRaw && myRaw.status === "cancelled_early" && !!myRaw.released_at;
   const completed = match.status === "completed";
   const kickedOff = now >= new Date(match.kickoff_at).getTime();
   const inCheckInWindow = kickedOff && !ended && !completed;
@@ -241,12 +252,43 @@ export default async function MatchLobbyPage({
                       </span>
                     )}
                   </span>
-                  <span className="shrink-0 text-xs text-white/40">Skill {p.skill_level}</span>
+                  {isOrganizer && checkinOpen && p.user_id !== captainId ? (
+                    confirmedIds.has(p.user_id) ? (
+                      <span className="shrink-0 text-xs font-bold text-pitch">Coming ✓</span>
+                    ) : (
+                      <span className="shrink-0 text-xs font-semibold text-yellow-400">Not confirmed</span>
+                    )
+                  ) : (
+                    <span className="shrink-0 text-xs text-white/40">Skill {p.skill_level}</span>
+                  )}
                 </li>
               ))}
             </ul>
           </section>
         )
+      )}
+
+      {/* Organiser: spots freed because nobody confirmed (refill them) */}
+      {isOrganizer && live && released.length > 0 && (
+        <p className="rounded-2xl border border-yellow-400/40 bg-yellow-400/10 p-3 text-sm text-white/80">
+          Freed (didn’t confirm): {released.map((r) => r.profile?.name?.split(" ")[0] ?? "Player").join(", ")}.
+          {" "}Share the game again to fill {released.length === 1 ? "the spot" : "the spots"}.
+        </p>
+      )}
+      {isOrganizer && checkinOpen && confirmed.length > 1 && (
+        <p className="px-1 text-xs text-white/40">
+          Players get “Still coming?” 24h and 3h before kickoff. Spots nobody confirms are freed 90 min before kickoff.
+        </p>
+      )}
+
+      {/* Player: "Still coming?" */}
+      {!isOrganizer && mine?.status === "accepted" && checkinOpen && !confirmedIds.has(mine.user_id) && (
+        <StillComing matchId={match.id} kickoffIso={match.kickoff_at} confirmed={false} />
+      )}
+      {!isOrganizer && iWasReleased && live && (
+        <p className="rounded-2xl border border-yellow-400/40 bg-yellow-400/10 p-3 text-center text-sm text-white/80">
+          Your spot was freed because it wasn’t confirmed in time. Tap “I’m in” if there’s still room.
+        </p>
       )}
 
       {/* Post-match MotM vote (attendees only) */}

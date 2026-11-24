@@ -7,6 +7,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { FollowList } from "./FollowList";
 import { foundingTier, FOUNDING_LABEL, POSITION_BADGE } from "@/lib/positions";
 import type { DrawerProfile } from "@/lib/types";
+import { showUp } from "@/lib/showUp";
 
 function joinedLabel(iso: string) {
   return "Joined " + new Date(iso).toLocaleDateString("en-ZA", { month: "short", year: "numeric" });
@@ -41,7 +42,7 @@ export function UserDrawer({
       const [{ data: p }, { count: fers }, { count: fing }, { data: auth }] = await Promise.all([
         supabase
           .from("profiles")
-          .select("id, name, avatar_url, bio, neighborhood, preferred_positions, reliability_score, motm_count, founding_number, created_at")
+          .select("id, name, avatar_url, bio, neighborhood, preferred_positions, reliability_score, games_played, games_missed, motm_count, founding_number, created_at")
           .eq("id", userId)
           .single<DrawerProfile>(),
         supabase.from("follows").select("id", { count: "exact", head: true }).eq("following_id", userId),
@@ -74,6 +75,7 @@ export function UserDrawer({
   }
 
   const tier = foundingTier(profile?.founding_number);
+  const rate = showUp(profile?.games_played ?? 0, profile?.games_missed ?? 0);
   const countBtn = "font-bold text-white transition hover:text-pitch";
 
   return (
@@ -102,8 +104,8 @@ export function UserDrawer({
 
         <div className="mt-5 grid grid-cols-3 gap-2 text-center">
           <div className="rounded-2xl border border-ink-700 bg-ink-900 p-3">
-            <p className="text-lg font-black text-pitch">{Math.round(profile?.reliability_score ?? 100)}%</p>
-            <p className="text-[10px] uppercase tracking-wide text-white/40">Reliability</p>
+            <p className="text-lg font-black text-pitch">{rate.label}</p>
+            <p className="text-[10px] uppercase tracking-wide text-white/40" title={rate.detail}>Shows up</p>
           </div>
           <div className="rounded-2xl border border-ink-700 bg-ink-900 p-3">
             <p className="text-lg font-black text-yellow-400">🏆 {profile?.motm_count ?? 0}</p>

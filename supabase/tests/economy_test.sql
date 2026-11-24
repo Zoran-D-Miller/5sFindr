@@ -9,7 +9,7 @@ begin;
 -- ═════════════════════════════════════════════════════════════════════════
 --  PART A (scenarios 1–3): the token economy, with the tokens flag ON.
 --  Kept so the deposit logic still works if NEXT_PUBLIC_FLAG_TOKENS returns.
---  PART B (scenarios 4–8): the S2 launch rules, tokens OFF (the default).
+--  PART B (scenarios 4–10): the launch rules, tokens OFF (the default).
 -- ═════════════════════════════════════════════════════════════════════════
 update public.app_config set tokens_enabled = true;
 
@@ -594,6 +594,164 @@ begin
     then raise exception 'S9 FAIL: untick'; end if;
 
   raise notice 'SCENARIO 9 PASSED — payment details list-only; I''ve paid → organiser ticks who''s paid';
+end $$;
+
+-- ─────────────────────────────────────────────────────────────────────────
+--  SCENARIO 10 — S4 no-show tools: "Still coming?" at 24h/3h, auto-release.
+-- ─────────────────────────────────────────────────────────────────────────
+do $$
+declare
+  v_org  uuid := gen_random_uuid();
+  v_a    uuid := gen_random_uuid();  -- confirms from the 24h email link
+  v_b    uuid := gen_random_uuid();  -- never answers → released (had a token)
+  v_g    uuid := gen_random_uuid();  -- guest, no email → in-app only, released
+  v_c    uuid := gen_random_uuid();  -- confirms in the app after the 3h call
+  v_late uuid := gen_random_uuid();  -- joins 80 min before → auto-confirmed
+  v_loc  uuid;
+  v_m    uuid;
+  v_tok  uuid;
+  v_res  jsonb;
+  v_n    int;
+  v_rows int;
+begin
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data, is_anonymous) values
+    ('00000000-0000-0000-0000-000000000000', v_org,  'authenticated', 'authenticated', 's10_org@test.co', '{"name":"Org10"}', false),
+    ('00000000-0000-0000-0000-000000000000', v_a,    'authenticated', 'authenticated', 's10_a@test.co',   '{"name":"A10"}',   false),
+    ('00000000-0000-0000-0000-000000000000', v_b,    'authenticated', 'authenticated', 's10_b@test.co',   '{"name":"B10"}',   false),
+    ('00000000-0000-0000-0000-000000000000', v_g,    'authenticated', 'authenticated', null,              '{"name":"G10"}',   true),
+    ('00000000-0000-0000-0000-000000000000', v_c,    'authenticated', 'authenticated', 's10_c@test.co',   '{"name":"C10"}',   false),
+    ('00000000-0000-0000-0000-000000000000', v_late, 'authenticated', 'authenticated', 's10_l@test.co',   '{"name":"L10"}',   false);
+  update public.profiles set phone_number = '+27821234567' where id = v_g;
+  select id into v_loc from public.locations where is_seeded limit 1;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
+                              max_players, join_mode, status, share_slug)
+    values (v_org, v_loc, 'open_area', now() + interval '3 days', 60, now() + interval '3 days 1 hour',
+            5, 'instant', 'open', 's10-' || substr(md5(random()::text), 1, 8)) returning id into v_m;
+
+  -- A, G, C join with tokens off; B joins with tokens on (commits a token).
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  perform public.join_match(v_m);
+  perform set_config('request.jwt.claims', json_build_object('sub', v_g, 'is_anonymous', true)::text, true);
+  perform public.join_match(v_m);
+  perform set_config('request.jwt.claims', json_build_object('sub', v_c)::text, true);
+  perform public.join_match(v_m);
+  update public.app_config set tokens_enabled = true;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_b)::text, true);
+  perform public.join_match(v_m);
+  update public.app_config set tokens_enabled = false;
+  select token_id into v_tok from public.match_players where match_id = v_m and user_id = v_b;
+  if v_tok is null then raise exception 'S10 FAIL: B has no committed token'; end if;
+  if (select status from public.matches where id = v_m) <> 'full' then raise exception 'S10 FAIL: not full at 5/5 (Captain + 4)'; end if;
+  if exists (select 1 from public.match_players where match_id = v_m and confirmed_at is not null and user_id <> v_org)
+    then raise exception 'S10 FAIL: early joiners auto-confirmed'; end if;
+  if (select confirmed_at from public.match_players where match_id = v_m and user_id = v_org) is null
+    then raise exception 'S10 FAIL: organiser seat not auto-confirmed'; end if;
+  perform set_config('request.jwt.claims', '', true);
+
+  -- Nothing to ask 3 days out.
+  v_res := public.run_checkins();
+  if (v_res->>'asked_24h')::int <> 0 then raise exception 'S10 FAIL: asked 3 days out'; end if;
+
+  -- They joined 2 days before kickoff. 20h before → 24h ask for all four.
+  update public.match_players set requested_at = now() - interval '2 days', responded_at = now() - interval '2 days'
+   where match_id = v_m;
+  update public.matches set kickoff_at = now() + interval '20 hours', ends_at = now() + interval '21 hours' where id = v_m;
+  v_res := public.run_checkins();
+  if (v_res->>'asked_24h')::int <> 4 then raise exception 'S10 FAIL: 24h asks = % (want 4)', v_res->>'asked_24h'; end if;
+  if public.checkin_emails_due() <> 3 then raise exception 'S10 FAIL: emails due = % (want 3, guest has none)', public.checkin_emails_due(); end if;
+  select count(*) into v_n from public.claim_checkin_emails(50) where stage = '24h';
+  if v_n <> 3 then raise exception 'S10 FAIL: claimed % 24h emails (want 3)', v_n; end if;
+  select count(*) into v_n from public.claim_checkin_emails(50);
+  if v_n <> 0 then raise exception 'S10 FAIL: emails claimed twice'; end if;
+
+  -- A taps the email link (no session, anon role).
+  select c.token into v_tok from public.match_checkins c join public.match_players mp on mp.id = c.match_player_id
+   where mp.match_id = v_m and mp.user_id = v_a;
+  set local role anon;
+  v_res := public.confirm_spot_by_token(v_tok);
+  reset role;
+  if v_res->>'result' <> 'confirmed' then raise exception 'S10 FAIL: token confirm = %', v_res; end if;
+  if v_res->>'slug' is null then raise exception 'S10 FAIL: no slug back'; end if;
+  if public.confirm_spot_by_token(gen_random_uuid())->>'result' <> 'gone' then raise exception 'S10 FAIL: bad token accepted'; end if;
+
+  -- 2h50 before → 3h last call only for the unconfirmed three.
+  update public.matches set kickoff_at = now() + interval '170 minutes', ends_at = now() + interval '230 minutes' where id = v_m;
+  v_res := public.run_checkins();
+  if (v_res->>'asked_3h')::int <> 3 then raise exception 'S10 FAIL: 3h asks = % (want 3)', v_res->>'asked_3h'; end if;
+  select count(*) into v_n from public.claim_checkin_emails(50) where stage = '3h';
+  if v_n <> 2 then raise exception 'S10 FAIL: claimed % 3h emails (want 2: B, C)', v_n; end if;
+
+  -- C confirms in the app. Someone not on the list can't.
+  perform set_config('request.jwt.claims', json_build_object('sub', v_c)::text, true);
+  if public.confirm_spot(v_m) <> 'confirmed' then raise exception 'S10 FAIL: in-app confirm'; end if;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_late)::text, true);
+  begin perform public.confirm_spot(v_m);
+        raise exception 'S10 FAIL: outsider confirmed a seat they don''t hold';
+  exception when others then if sqlerrm not like '%NOT_IN%' then raise; end if; end;
+  perform set_config('request.jwt.claims', '', true);
+
+  -- Too early to release (last call just went out).
+  update public.matches set kickoff_at = now() + interval '80 minutes', ends_at = now() + interval '140 minutes' where id = v_m;
+  v_res := public.run_checkins();
+  if (v_res->>'released')::int <> 0 then raise exception 'S10 FAIL: released < 45 min after last call'; end if;
+
+  -- 50 min after the last call, 80 min before kickoff → B and G released.
+  update public.match_checkins set asked_3h_at = now() - interval '50 minutes'
+   where match_player_id in (select id from public.match_players where match_id = v_m);
+  v_res := public.run_checkins();
+  if (v_res->>'released')::int <> 2 then raise exception 'S10 FAIL: released % (want 2)', v_res->>'released'; end if;
+  select count(*) into v_n from public.match_players
+   where match_id = v_m and status = 'cancelled_early' and released_at is not null and user_id in (v_b, v_g);
+  if v_n <> 2 then raise exception 'S10 FAIL: B/G not marked released'; end if;
+  select count(*) into v_n from public.match_players
+   where match_id = v_m and status = 'accepted' and user_id in (v_a, v_c, v_org);
+  if v_n <> 3 then raise exception 'S10 FAIL: confirmed players / Captain touched'; end if;
+  if (select status from public.matches where id = v_m) <> 'open' then raise exception 'S10 FAIL: game not reopened'; end if;
+  select token_id into v_tok from public.match_players where match_id = v_m and user_id = v_b;
+  if (select status from public.tokens where id = v_tok) <> 'available'
+    then raise exception 'S10 FAIL: B''s token not refunded'; end if;
+  if not exists (select 1 from public.token_transactions where token_id = v_tok and type = 'refund' and match_id = v_m)
+    then raise exception 'S10 FAIL: no refund ledger row'; end if;
+  if (select games_missed from public.profiles where id = v_b) <> 0
+    then raise exception 'S10 FAIL: release counted as a missed game'; end if;
+  if public.checkin_emails_due() <> 0 then raise exception 'S10 FAIL: email queued for a released spot'; end if;
+
+  -- B's old link now says "released".
+  select c.token into v_tok from public.match_checkins c join public.match_players mp on mp.id = c.match_player_id
+   where mp.match_id = v_m and mp.user_id = v_b;
+  if public.confirm_spot_by_token(v_tok)->>'result' <> 'released' then raise exception 'S10 FAIL: released link'; end if;
+
+  -- Late joiner (80 min before) is confirmed on join and never released.
+  perform set_config('request.jwt.claims', json_build_object('sub', v_late)::text, true);
+  perform public.join_match(v_m);
+  if (select confirmed_at from public.match_players where match_id = v_m and user_id = v_late) is null
+    then raise exception 'S10 FAIL: late joiner not auto-confirmed'; end if;
+  -- B rejoins: fresh seat, old check-in gone, auto-confirmed (inside 3h).
+  perform set_config('request.jwt.claims', json_build_object('sub', v_b)::text, true);
+  perform public.join_match(v_m);
+  if (select released_at is not null or confirmed_at is null
+        from public.match_players where match_id = v_m and user_id = v_b)
+    then raise exception 'S10 FAIL: rejoin not reset'; end if;
+  if public.confirm_spot_by_token(v_tok)->>'result' <> 'gone' then raise exception 'S10 FAIL: old token survived rejoin'; end if;
+  perform set_config('request.jwt.claims', '', true);
+  v_res := public.run_checkins();
+  if (v_res->>'released')::int <> 0 then raise exception 'S10 FAIL: released a confirmed seat'; end if;
+
+  -- Lockdown: callers can't run the sweep, the email queue or the table.
+  set local role anon;
+  begin perform public.run_checkins(); raise exception 'S10 FAIL: anon ran the sweep';
+  exception when insufficient_privilege then null; end;
+  begin perform public.claim_checkin_emails(5); raise exception 'S10 FAIL: anon claimed emails';
+  exception when insufficient_privilege then null; end;
+  reset role;
+  set local role authenticated;
+  begin perform public.release_unconfirmed_spot(gen_random_uuid()); raise exception 'S10 FAIL: user released a spot';
+  exception when insufficient_privilege then null; end;
+  begin select count(*) into v_rows from public.match_checkins; raise exception 'S10 FAIL: user read check-in tokens';
+  exception when insufficient_privilege then null; end;
+  reset role;
+
+  raise notice 'SCENARIO 10 PASSED — 24h/3h asks (email + in-app), link + app confirm, auto-release refunds token, reopens game';
 end $$;
 
 rollback;  -- leave the database untouched

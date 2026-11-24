@@ -122,8 +122,8 @@ metadata, pinch-zoom, 5sfindr.com on Vercel, Umami visits, seed bots removed.
 - [x] Admin view: counts by area and role, plus unlock progress
 
 **S4 — No-show tools**
-- [ ] Email through Resend (free tier, from `hello@5sfindr.com`; DNS records in Vercel)
-- [ ] "Still coming?" at 24h/3h, unconfirmed spots auto-released, show-up rate on profile
+- [x] Email through Resend (free tier, from `hello@5sfindr.com`; DNS records in Vercel)
+- [x] "Still coming?" at 24h/3h, unconfirmed spots auto-released, show-up rate on profile
 
 **S5 — Unlock mechanics + landing redesign**
 - [ ] Area progress board ("Sea Point 38/50"), Founding Member numbers, referrals that move your area closer to unlocking
