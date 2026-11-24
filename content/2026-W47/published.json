@@ -71,8 +71,12 @@
       "at": "2026-11-23T17:34:03.120Z"
     },
     "2026-W47/08/facebook": {
-      "status": "claimed",
-      "claimed_at": "2026-11-24T10:33:13.387Z"
+      "status": "published",
+      "claimed_at": "2026-11-24T10:33:13.387Z",
+      "platform_id": "1149460968258385_122127656091366919",
+      "permalink": "https://www.facebook.com/1149460968258385_122127656091366919",
+      "ai_label": null,
+      "at": "2026-11-24T10:33:39.951Z"
     }
   },
   "notices": {}
