@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { loadInvite, inviteWhen } from "@/lib/invite";
+import { loadInvite, inviteWhen, spotsLabel } from "@/lib/invite";
 import { Avatar } from "@/components/ui/Avatar";
 import { PlayerActions } from "@/components/match/PlayerActions";
 import { KeepProfile } from "@/components/match/KeepProfile";
@@ -11,12 +11,11 @@ import type { ParticipantStatus } from "@/lib/types";
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const m = await loadInvite(params.slug);
   if (!m) return { title: "5sFindr" };
-  const left = Math.max(0, m.max_players - m.players.length);
   const title = `${m.organizer?.name ?? "A game"} needs players · ${inviteWhen(m.kickoff_at)}`;
   const description = [
     m.location?.name,
     m.price_per_player_zar > 0 ? `R${m.price_per_player_zar} each` : "Free",
-    left > 0 ? `${left} spot${left === 1 ? "" : "s"} left` : "Full",
+    spotsLabel(m),
     "Tap “I’m in”, no app needed.",
   ].filter(Boolean).join(" · ");
   // The image comes from ./opengraph-image.tsx (faces + spots left).
@@ -84,7 +83,11 @@ export default async function MatchInvitePage({ params }: { params: { slug: stri
           </div>
           <div className="flex justify-between border-t border-ink-700 pt-2">
             <dt className="text-white/40">Spots</dt>
-            <dd className="font-semibold text-pitch">{left > 0 ? `${left} left of ${match.max_players}` : "Full"}</dd>
+            <dd className="font-semibold text-pitch">
+              {match.status === "open" || match.status === "full"
+                ? left > 0 ? `${left} left of ${match.max_players}` : "Full"
+                : spotsLabel(match)}
+            </dd>
           </div>
         </dl>
 

@@ -8,7 +8,7 @@ type CookieToSet = { name: string; value: string; options: CookieOptions };
 // (/feed, /matches/[id], /leaderboard, /m/* invites) is public; the auth wall
 // triggers on Wallet, Profile, and Post-a-Match. Join-a-match is guarded
 // in-page (login CTA) and by RLS.
-const PROTECTED = ["/wallet", "/profile", "/matches/new"];
+const PROTECTED = ["/wallet", "/profile", "/matches/new", "/admin"];
 const AUTH_PAGES = ["/login", "/signup"];
 
 // Pre-launch, signed-out visitors only reach these (plus / and files such as

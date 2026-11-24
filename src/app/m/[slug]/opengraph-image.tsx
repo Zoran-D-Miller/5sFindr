@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { loadInvite, inviteWhen } from "@/lib/invite";
+import { loadInvite, inviteWhen, spotsLabel } from "@/lib/invite";
 
 export const alt = "5sFindr game invite";
 export const size = { width: 1200, height: 630 };
@@ -8,7 +8,6 @@ export const contentType = "image/png";
 // WhatsApp / social link preview: who's playing, when, where, spots left.
 export default async function Image({ params }: { params: { slug: string } }) {
   const m = await loadInvite(params.slug);
-  const left = m ? Math.max(0, m.max_players - m.players.length) : 0;
   const faces = (m?.players ?? []).slice(0, 7);
 
   return new ImageResponse(
@@ -65,7 +64,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
                 fontSize: 40, fontWeight: 900,
               }}
             >
-              {left > 0 ? `${left} spot${left === 1 ? "" : "s"} left` : "Full"}
+              {spotsLabel(m)}
             </div>
           )}
         </div>

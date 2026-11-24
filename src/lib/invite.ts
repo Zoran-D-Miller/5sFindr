@@ -50,6 +50,14 @@ export async function loadInvite(slug: string): Promise<InviteData | null> {
   return { ...match, players };
 }
 
+/** "3 spots left" / "Full" / "Played" / "Cancelled" for the invite + preview. */
+export function spotsLabel(m: Pick<InviteData, "status" | "max_players" | "players">) {
+  if (m.status === "completed") return "Played";
+  if (m.status === "cancelled") return "Cancelled";
+  const left = Math.max(0, m.max_players - m.players.length);
+  return left > 0 ? `${left} spot${left === 1 ? "" : "s"} left` : "Full";
+}
+
 export function inviteWhen(iso: string) {
   return new Date(iso).toLocaleString("en-ZA", {
     weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false,
