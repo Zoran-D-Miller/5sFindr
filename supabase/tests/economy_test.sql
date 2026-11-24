@@ -530,4 +530,70 @@ begin
   raise notice 'SCENARIO 8 PASSED — no ticks + 24h → cron settles, squad credited, nobody a no-show';
 end $$;
 
+-- ─────────────────────────────────────────────────────────────────────────
+--  SCENARIO 9 — Paid court: payment details only for the list; I've paid → who's paid.
+-- ─────────────────────────────────────────────────────────────────────────
+do $$
+declare
+  v_org uuid := gen_random_uuid();
+  v_p   uuid := gen_random_uuid();
+  v_out uuid := gen_random_uuid();
+  v_loc uuid;
+  v_m   uuid;
+  v_n   int;
+begin
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data) values
+    ('00000000-0000-0000-0000-000000000000', v_org, 'authenticated', 'authenticated', 's9_org@test.co', '{"name":"Org9"}'),
+    ('00000000-0000-0000-0000-000000000000', v_p,   'authenticated', 'authenticated', 's9_p@test.co',   '{"name":"P9"}'),
+    ('00000000-0000-0000-0000-000000000000', v_out, 'authenticated', 'authenticated', 's9_out@test.co', '{"name":"Out9"}');
+  select id into v_loc from public.locations where is_seeded and type = 'official_court' limit 1;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at,
+                              max_players, join_mode, status, share_slug, price_per_player_zar)
+    values (v_org, v_loc, 'official_court', now() + interval '2 days', 60, now() + interval '2 days 1 hour',
+            10, 'instant', 'open', 's9-' || substr(md5(random()::text), 1, 8), 60) returning id into v_m;
+
+  -- Organiser saves payment details through RLS.
+  perform set_config('request.jwt.claims', json_build_object('sub', v_org)::text, true);
+  set local role authenticated;
+  insert into public.match_payment_info (match_id, details) values (v_m, 'SnapScan: snapscan.io/pay/test');
+  reset role;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_p)::text, true);
+  perform public.join_match(v_m);
+
+  -- Player on the list can read it; an outsider can't.
+  set local role authenticated;
+  select count(*) into v_n from public.match_payment_info where match_id = v_m;
+  reset role;
+  if v_n <> 1 then raise exception 'S9 FAIL: player can''t see payment details'; end if;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_out)::text, true);
+  set local role authenticated;
+  select count(*) into v_n from public.match_payment_info where match_id = v_m;
+  reset role;
+  if v_n <> 0 then raise exception 'S9 FAIL: outsider can see payment details'; end if;
+
+  -- Outsider can't claim; player claims; only the organiser confirms.
+  begin perform public.claim_paid(v_m, true);
+        raise exception 'S9 FAIL: outsider claimed paid';
+  exception when others then if sqlerrm not like '%NOT_IN%' then raise; end if; end;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_p)::text, true);
+  if public.claim_paid(v_m, true) <> 'claimed' then raise exception 'S9 FAIL: claim'; end if;
+  begin perform public.confirm_paid(v_m, v_p, true);
+        raise exception 'S9 FAIL: player confirmed own payment';
+  exception when others then if sqlerrm not like '%NOT_ORGANIZER%' then raise; end if; end;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_org)::text, true);
+  perform public.confirm_paid(v_m, v_p, true);
+  if (select paid_claimed_at is not null and paid_confirmed_at is not null
+        from public.match_players where match_id = v_m and user_id = v_p) is not true
+    then raise exception 'S9 FAIL: paid flags not set'; end if;
+  perform public.confirm_paid(v_m, v_p, false);
+  if (select paid_confirmed_at from public.match_players where match_id = v_m and user_id = v_p) is not null
+    then raise exception 'S9 FAIL: untick'; end if;
+
+  raise notice 'SCENARIO 9 PASSED — payment details list-only; I''ve paid → organiser ticks who''s paid';
+end $$;
+
 rollback;  -- leave the database untouched

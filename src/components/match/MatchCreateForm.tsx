@@ -4,7 +4,8 @@ import { useState, useTransition } from "react";
 import { createMatch } from "@/server/actions/match";
 import { SkillMeter } from "@/components/profile/SkillMeter";
 import { PositionPicker } from "@/components/profile/PositionPicker";
-import type { CreateMatchInput, JoinMode, Position, VenueOption } from "@/lib/types";
+import { NEIGHBOURHOODS } from "@/lib/waitlist";
+import type { CreateMatchInput, JoinMode, LastGameDefaults, Position, VenueOption } from "@/lib/types";
 
 const inputCls =
   "mt-2 w-full rounded-xl border border-ink-600 bg-ink-800 px-3.5 py-2.5 text-white placeholder:text-white/30 outline-none focus:border-pitch";
@@ -75,41 +76,72 @@ function Chips<T extends string | number>({
   );
 }
 
-export function MatchCreateForm({ venues }: { venues: VenueOption[] }) {
-  const [venueMode, setVenueMode] = useState<"seeded" | "custom">("seeded");
-  const [locationId, setLocationId] = useState(venues[0]?.id ?? "");
+const NEW_FIELD = "__new__";
+const AREAS = NEIGHBOURHOODS.filter((n) => n !== "Just visiting Cape Town");
+
+// datetime-local value (organiser's local time) for a Date.
+function toLocalInput(d: Date) {
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60_000).toISOString().slice(0, 16);
+}
+
+// Same weekday + time as the last game, in the future.
+function nextSlot(lastIso: string): string {
+  const d = new Date(lastIso);
+  const soon = Date.now() + 30 * 60_000;
+  while (d.getTime() < soon) d.setDate(d.getDate() + 7);
+  return toLocalInput(d);
+}
+
+export function MatchCreateForm({
+  venues,
+  savedVenues = [],
+  defaults = null,
+}: {
+  venues: VenueOption[];
+  savedVenues?: VenueOption[];
+  defaults?: LastGameDefaults | null;
+}) {
+  const known = [...savedVenues, ...venues];
+  const startVenue =
+    defaults && known.some((v) => v.id === defaults.locationId)
+      ? defaults.locationId
+      : savedVenues[0]?.id ?? venues[0]?.id ?? NEW_FIELD;
+
+  const [venueChoice, setVenueChoice] = useState(startVenue);
   const [customVenueName, setCustomVenueName] = useState("");
-  const [customNeighborhood, setCustomNeighborhood] = useState("");
+  const [customNeighborhood, setCustomNeighborhood] = useState<string>(AREAS[0]);
 
-  const [title, setTitle] = useState("");
-  const [kickoffLocal, setKickoffLocal] = useState("");
-  const [durationMin, setDurationMin] = useState(60);
-  const [maxPlayers, setMaxPlayers] = useState(10);
-  const [price, setPrice] = useState(0);
+  const [title, setTitle] = useState(defaults?.title ?? "");
+  const [kickoffLocal, setKickoffLocal] = useState(defaults ? nextSlot(defaults.kickoffAtIso) : "");
+  const [durationMin, setDurationMin] = useState(defaults?.durationMin ?? 60);
+  const [maxPlayers, setMaxPlayers] = useState(defaults?.maxPlayers ?? 10);
+  const [price, setPrice] = useState(defaults?.pricePerPlayerZar ?? 0);
+  const [paymentDetails, setPaymentDetails] = useState(defaults?.paymentDetails ?? "");
+  const [repeatWeeks, setRepeatWeeks] = useState(1);
 
-  const [joinMode, setJoinMode] = useState<JoinMode>("manual");
-  const [minSkill, setMinSkill] = useState(3);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [joinMode, setJoinMode] = useState<JoinMode>(defaults?.joinMode ?? "instant");
+  const [minSkill, setMinSkill] = useState(1);
   const [reqPositions, setReqPositions] = useState<Position[]>([]);
   const [minReliability, setMinReliability] = useState(0);
 
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState("");
 
+  const isNew = venueChoice === NEW_FIELD;
+
   function submit() {
     setError("");
-    if (venueMode === "seeded" && !locationId) return setError("Choose a venue.");
-    if (venueMode === "custom" && !customVenueName.trim())
-      return setError("Name your community field.");
+    if (isNew && !customVenueName.trim()) return setError("Name the field or court.");
     if (!kickoffLocal) return setError("Pick a kickoff time.");
 
-    // datetime-local is in the organizer's local tz → convert to UTC ISO.
+    // datetime-local is in the organiser's local tz → convert to UTC ISO.
     const kickoffAtIso = new Date(kickoffLocal).toISOString();
-
     const payload: CreateMatchInput = {
-      venueMode,
-      locationId: venueMode === "seeded" ? locationId : undefined,
-      customVenueName: venueMode === "custom" ? customVenueName : undefined,
-      customNeighborhood: venueMode === "custom" ? customNeighborhood : undefined,
+      venueMode: isNew ? "custom" : "seeded",
+      locationId: isNew ? undefined : venueChoice,
+      customVenueName: isNew ? customVenueName : undefined,
+      customNeighborhood: isNew ? customNeighborhood : undefined,
       title,
       kickoffAtIso,
       durationMin,
@@ -119,6 +151,8 @@ export function MatchCreateForm({ venues }: { venues: VenueOption[] }) {
       minSkillLevel: joinMode === "instant" ? minSkill : undefined,
       requiredPositions: joinMode === "instant" ? reqPositions : undefined,
       minReliabilityScore: joinMode === "instant" ? minReliability : undefined,
+      repeatWeeks,
+      paymentDetails: price > 0 ? paymentDetails : undefined,
     };
 
     startTransition(async () => {
@@ -127,67 +161,55 @@ export function MatchCreateForm({ venues }: { venues: VenueOption[] }) {
     });
   }
 
-  // local datetime min = now (rounded to the minute)
-  const minLocal = new Date(Date.now() - new Date().getTimezoneOffset() * 60_000)
-    .toISOString()
-    .slice(0, 16);
+  const minLocal = toLocalInput(new Date());
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Venue */}
+      {defaults && (
+        <p className="rounded-2xl border border-pitch/20 bg-pitch/5 px-4 py-3 text-xs text-white/60">
+          Filled in from your last game. Change anything, then post.
+        </p>
+      )}
+
       <Section label="Where">
-        <Segmented
-          value={venueMode}
-          onChange={setVenueMode}
-          options={[
-            { key: "seeded", label: "Popular venue" },
-            { key: "custom", label: "Custom field" },
-          ]}
-        />
-        {venueMode === "seeded" ? (
-          <select
-            className={inputCls}
-            value={locationId}
-            onChange={(e) => setLocationId(e.target.value)}
-          >
+        <select className={inputCls} value={venueChoice} onChange={(e) => setVenueChoice(e.target.value)}>
+          {savedVenues.length > 0 && (
+            <optgroup label="Your fields">
+              {savedVenues.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.name}
+                  {v.neighborhood ? ` · ${v.neighborhood}` : ""}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          <optgroup label="Popular venues">
             {venues.map((v) => (
               <option key={v.id} value={v.id}>
                 {v.name}
                 {v.neighborhood ? ` · ${v.neighborhood}` : ""}
               </option>
             ))}
-          </select>
-        ) : (
+          </optgroup>
+          <option value={NEW_FIELD}>+ Another field or court</option>
+        </select>
+        {isNew && (
           <div className="space-y-2">
             <input
               className={inputCls}
-              placeholder="Custom Community Field / Park (e.g. Green Point Common)"
+              placeholder="Field or court name (e.g. Green Point Common)"
               value={customVenueName}
               onChange={(e) => setCustomVenueName(e.target.value)}
               maxLength={80}
             />
-            <input
-              className={inputCls}
-              placeholder="Neighborhood (optional)"
-              value={customNeighborhood}
-              onChange={(e) => setCustomNeighborhood(e.target.value)}
-              maxLength={40}
-            />
-            <p className="text-xs text-white/40">
-              No GPS pin for custom fields — players verify with your 4-digit match code.
-            </p>
+            <select className={inputCls} value={customNeighborhood} onChange={(e) => setCustomNeighborhood(e.target.value)}>
+              {AREAS.map((a) => (
+                <option key={a} value={a}>{a}</option>
+              ))}
+            </select>
+            <p className="text-xs text-white/40">Saved for next time.</p>
           </div>
         )}
-      </Section>
-
-      <Section label="Match name (optional)">
-        <input
-          className={inputCls}
-          placeholder="e.g. Thursday Lunchtime Fives"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          maxLength={60}
-        />
       </Section>
 
       <Section label="Kickoff">
@@ -200,19 +222,7 @@ export function MatchCreateForm({ venues }: { venues: VenueOption[] }) {
         />
       </Section>
 
-      <Section label="Duration">
-        <Chips
-          value={durationMin}
-          onChange={setDurationMin}
-          options={[
-            { key: 60, label: "60 min" },
-            { key: 90, label: "90 min" },
-            { key: 120, label: "120 min" },
-          ]}
-        />
-      </Section>
-
-      <Section label="Squad size">
+      <Section label="Players (including you)">
         <Chips
           value={maxPlayers}
           onChange={setMaxPlayers}
@@ -225,7 +235,7 @@ export function MatchCreateForm({ venues }: { venues: VenueOption[] }) {
         />
       </Section>
 
-      <Section label="Price per player (R) — settled off-platform">
+      <Section label="Cost per player (R, 0 = free)">
         <input
           type="number"
           inputMode="numeric"
@@ -233,60 +243,107 @@ export function MatchCreateForm({ venues }: { venues: VenueOption[] }) {
           className={inputCls}
           value={price}
           onChange={(e) => setPrice(Number(e.target.value))}
-          placeholder="0 for free fields"
         />
       </Section>
 
-      {/* Join settings */}
-      <Section label="Who can join">
-        <Segmented
-          value={joinMode}
-          onChange={setJoinMode}
+      {price > 0 && (
+        <Section label="How players pay you">
+          <textarea
+            className={inputCls}
+            rows={3}
+            maxLength={300}
+            value={paymentDetails}
+            onChange={(e) => setPaymentDetails(e.target.value)}
+            placeholder="SnapScan link, or bank + account number + branch code. Only people on the list see this."
+          />
+        </Section>
+      )}
+
+      <Section label="Repeat">
+        <Chips
+          value={repeatWeeks}
+          onChange={setRepeatWeeks}
           options={[
-            { key: "manual", label: "Manual request" },
-            { key: "instant", label: "Instant booking" },
+            { key: 1, label: "Just this one" },
+            { key: 4, label: "Weekly × 4" },
+            { key: 8, label: "Weekly × 8" },
           ]}
         />
-        <p className="mt-2 text-xs text-white/40">
-          {joinMode === "instant"
-            ? "Players meeting all criteria are auto-accepted. Others can still request."
-            : "You approve every join request yourself."}
-        </p>
       </Section>
 
-      {joinMode === "instant" && (
-        <div className="space-y-5 rounded-2xl border border-pitch/20 bg-pitch/5 p-4">
-          <SkillMeter label="Minimum skill to auto-accept" value={minSkill} onChange={setMinSkill} />
-          <PositionPicker
-            label="Positions needed (optional)"
-            value={reqPositions}
-            onChange={setReqPositions}
-          />
-          <Section label="Minimum reliability">
+      <button
+        type="button"
+        onClick={() => setMoreOpen((o) => !o)}
+        className="text-sm font-semibold text-white/50 underline"
+      >
+        {moreOpen ? "Fewer options" : "More options (name, length, who can join)"}
+      </button>
+
+      {moreOpen && (
+        <div className="space-y-6">
+          <Section label="Game name (optional)">
+            <input
+              className={inputCls}
+              placeholder="e.g. Thursday Lunchtime Fives"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={60}
+            />
+          </Section>
+
+          <Section label="Length">
             <Chips
-              value={minReliability}
-              onChange={setMinReliability}
+              value={durationMin}
+              onChange={setDurationMin}
               options={[
-                { key: 0, label: "Any" },
-                { key: 50, label: "50+" },
-                { key: 70, label: "70+" },
-                { key: 85, label: "85+" },
+                { key: 60, label: "60 min" },
+                { key: 90, label: "90 min" },
+                { key: 120, label: "120 min" },
               ]}
             />
           </Section>
+
+          <Section label="Who can join">
+            <Segmented
+              value={joinMode}
+              onChange={setJoinMode}
+              options={[
+                { key: "instant", label: "Anyone with the link" },
+                { key: "manual", label: "I approve each one" },
+              ]}
+            />
+          </Section>
+
+          {joinMode === "instant" && (
+            <div className="space-y-5 rounded-2xl border border-pitch/20 bg-pitch/5 p-4">
+              <SkillMeter label="Minimum skill to auto-accept" value={minSkill} onChange={setMinSkill} />
+              <PositionPicker label="Positions needed (optional)" value={reqPositions} onChange={setReqPositions} />
+              <Section label="Minimum show-up rate">
+                <Chips
+                  value={minReliability}
+                  onChange={setMinReliability}
+                  options={[
+                    { key: 0, label: "Any" },
+                    { key: 50, label: "50+" },
+                    { key: 70, label: "70+" },
+                    { key: 85, label: "85+" },
+                  ]}
+                />
+              </Section>
+            </div>
+          )}
         </div>
       )}
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 
-      {/* Inline create button — scrolls with the form and clears the bottom nav. */}
       <button
         type="button"
         onClick={submit}
         disabled={pending}
         className="w-full rounded-2xl bg-pitch py-3.5 font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark disabled:opacity-60"
       >
-        {pending ? "Creating…" : "Create match"}
+        {pending ? "Posting…" : repeatWeeks > 1 ? `Post ${repeatWeeks} weekly games` : "Post game"}
       </button>
     </div>
   );

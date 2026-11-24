@@ -1,32 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { buildWhatsAppInvite } from "@/lib/whatsapp";
+import { buildGroupList } from "@/lib/whatsapp";
 import { track } from "@/lib/analytics";
 
-// Viral share. Builds the spec invite text + /m/<slug> link and opens WhatsApp;
-// also offers a plain copy for any other group chat.
-export function WhatsAppInvite({
-  organizerName,
-  venue,
-  kickoffIso,
-  shareSlug,
-  siteUrl,
-}: {
-  organizerName: string;
+// One-tap share: the game as a WhatsApp group list (numbered names + spots
+// left + the /m/<slug> link). Copy for any other chat.
+export function WhatsAppInvite(props: {
+  title?: string | null;
   venue: string;
   kickoffIso: string;
+  pricePerPlayer: number;
+  names: string[];
+  maxPlayers: number;
   shareSlug: string;
   siteUrl: string;
 }) {
   const [copied, setCopied] = useState(false);
-  const { text, link, whatsappUrl } = buildWhatsAppInvite({
-    organizerName,
-    venue,
-    kickoffIso,
-    shareSlug,
-    siteUrl,
-  });
+  const { text, whatsappUrl } = buildGroupList(props);
 
   async function copy() {
     track("share", { via: "copy" });
@@ -36,11 +27,11 @@ export function WhatsAppInvite({
   }
 
   return (
-    <section className="rounded-2xl border border-ink-700 bg-ink-800/60 p-4">
-      <h3 className="text-sm font-bold uppercase tracking-wide text-white/50">Fill the squad</h3>
-      <p className="mt-1 text-xs text-white/40">
-        Drop this in your WhatsApp group — anyone with the link taps “I’m in” and lands on your list.
-      </p>
+    <section className="rounded-2xl border border-pitch/30 bg-pitch/5 p-4">
+      <h3 className="text-sm font-bold uppercase tracking-wide text-white/50">Share to your group</h3>
+      <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap rounded-xl bg-ink-900/60 p-3 font-sans text-xs leading-relaxed text-white/70">
+        {text}
+      </pre>
       <div className="mt-3 flex gap-2">
         <a
           href={whatsappUrl}
@@ -59,7 +50,9 @@ export function WhatsAppInvite({
           {copied ? "Copied ✓" : "Copy"}
         </button>
       </div>
-      <p className="mt-2 truncate text-center text-[11px] text-white/30">{link}</p>
+      <p className="mt-2 text-center text-[11px] text-white/30">
+        Anyone with the link taps “I’m in”. No app or account needed.
+      </p>
     </section>
   );
 }

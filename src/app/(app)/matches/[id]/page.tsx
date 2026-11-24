@@ -14,6 +14,9 @@ import { PingBallers } from "@/components/match/PingBallers";
 import { PlayerChip } from "@/components/profile/PlayerChip";
 import { AttendancePanel } from "@/components/match/AttendancePanel";
 import { KeepProfile } from "@/components/match/KeepProfile";
+import { TrackEvent } from "@/components/analytics/TrackEvent";
+import { PaymentPanel } from "@/components/match/PaymentPanel";
+import { WhoPaidPanel } from "@/components/match/WhoPaidPanel";
 import type { MatchStatus, JoinMode, VenueType, RosterEntry } from "@/lib/types";
 
 interface MatchRow {
@@ -40,7 +43,19 @@ interface RawRosterRow {
   status: RosterEntry["status"];
   team_color: RosterEntry["team_color"];
   position: RosterEntry["position"];
+  paid_claimed_at: string | null;
+  paid_confirmed_at: string | null;
   profile: { name: string; skill_level: number; reliability_score: number } | null;
+}
+
+// Payment reference the player puts on an EFT, e.g. 5S-THU-ZORAN.
+function payReference(kickoffIso: string, name: string) {
+  const day = new Date(kickoffIso)
+    .toLocaleDateString("en-ZA", { weekday: "short", timeZone: "Africa/Johannesburg" })
+    .slice(0, 3)
+    .toUpperCase();
+  const who = (name.split(" ")[0] || "PLAYER").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10) || "PLAYER";
+  return `5S-${day}-${who}`;
 }
 
 // NOTE: no `organizer:profiles(...)` embed here — matches has TWO FKs to
@@ -57,7 +72,13 @@ function fmt(iso: string) {
   });
 }
 
-export default async function MatchLobbyPage({ params }: { params: { id: string } }) {
+export default async function MatchLobbyPage({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams: { posted?: string };
+}) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
   // Public browsing: match details are viewable anonymously. uid === null →
@@ -100,11 +121,12 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   }
   if (!match) notFound();
 
-  const [{ data: rawRoster }, { count: availableTokens }, { data: myVote }, { data: organizerRow }] =
+  const paid = match.price_per_player_zar > 0;
+  const [{ data: rawRoster }, { count: availableTokens }, { data: myVote }, { data: organizerRow }, { data: payInfo }] =
     await Promise.all([
       supabase
         .from("match_players")
-        .select("user_id, status, team_color, position, profile:profiles(name, skill_level, reliability_score)")
+        .select("user_id, status, team_color, position, paid_claimed_at, paid_confirmed_at, profile:profiles(name, skill_level, reliability_score)")
         .eq("match_id", matchId)
         .returns<RawRosterRow[]>(),
       uid && FEATURES.tokens
@@ -115,6 +137,10 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
         ? supabase.from("match_votes").select("id").eq("match_id", matchId).eq("voter_id", uid).maybeSingle()
         : Promise.resolve({ data: null }),
       supabase.from("profiles").select("name").eq("id", match.organizer_id).maybeSingle<{ name: string }>(),
+      // RLS: only the organiser and people on the list can read this.
+      uid && paid
+        ? supabase.from("match_payment_info").select("details").eq("match_id", matchId).maybeSingle<{ details: string }>()
+        : Promise.resolve({ data: null }),
     ]);
 
   const organizerName = organizerRow?.name ?? "Your organizer";
@@ -135,6 +161,16 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   const confirmed = roster.filter((r) => r.status === "accepted" || r.status === "attended").sort(slotOrder);
   const requests = roster.filter((r) => r.status === "requested");
   const mine = roster.find((r) => r.user_id === uid) ?? null;
+  const myRaw = (rawRoster ?? []).find((r) => r.user_id === uid) ?? null;
+  const ACTIVE_STATUSES = ["requested", "accepted", "attended"];
+  const payRows = (rawRoster ?? [])
+    .filter((r) => r.user_id !== match!.organizer_id && ACTIVE_STATUSES.includes(r.status))
+    .map((r) => ({
+      user_id: r.user_id,
+      name: r.profile?.name ?? "Player",
+      claimed: !!r.paid_claimed_at,
+      confirmed: !!r.paid_confirmed_at,
+    }));
   const completed = match.status === "completed";
   const kickedOff = now >= new Date(match.kickoff_at).getTime();
   const inCheckInWindow = kickedOff && !ended && !completed;
@@ -145,6 +181,14 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   return (
     <div className="space-y-6 pb-10">
       <MatchRealtime matchId={match.id} />
+      {searchParams.posted === "1" && isOrganizer && (
+        <>
+          <TrackEvent name="post_game" />
+          <p className="rounded-2xl border border-pitch/40 bg-pitch/10 p-3 text-center text-sm font-bold text-pitch">
+            Posted ✓ Now share it to your group.
+          </p>
+        </>
+      )}
 
       {/* Header */}
       <div>
@@ -237,6 +281,16 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
         <div className="space-y-4">
           {!completed && match.status !== "cancelled" && (
             <>
+              <WhatsAppInvite
+                title={match.title}
+                venue={match.location?.name ?? "the pitch"}
+                kickoffIso={match.kickoff_at}
+                pricePerPlayer={match.price_per_player_zar}
+                names={confirmed.map((p) => p.name)}
+                maxPlayers={match.max_players}
+                shareSlug={match.share_slug}
+                siteUrl={SITE_URL}
+              />
               <PingBallers
                 matchId={match.id}
                 venue={match.location?.name ?? "the pitch"}
@@ -245,14 +299,10 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
                 shareSlug={match.share_slug}
                 siteUrl={SITE_URL}
               />
-              <WhatsAppInvite
-                organizerName={organizerName}
-                venue={match.location?.name ?? "the pitch"}
-                kickoffIso={match.kickoff_at}
-                shareSlug={match.share_slug}
-                siteUrl={SITE_URL}
-              />
             </>
+          )}
+          {paid && match.status !== "cancelled" && (
+            <WhoPaidPanel matchId={match.id} price={match.price_per_player_zar} details={payInfo?.details ?? null} rows={payRows} />
           )}
           {FEATURES.gpsCheckIn && !completed && <MatchCodePanel matchId={match.id} />}
           <OrganizerControls
@@ -281,6 +331,19 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
             availableTokens={availableTokens ?? 0}
           />
         )
+      )}
+
+      {/* Paid court: how to pay the organiser + "I've paid" */}
+      {!isOrganizer && paid && myRaw && ACTIVE_STATUSES.includes(myRaw.status) && match.status !== "cancelled" && (
+        <PaymentPanel
+          matchId={match.id}
+          price={match.price_per_player_zar}
+          organizerName={organizerName}
+          details={payInfo?.details ?? null}
+          reference={payReference(match.kickoff_at, myRaw.profile?.name ?? "Player")}
+          claimed={!!myRaw.paid_claimed_at}
+          confirmed={!!myRaw.paid_confirmed_at}
+        />
       )}
     </div>
   );

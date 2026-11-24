@@ -60,6 +60,12 @@ export default function LandingPage({
 
       <section className="mt-8">
         <WaitlistForm refCode={refCode} source={source} siteUrl={siteUrl} />
+        <p className="mt-4 text-center text-sm text-white/60">
+          Run a regular game?{" "}
+          <Link href="/organise" className="font-semibold text-pitch underline">
+            Post it now, free
+          </Link>
+        </p>
       </section>
 
       <div className="pitch-line my-14" />

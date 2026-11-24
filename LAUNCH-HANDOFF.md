@@ -191,9 +191,44 @@ linked to the FB Page.
 - Not built (follow-ups): the organiser can't see guests' WhatsApp numbers in the app yet (`phone_number` stays
   private per 0025). The S3 "WhatsApp group list" share message is where that belongs.
 
-## Next session → S3 (organiser soft launch) in PRODUCT-BRIEF.md
-Merge PR #17 (0027 is already in prod) and do the setup above first. Then S3: organiser signup path, open `/m/<slug>` to signed-out visitors under the
-gate, fast "post a game", the WhatsApp list share message, paid-court "who's paid", admin counts.
+## Update 2026-11-24: S3 built (organiser soft launch), branch `claude/s3-organiser-launch`
+- [x] **Gate:** `/organise` ("Run a game? Post it here, free") is open under PRELAUNCH: Continue with Google or an email
+  link creates the account (only this path can create accounts while the gate is on) and lands on "Post a game".
+  `/m/<slug>` is open to everyone and is now the join page: the game, faces of who's in, spots left, and "I'm in"
+  (guest join from S2). The landing page links to `/organise`. **The feed stays closed:** with PRELAUNCH on, `/feed`
+  only shows games you run or are on, with a line explaining areas unlock at 50 players + 3 weekly games.
+- [x] **Post in under 30s** (`MatchCreateForm`): venue picker has "Your fields" (fields you added before; same-name
+  fields are reused, not duplicated) + popular venues; everything is filled in from your last game (same weekday and
+  time, next week); "Repeat: just this one / weekly × 4 / weekly × 8" (games share `matches.series_id`); name, length
+  and join rules sit under "More options"; "Anyone with the link" (instant) is the default. After posting you land on
+  the game with the share box.
+- [x] **WhatsApp share** (`buildGroupList`): `⚽ Thu 26 Nov, 19:00 · venue · R60 each` / `1. Zoran` / `2. Sam` /
+  `8 spots left → link`. Old "first month free" copy is gone from all share text.
+- [x] **Paid courts:** organiser adds "How players pay you" (SnapScan link / EFT details) when posting or on the game;
+  only the organiser and people on that game's list can read it (`match_payment_info` + RLS). Players see
+  "R60 each · Court booked by X, pay them directly", the reference (`5S-THU-SAM`) and "I've paid". The organiser gets
+  "Who's paid (n/m)" with "says paid" players first and a tick per player. No money moves through 5sFindr.
+- [x] **Link preview:** `/m/<slug>` has its own title/description and a 1200×630 image (faces, time, venue, price,
+  "3 spots left" / "Full" / "Played").
+- [x] **Admin:** `/admin` (only for emails in the `ADMIN_EMAILS` Vercel env var, else 404): waitlist / kept profiles /
+  guests / organisers, unlock progress per launch area (waitlist players vs 50, games ±7 days vs 3), and a table by
+  area and role. Counts only. Area mapping is `src/lib/areas.ts` (same as the 06:00 digest).
+- **Migration 0028_organiser_launch** (`series_id`, `match_payment_info`, `paid_claimed_at` / `paid_confirmed_at`,
+  `claim_paid`, `confirm_paid`): tested locally (scenario 9, all 10 scenarios pass). **Applied to prod 2026-11-24**
+  with Zoran's OK and checked (columns, RLS, grants). Note: like the rest of a live game's roster, the paid
+  timestamps are readable through the API by anyone with the link (not shown anywhere public); payment details are not.
+- Checked in a local preview against prod data (read-only): `/m/<slug>` and `/organise` open signed-out, `/feed`
+  still redirects to the waitlist, the preview image renders.
+
+**Zoran, for S3:**
+1. ~~OK applying 0028 to prod~~ Done 2026-11-24. Merge the S3 PR (#20).
+2. Vercel → Settings → Environment Variables: `ADMIN_EMAILS` = your email (Production), then redeploy.
+3. The S2 setup list above (anonymous sign-ins, manual linking, Google, redirect URL, Turnstile) is still needed for
+   "I'm in" and Google to work. Until then, organisers can use the email link on `/organise`.
+
+## Next session → S4 (no-show tools) in PRODUCT-BRIEF.md
+Resend email from `hello@5sfindr.com`, "still coming?" at 24h/3h, auto-release of unconfirmed spots, show-up rate on
+profiles. Outreach to organisers (GROWTH-STRATEGY.md §12) can start once S3 is live.
 Content runs alongside: each week, `/content-week` → Zoran reviews `REVIEW.md` → records → schedules.
 
 ## Working style

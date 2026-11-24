@@ -8,13 +8,15 @@ type CookieToSet = { name: string; value: string; options: CookieOptions };
 // (/feed, /matches/[id], /leaderboard, /m/* invites) is public; the auth wall
 // triggers on Wallet, Profile, and Post-a-Match. Join-a-match is guarded
 // in-page (login CTA) and by RLS.
-const PROTECTED = ["/wallet", "/profile", "/matches/new"];
+const PROTECTED = ["/wallet", "/profile", "/matches/new", "/admin"];
 const AUTH_PAGES = ["/login", "/signup"];
 
 // Pre-launch, signed-out visitors only reach these (plus / and files such as
 // robots.txt and the service worker's scripts); the rest goes to the waitlist.
 // /login stays open so existing accounts can still sign in and use the app.
-const PRELAUNCH_OPEN = ["/privacy", "/terms", "/login", "/offline", "/api/", "/auth/"];
+// /m/<slug> invites and /organise are the S3 soft launch: anyone with a game's
+// link can join it, and organisers can sign up. The feed stays closed.
+const PRELAUNCH_OPEN = ["/privacy", "/terms", "/login", "/offline", "/api/", "/auth/", "/m/", "/organise"];
 // Guests (Supabase anonymous sign-in) only ever need their game and the
 // sign-in callback; everything else treats them as signed out.
 const GUEST_OPEN = ["/matches/", "/m/", "/auth/"];

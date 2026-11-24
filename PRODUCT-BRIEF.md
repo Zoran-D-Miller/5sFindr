@@ -113,13 +113,13 @@ metadata, pinch-zoom, 5sfindr.com on Vercel, Umami visits, seed bots removed.
 - [x] Update `supabase/tests/economy_test.sql` for the new rules
 
 **S3 — Organiser soft launch**
-- [ ] Gate: organisers can sign up (an "I run a game" path). **Anyone with a game's `/m/<slug>` link
+- [x] Gate: organisers can sign up (an "I run a game" path). **Anyone with a game's `/m/<slug>` link
       can join that game.** The area feed stays closed until the area unlocks
-- [ ] Post a game in under 30 seconds: saved venues, last game's settings filled in, **repeat weekly**
-- [ ] One-tap WhatsApp share message laid out like a group list ("Thu 19:00 · venue · R60 each · 1. … 3 spots left → link")
-- [ ] Paid courts: payment details + reference on the game page, "I've paid", and the organiser's "who's paid" checklist
-- [ ] `/m/<slug>` preview shows spots left + players' faces
-- [ ] Admin view: counts by area and role, plus unlock progress
+- [x] Post a game in under 30 seconds: saved venues, last game's settings filled in, **repeat weekly**
+- [x] One-tap WhatsApp share message laid out like a group list ("Thu 19:00 · venue · R60 each · 1. … 3 spots left → link")
+- [x] Paid courts: payment details + reference on the game page, "I've paid", and the organiser's "who's paid" checklist
+- [x] `/m/<slug>` preview shows spots left + players' faces
+- [x] Admin view: counts by area and role, plus unlock progress
 
 **S4 — No-show tools**
 - [ ] Email through Resend (free tier, from `hello@5sfindr.com`; DNS records in Vercel)
