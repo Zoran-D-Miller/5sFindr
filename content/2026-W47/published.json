@@ -88,8 +88,13 @@
       "at": "2026-11-24T10:34:19.246Z"
     },
     "2026-W47/09/tiktok": {
-      "status": "claimed",
-      "claimed_at": "2026-11-24T17:03:15.033Z"
+      "status": "draft_sent",
+      "claimed_at": "2026-11-24T17:03:15.033Z",
+      "publish_id": "v_inbox_file~v2.7711784624468625409",
+      "platform_id": "v_inbox_file~v2.7711784624468625409",
+      "tiktok_status": "SEND_TO_USER_INBOX",
+      "ai_label": "Zoran turns it on in the app",
+      "at": "2026-11-24T17:03:43.925Z"
     }
   },
   "notices": {}
