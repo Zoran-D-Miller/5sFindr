@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { canPostGames } from "@/lib/entitlements";
 import { TrackEvent } from "@/components/analytics/TrackEvent";
+import { PRELAUNCH } from "@/lib/flags";
+import { UNLOCK } from "@/lib/areas";
 import { FeedShell } from "@/components/feed/FeedShell";
 import type { MatchFeedItem, ViewMode } from "@/lib/types";
 
@@ -52,7 +54,18 @@ export default async function FeedPage({ searchParams }: { searchParams: { poste
   // error must be visible in logs, not silently rendered as a ghost town.
   if (playerRes.error) console.error("[feed] player query error:", playerRes.error.message);
   if (organizerRes.error) console.error("[feed] organizer query error:", organizerRes.error.message);
-  const playerMatches = playerRes.data;
+  let playerMatches = playerRes.data;
+
+  // Soft launch: the area feeds stay closed until an area unlocks. Games are
+  // shared by link (/m/<slug>), so here you only see the ones you're on.
+  if (PRELAUNCH) {
+    const { data: mine } = uid
+      ? await supabase.from("match_players").select("match_id").eq("user_id", uid)
+          .in("status", ["requested", "accepted", "attended"]).returns<{ match_id: string }[]>()
+      : { data: [] as { match_id: string }[] };
+    const ids = new Set((mine ?? []).map((r) => r.match_id));
+    playerMatches = (playerMatches ?? []).filter((m) => ids.has(m.id));
+  }
   const organizerMatches = organizerRes.data;
 
   const initialView: ViewMode =
@@ -66,9 +79,9 @@ export default async function FeedPage({ searchParams }: { searchParams: { poste
     .in("status", ["open", "full"])
     .gte("kickoff_at", now)
     .returns<{ neighborhood: string | null }[]>();
-  const neighborhoods = [
-    ...new Set((hoodRows ?? []).map((r) => r.neighborhood?.trim()).filter((n): n is string => !!n)),
-  ].sort();
+  const neighborhoods = PRELAUNCH
+    ? []
+    : [...new Set((hoodRows ?? []).map((r) => r.neighborhood?.trim()).filter((n): n is string => !!n))].sort();
 
   // Region pings (Layer 1): active alerts for upcoming open matches in my hood.
   // Anonymous visitors have no neighborhood, so no pings.
@@ -118,6 +131,13 @@ export default async function FeedPage({ searchParams }: { searchParams: { poste
             </Link>
           ))}
         </div>
+      )}
+
+      {PRELAUNCH && (
+        <p className="mb-5 rounded-2xl border border-ink-700 bg-ink-800/60 p-4 text-sm text-white/60">
+          Soft launch: games are shared by link for now. Each area’s feed opens once it has {UNLOCK.players} players
+          and {UNLOCK.weeklyGames} weekly games. Here you’ll see the games you run or are on.
+        </p>
       )}
 
       <FeedShell

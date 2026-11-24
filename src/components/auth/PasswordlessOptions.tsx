@@ -15,7 +15,18 @@ function Send() {
 
 // Continue with Google + email magic link. Google is only offered when new
 // accounts are allowed (OAuth can't be limited to existing users).
-export function PasswordlessOptions({ next, allowGoogle }: { next?: string; allowGoogle: boolean }) {
+export function PasswordlessOptions({
+  next,
+  allowGoogle,
+  intent,
+  passwordHint = true,
+}: {
+  next?: string;
+  allowGoogle: boolean;
+  /** "organise" = the /organise signup path (new accounts allowed under PRELAUNCH). */
+  intent?: "organise";
+  passwordHint?: boolean;
+}) {
   const [state, action] = useFormState(sendMagicLink, {});
   const dest = next && next.startsWith("/") && !next.startsWith("//") ? next : "/feed";
 
@@ -36,11 +47,12 @@ export function PasswordlessOptions({ next, allowGoogle }: { next?: string; allo
       )}
       {state.sent ? (
         <p className="rounded-2xl border border-pitch/30 bg-pitch/10 p-3 text-center text-sm text-pitch">
-          If that email has a profile, a sign-in link is on its way. Check your inbox.
+          {intent ? "Check your inbox and tap the link to start posting." : "If that email has a profile, a sign-in link is on its way. Check your inbox."}
         </p>
       ) : (
         <form action={action} className="flex gap-2">
           <input type="hidden" name="next" value={dest} />
+          {intent && <input type="hidden" name="intent" value={intent} />}
           <input
             name="email"
             type="email"
@@ -54,7 +66,9 @@ export function PasswordlessOptions({ next, allowGoogle }: { next?: string; allo
         </form>
       )}
       {state.error && <p className="text-sm text-red-400">{state.error}</p>}
-      <p className="pt-2 text-center text-xs uppercase tracking-wide text-white/30">or with your password</p>
+      {passwordHint && (
+        <p className="pt-2 text-center text-xs uppercase tracking-wide text-white/30">or with your password</p>
+      )}
     </div>
   );
 }

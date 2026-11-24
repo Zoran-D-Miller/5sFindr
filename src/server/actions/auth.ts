@@ -89,7 +89,8 @@ export async function signUp(
 }
 
 // Email magic link (passwordless). While PRELAUNCH is on it only signs in
-// existing accounts, so the waitlist gate holds.
+// existing accounts, except on the /organise path (intent=organise), which is
+// how organisers get an account during the soft launch.
 export async function sendMagicLink(
   _prev: { error?: string; sent?: boolean },
   formData: FormData,
@@ -102,7 +103,7 @@ export async function sendMagicLink(
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        shouldCreateUser: !PRELAUNCH,
+        shouldCreateUser: !PRELAUNCH || formData.get("intent") === "organise",
         emailRedirectTo: `${SITE_URL}/auth/callback?next=${encodeURIComponent(next)}`,
       },
     });

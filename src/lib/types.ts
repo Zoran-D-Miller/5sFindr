@@ -154,6 +154,22 @@ export interface CreateMatchInput {
   minSkillLevel?: number;
   requiredPositions?: Position[];
   minReliabilityScore?: number;
+  /** 1 = just this game; N = this game + the same slot for the next N-1 weeks. */
+  repeatWeeks?: number;
+  /** Paid courts: SnapScan link / EFT details, shown only to people on the list. */
+  paymentDetails?: string;
+}
+
+/** The organiser's last game, used to pre-fill the post form. */
+export interface LastGameDefaults {
+  locationId: string;
+  kickoffAtIso: string;
+  durationMin: number;
+  maxPlayers: number;
+  pricePerPlayerZar: number;
+  joinMode: JoinMode;
+  title: string | null;
+  paymentDetails: string | null;
 }
 
 /** The editable slice of a profile (what the Profile Editor writes back). */

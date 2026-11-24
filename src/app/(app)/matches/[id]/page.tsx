@@ -14,6 +14,7 @@ import { PingBallers } from "@/components/match/PingBallers";
 import { PlayerChip } from "@/components/profile/PlayerChip";
 import { AttendancePanel } from "@/components/match/AttendancePanel";
 import { KeepProfile } from "@/components/match/KeepProfile";
+import { TrackEvent } from "@/components/analytics/TrackEvent";
 import { PaymentPanel } from "@/components/match/PaymentPanel";
 import { WhoPaidPanel } from "@/components/match/WhoPaidPanel";
 import type { MatchStatus, JoinMode, VenueType, RosterEntry } from "@/lib/types";
@@ -71,7 +72,13 @@ function fmt(iso: string) {
   });
 }
 
-export default async function MatchLobbyPage({ params }: { params: { id: string } }) {
+export default async function MatchLobbyPage({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams: { posted?: string };
+}) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
   // Public browsing: match details are viewable anonymously. uid === null →
@@ -174,6 +181,14 @@ export default async function MatchLobbyPage({ params }: { params: { id: string 
   return (
     <div className="space-y-6 pb-10">
       <MatchRealtime matchId={match.id} />
+      {searchParams.posted === "1" && isOrganizer && (
+        <>
+          <TrackEvent name="post_game" />
+          <p className="rounded-2xl border border-pitch/40 bg-pitch/10 p-3 text-center text-sm font-bold text-pitch">
+            Posted ✓ Now share it to your group.
+          </p>
+        </>
+      )}
 
       {/* Header */}
       <div>

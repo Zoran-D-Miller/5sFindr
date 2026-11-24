@@ -1,48 +1,54 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import type { JoinMode, MatchStatus, VenueType } from "@/lib/types";
+import { loadInvite, inviteWhen } from "@/lib/invite";
+import { Avatar } from "@/components/ui/Avatar";
+import { PlayerActions } from "@/components/match/PlayerActions";
+import { KeepProfile } from "@/components/match/KeepProfile";
+import type { ParticipantStatus } from "@/lib/types";
 
-interface InviteMatch {
-  id: string;
-  title: string | null;
-  venue_type: VenueType;
-  kickoff_at: string;
-  max_players: number;
-  join_mode: JoinMode;
-  status: MatchStatus;
-  location: { name: string; neighborhood: string | null } | null;
-  organizer: { name: string; referral_code: string } | null;
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const m = await loadInvite(params.slug);
+  if (!m) return { title: "5sFindr" };
+  const left = Math.max(0, m.max_players - m.players.length);
+  const title = `${m.organizer?.name ?? "A game"} needs players · ${inviteWhen(m.kickoff_at)}`;
+  const description = [
+    m.location?.name,
+    m.price_per_player_zar > 0 ? `R${m.price_per_player_zar} each` : "Free",
+    left > 0 ? `${left} spot${left === 1 ? "" : "s"} left` : "Full",
+    "Tap “I’m in”, no app needed.",
+  ].filter(Boolean).join(" · ");
+  // The image comes from ./opengraph-image.tsx (faces + spots left).
+  return { title, description, openGraph: { title, description }, twitter: { card: "summary_large_image", title, description } };
 }
 
-function fmt(iso: string) {
-  return new Date(iso).toLocaleString("en-ZA", {
-    weekday: "long", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false,
-  });
-}
-
-// Public viral landing — anyone with the link can see the match and claim a
-// spot. RLS exposes only live matches to anon, which is exactly what we want.
+// Public invite: anyone with the link sees the game and taps "I'm in"
+// (guest join: first name + WhatsApp). Open under the pre-launch gate.
 export default async function MatchInvitePage({ params }: { params: { slug: string } }) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data: match } = await supabase
-    .from("matches")
-    .select(
-      "id, title, venue_type, kickoff_at, max_players, join_mode, status, location:locations(name, neighborhood), organizer:profiles!organizer_id(name, referral_code)",
-    )
-    .eq("share_slug", params.slug)
-    .maybeSingle<InviteMatch>();
-
+  const match = await loadInvite(params.slug);
   if (!match) notFound();
 
-  const open = match.status === "open";
-  // Everyone goes to the lobby: newcomers tap "I'm in" there (name + WhatsApp,
-  // no account). The organiser's referral code rides along for later.
-  const claimHref = `/matches/${match.id}`;
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const uid = user?.id ?? null;
+
+  let myStatus: ParticipantStatus | null = null;
+  if (uid) {
+    const { data } = await supabase
+      .from("match_players")
+      .select("status")
+      .eq("match_id", match.id)
+      .eq("user_id", uid)
+      .maybeSingle<{ status: ParticipantStatus }>();
+    myStatus = data?.status ?? null;
+  }
+
+  const isOrganizer = uid === match.organizer_id;
+  const inGame = myStatus === "requested" || myStatus === "accepted" || myStatus === "attended";
+  const taken = match.players.length;
+  const left = Math.max(0, match.max_players - taken);
+  const faces = match.players.slice(0, 8);
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col px-6 py-10">
@@ -52,15 +58,15 @@ export default async function MatchInvitePage({ params }: { params: { slug: stri
         </Link>
       </header>
 
-      <div className="mt-10 rounded-3xl border border-pitch/30 bg-gradient-to-b from-pitch/10 to-transparent p-6">
+      <div className="mt-8 rounded-3xl border border-pitch/30 bg-gradient-to-b from-pitch/10 to-transparent p-6">
         <span className="inline-flex items-center gap-2 rounded-full border border-pitch/30 bg-pitch/10 px-3 py-1 text-xs font-semibold text-pitch">
-          ⚽ 5-a-side invite
+          ⚽ 5-a-side
         </span>
         <h1 className="mt-4 text-2xl font-black leading-tight">
-          {match.organizer?.name ?? "An organizer"} needs players
+          {match.organizer?.name ?? "An organiser"} needs players
         </h1>
         <p className="mt-1 text-white/60">
-          {match.title || `${match.max_players}-a-side`} at{" "}
+          {match.title ? `${match.title} · ` : ""}
           <span className="font-semibold text-white">{match.location?.name}</span>
           {match.location?.neighborhood ? ` · ${match.location.neighborhood}` : ""}
         </p>
@@ -68,48 +74,68 @@ export default async function MatchInvitePage({ params }: { params: { slug: stri
         <dl className="mt-5 space-y-2 text-sm">
           <div className="flex justify-between border-t border-ink-700 pt-2">
             <dt className="text-white/40">Kickoff</dt>
-            <dd className="font-semibold">{fmt(match.kickoff_at)}</dd>
+            <dd className="font-semibold">{inviteWhen(match.kickoff_at)}</dd>
           </div>
           <div className="flex justify-between border-t border-ink-700 pt-2">
-            <dt className="text-white/40">Venue</dt>
+            <dt className="text-white/40">Cost</dt>
             <dd className="font-semibold">
-              {match.venue_type === "official_court" ? "Official court" : "Open field"}
+              {match.price_per_player_zar > 0 ? `R${match.price_per_player_zar} each, pay the organiser` : "Free"}
             </dd>
           </div>
           <div className="flex justify-between border-t border-ink-700 pt-2">
-            <dt className="text-white/40">Joining</dt>
-            <dd className="font-semibold capitalize">
-              {match.join_mode === "instant" ? "Instant booking" : "Request to join"}
-            </dd>
+            <dt className="text-white/40">Spots</dt>
+            <dd className="font-semibold text-pitch">{left > 0 ? `${left} left of ${match.max_players}` : "Full"}</dd>
           </div>
         </dl>
+
+        {faces.length > 0 && (
+          <div className="mt-5 flex items-center">
+            <div className="flex -space-x-2">
+              {faces.map((p) => (
+                <span key={p.user_id} className="rounded-full ring-2 ring-ink-900">
+                  <Avatar name={p.name} url={p.avatar_url} size={34} />
+                </span>
+              ))}
+            </div>
+            <p className="ml-3 text-xs text-white/50">
+              {faces.map((p) => p.name.split(" ")[0]).slice(0, 3).join(", ")}
+              {taken > 3 ? ` +${taken - 3}` : ""} {taken === 1 ? "is" : "are"} in
+            </p>
+          </div>
+        )}
       </div>
 
-      {open ? (
-        <Link
-          href={claimHref}
-          className="mt-6 rounded-2xl bg-pitch py-4 text-center text-base font-bold text-ink-900 shadow-glow transition hover:bg-pitch-dark"
-        >
-          I’m in
+      <div className="mt-6 space-y-4">
+        {isOrganizer ? (
+          <Link href={`/matches/${match.id}`} className="btn-primary block w-full text-center">
+            Manage your game
+          </Link>
+        ) : (
+          <PlayerActions
+            matchId={match.id}
+            matchStatus={match.status}
+            joinMode={match.join_mode}
+            kickoffIso={match.kickoff_at}
+            myStatus={myStatus}
+            isAuthed={!!uid}
+            availableTokens={0}
+          />
+        )}
+
+        {inGame && (
+          <Link href={`/matches/${match.id}`} className="block text-center text-sm font-semibold text-pitch">
+            Game details{match.price_per_player_zar > 0 ? " and how to pay" : ""} →
+          </Link>
+        )}
+        {inGame && user?.is_anonymous && <KeepProfile />}
+      </div>
+
+      <p className="mt-auto pt-10 text-center text-xs text-white/40">
+        Run your own game?{" "}
+        <Link href="/organise" className="font-semibold text-white/70 underline">
+          Post it on 5sFindr, free
         </Link>
-      ) : (
-        <p className="mt-6 rounded-2xl border border-ink-700 bg-ink-800/60 py-4 text-center text-sm text-white/50">
-          This match is {match.status === "full" ? "full" : "closed"} — but there are more games waiting.
-        </p>
-      )}
-
-      {!user && (
-        <p className="mt-4 text-center text-xs text-white/40">
-          Free to join. No account needed, just your first name and WhatsApp number.
-        </p>
-      )}
-
-      <Link
-        href={user ? "/feed" : "/login"}
-        className="mt-6 text-center text-sm font-medium text-white/50 transition hover:text-white"
-      >
-        {user ? "Browse all games" : "Already have an account? Log in"}
-      </Link>
+      </p>
     </main>
   );
 }

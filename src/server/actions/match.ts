@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { canPostGames } from "@/lib/entitlements";
 import { randomSlug } from "@/lib/slug";
@@ -40,24 +39,37 @@ export async function createMatch(input: CreateMatchInput): Promise<CreateMatchR
 
   if (input.venueMode === "custom") {
     const name = input.customVenueName?.trim();
-    if (!name) return { error: "Name your community field." };
-    // No coordinates (no map SDK) — attendance falls back to the 4-digit code.
-    const { data: loc, error: locErr } = await supabase
+    if (!name) return { error: "Name the field or court." };
+    const neighborhood = input.customNeighborhood?.trim() || null;
+    // Reuse this organiser's saved field of the same name instead of a duplicate.
+    const { data: existing } = await supabase
       .from("locations")
-      .insert({
-        name,
-        type: "open_area",
-        neighborhood: input.customNeighborhood?.trim() || null,
-        latitude: null,
-        longitude: null,
-        is_seeded: false,
-        created_by_id: user.id,
-      })
-      .select("id")
-      .single();
-    if (locErr || !loc) return { error: locErr?.message ?? "Could not save the venue." };
-    locationId = loc.id;
-    venueType = "open_area";
+      .select("id, type")
+      .eq("created_by_id", user.id)
+      .ilike("name", name)
+      .limit(1)
+      .maybeSingle<{ id: string; type: VenueType }>();
+    if (existing) {
+      locationId = existing.id;
+      venueType = existing.type;
+    } else {
+      venueType = price > 0 ? "official_court" : "open_area";
+      const { data: loc, error: locErr } = await supabase
+        .from("locations")
+        .insert({
+          name,
+          type: venueType,
+          neighborhood,
+          latitude: null,
+          longitude: null,
+          is_seeded: false,
+          created_by_id: user.id,
+        })
+        .select("id")
+        .single();
+      if (locErr || !loc) return { error: locErr?.message ?? "Could not save the venue." };
+      locationId = loc.id;
+    }
   } else {
     if (!input.locationId) return { error: "Choose a venue." };
     const { data: loc } = await supabase
@@ -70,19 +82,20 @@ export async function createMatch(input: CreateMatchInput): Promise<CreateMatchR
     venueType = loc.type;
   }
 
-  // ── Build the row ────────────────────────────────────────────────────
+  // ── Build the rows (one, or one per week) ────────────────────────────
   const instant = input.joinMode === "instant";
   const requiredPositions: Position[] | null =
     instant && input.requiredPositions?.length ? input.requiredPositions : null;
+  const weeks = clamp(input.repeatWeeks ?? 1, 1, 8);
+  const seriesId = weeks > 1 ? crypto.randomUUID() : null;
+  const WEEK = 7 * 24 * 3_600_000;
 
-  const row = {
+  const base = {
     organizer_id: user.id,
     location_id: locationId,
     title: input.title?.trim() || null,
     venue_type: venueType,
-    kickoff_at: kickoff.toISOString(),
     duration_min: duration,
-    ends_at: new Date(kickoff.getTime() + duration * 60_000).toISOString(),
     max_players: maxPlayers,
     price_per_player_zar: price,
     join_mode: instant ? "instant" : "manual",
@@ -90,24 +103,42 @@ export async function createMatch(input: CreateMatchInput): Promise<CreateMatchR
     required_positions: requiredPositions,
     min_reliability_score: instant ? clamp(input.minReliabilityScore ?? 0, 0, 100) : null,
     status: "open" as const,
+    series_id: seriesId,
   };
 
-  // Insert with a fresh slug, retrying only on a unique-violation (23505).
-  let created = false;
-  for (let attempt = 0; attempt < 4; attempt++) {
-    const { error } = await supabase
-      .from("matches")
-      .insert({ ...row, share_slug: randomSlug() });
-    if (!error) {
-      created = true;
-      break;
+  const createdIds: string[] = [];
+  for (let w = 0; w < weeks; w++) {
+    const start = new Date(kickoff.getTime() + w * WEEK);
+    const row = {
+      ...base,
+      kickoff_at: start.toISOString(),
+      ends_at: new Date(start.getTime() + duration * 60_000).toISOString(),
+    };
+    // Insert with a fresh slug, retrying only on a unique-violation (23505).
+    let id: string | null = null;
+    for (let attempt = 0; attempt < 4 && !id; attempt++) {
+      const { data, error } = await supabase
+        .from("matches")
+        .insert({ ...row, share_slug: randomSlug() })
+        .select("id")
+        .single<{ id: string }>();
+      if (data) id = data.id;
+      else if (error?.code !== "23505") return { error: error?.message ?? "Could not create the game." };
     }
-    if (error.code !== "23505") return { error: error.message };
+    if (!id) return { error: "Could not create the game — please try again." };
+    createdIds.push(id);
   }
-  if (!created) return { error: "Could not create the match — please try again." };
 
-  // Land them on their Organizer dashboard with the new match showing.
-  cookies().set("view", "organizer", { path: "/", maxAge: 31_536_000, sameSite: "lax" });
+  // Paid courts: payment details for each game (only the list can read them).
+  const details = input.paymentDetails?.trim().slice(0, 300);
+  if (price > 0 && details) {
+    const { error } = await supabase
+      .from("match_payment_info")
+      .insert(createdIds.map((match_id) => ({ match_id, details })));
+    if (error) console.error("[createMatch] payment details not saved:", error.message);
+  }
+
   revalidatePath("/feed");
-  redirect("/feed?posted=1"); // ?posted=1 → Umami "post_game" event on the feed
+  // Straight to the first game, where the WhatsApp share is. ?posted=1 → Umami.
+  redirect(`/matches/${createdIds[0]}?posted=1`);
 }
