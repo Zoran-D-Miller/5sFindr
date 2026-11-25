@@ -39,7 +39,7 @@ friends through football, and anyone who wants a quick game when their schedule 
 - Socials: TikTok `@5sfindr.com`, IG `@5sfindr.official`. About 0 followers, nothing to report yet.
 - Zoran: works **online only** (can't travel for now), **R0 marketing budget**, about 5–7 hours a day,
   and is a member of 2–3 social 5-a-side WhatsApp groups.
-- Code (2026-11-25): S1–S5 built (0030 in prod 2026-11-25). Earlier: S1 essentials + S2 built (see `LAUNCH-HANDOFF.md`). Joining and posting are free,
+- Code (2026-11-25): S1–S5 built (0030 in prod 2026-11-25). S6 boxes 1–3 built (migration 0031, not in prod yet); The Drop + Sessions next. Earlier: S1 essentials + S2 built (see `LAUNCH-HANDOFF.md`). Joining and posting are free,
   guests join with name + WhatsApp, extras sit behind flags. Migration 0027 is in prod (2026-11-23).
 
 ## Locked decisions
@@ -131,10 +131,10 @@ metadata, pinch-zoom, 5sfindr.com on Vercel, Umami visits, seed bots removed.
       demo (6–7 steps, best part first), one main button, plain line under every teaser
 
 **S6 — Social stickiness**
-- [ ] "Played with" after each game, alerts when your regulars join a game, a "first game in Cape Town" newcomer tag
-- [ ] Game labels: skill (beginner / casual / competitive), women's, mixed, 30+
-- [ ] Shareable images: game recap card for organisers, player card for IG stories
-- [ ] The Drop (new games released at a set time each week) and Sessions (secret-location game, run by Area Captains)
+- [x] "Played with" after each game, alerts when your regulars join a game, a "first game in Cape Town" newcomer tag
+- [x] Game labels: skill (beginner / casual / competitive), women's, mixed, 30+
+- [x] Shareable images: game recap card for organisers, player card for IG stories
+- [ ] The Drop (new games released at a set time each week) and Sessions (secret-location game, run by Area Captains): **next PR (S6 part 2)**
 
 **S7 — Launch kit**
 - [ ] "Claim your profile" email (magic link, pre-filled from the waitlist) sent in batches through Resend

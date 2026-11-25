@@ -18,6 +18,12 @@ import { TrackEvent } from "@/components/analytics/TrackEvent";
 import { PaymentPanel } from "@/components/match/PaymentPanel";
 import { WhoPaidPanel } from "@/components/match/WhoPaidPanel";
 import { StillComing } from "@/components/match/StillComing";
+import { FirstGameToggle } from "@/components/match/FirstGameToggle";
+import { GameLabelsEditor } from "@/components/match/GameLabelsEditor";
+import { PlayedWith } from "@/components/social/PlayedWith";
+import { RegularAlerts, type RegularAlertRow } from "@/components/social/RegularAlerts";
+import { ShareImage } from "@/components/share/ShareImage";
+import { cleanLabels, labelList, type GroupTag, type SkillTag } from "@/lib/labels";
 import type { MatchStatus, JoinMode, VenueType, RosterEntry } from "@/lib/types";
 
 interface MatchRow {
@@ -36,6 +42,10 @@ interface MatchRow {
   motm_awarded: boolean;
   motm_winner_id: string | null;
   share_slug: string;
+  series_id: string | null;
+  skill_tag: SkillTag | null;
+  group_tag: GroupTag | null;
+  over_30: boolean;
   location: { name: string; neighborhood: string | null; type: VenueType; latitude: number | null } | null;
 }
 
@@ -48,7 +58,8 @@ interface RawRosterRow {
   paid_confirmed_at: string | null;
   confirmed_at: string | null;
   released_at: string | null;
-  profile: { name: string; skill_level: number; reliability_score: number } | null;
+  first_game_ct: boolean;
+  profile: { name: string; skill_level: number; reliability_score: number; avatar_url: string | null; games_played: number } | null;
 }
 
 // Payment reference the player puts on an EFT, e.g. 5S-THU-ZORAN.
@@ -65,7 +76,7 @@ function payReference(kickoffIso: string, name: string) {
 // profiles (organizer_id + motm_winner_id), which makes that embed ambiguous
 // and errors out (→ null → 404). The organizer name is fetched separately.
 const MATCH_COLS =
-  "id, organizer_id, title, venue_type, kickoff_at, ends_at, duration_min, max_players, price_per_player_zar, join_mode, status, teams_assigned, motm_awarded, motm_winner_id, share_slug, location:locations(name, neighborhood, type, latitude)";
+  "id, organizer_id, title, venue_type, kickoff_at, ends_at, duration_min, max_players, price_per_player_zar, join_mode, status, teams_assigned, motm_awarded, motm_winner_id, share_slug, series_id, skill_tag, group_tag, over_30, location:locations(name, neighborhood, type, latitude)";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://5sfindr.com";
 
@@ -129,7 +140,7 @@ export default async function MatchLobbyPage({
     await Promise.all([
       supabase
         .from("match_players")
-        .select("user_id, status, team_color, position, paid_claimed_at, paid_confirmed_at, confirmed_at, released_at, profile:profiles(name, skill_level, reliability_score)")
+        .select("user_id, status, team_color, position, paid_claimed_at, paid_confirmed_at, confirmed_at, released_at, first_game_ct, profile:profiles(name, skill_level, reliability_score, avatar_url, games_played)")
         .eq("match_id", matchId)
         .returns<RawRosterRow[]>(),
       uid && FEATURES.tokens
@@ -189,6 +200,28 @@ export default async function MatchLobbyPage({
   const showTeams = FEATURES.shirts && match.teams_assigned;
   const winner = match.motm_winner_id ? roster.find((r) => r.user_id === match!.motm_winner_id) : null;
 
+  // ── S6 ──
+  const labels = cleanLabels(match);
+  const labelChips = labelList(labels);
+  const newcomers = new Set((rawRoster ?? []).filter((r) => r.first_game_ct).map((r) => r.user_id));
+  const newcomerNames = confirmed.filter((p) => newcomers.has(p.user_id) && p.user_id !== uid).map((p) => p.name.split(" ")[0]);
+  // "First game in Cape Town?" while they've never played a 5sFindr game.
+  const canTagFirstGame = !isOrganizer && !!myRaw && (myRaw.status === "requested" || myRaw.status === "accepted") &&
+    msToKickoff > 0 && (match.status === "open" || match.status === "full") && (myRaw.profile?.games_played ?? 1) === 0;
+  // "Played with": after the game, everyone ticked as playing (you included).
+  const iPlayed = !!myRaw && myRaw.status === "attended" && ended;
+  const teammates = iPlayed
+    ? (rawRoster ?? []).filter((r) => r.status === "attended" && r.user_id !== uid)
+    : [];
+  const [{ data: myRegulars }, { data: alertRows }] = await Promise.all([
+    teammates.length > 0
+      ? supabase.from("regulars").select("regular_id").eq("user_id", uid!).returns<{ regular_id: string }[]>()
+      : Promise.resolve({ data: [] as { regular_id: string }[] }),
+    // Guests can't open the feed, so their "your regulars are playing" card lives here.
+    isGuest ? supabase.rpc("my_regular_alerts") : Promise.resolve({ data: [] }),
+  ]);
+  const regularIds = new Set((myRegulars ?? []).map((r) => r.regular_id));
+
   return (
     <div className="space-y-6 pb-10">
       <MatchRealtime matchId={match.id} />
@@ -217,6 +250,9 @@ export default async function MatchLobbyPage({
           <span className="rounded-full bg-ink-700 px-2 py-0.5 font-medium capitalize text-white/60">
             {match.status} · {confirmed.length}/{match.max_players}
           </span>
+          {labelChips.map((l) => (
+            <span key={l} className="rounded-full border border-pitch/40 px-2 py-0.5 font-semibold text-pitch">{l}</span>
+          ))}
         </div>
       </div>
 
@@ -251,6 +287,11 @@ export default async function MatchLobbyPage({
                         ⓒ Captain
                       </span>
                     )}
+                    {newcomers.has(p.user_id) && (
+                      <span className="ml-2 rounded-full bg-electric/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-electric">
+                        👋 First game in Cape Town
+                      </span>
+                    )}
                   </span>
                   {isOrganizer && checkinOpen && p.user_id !== captainId ? (
                     confirmedIds.has(p.user_id) ? (
@@ -267,6 +308,29 @@ export default async function MatchLobbyPage({
           </section>
         )
       )}
+
+      {/* S6: say hi to newcomers */}
+      {isOrganizer && live && newcomerNames.length > 0 && (
+        <p className="rounded-2xl border border-electric/40 bg-electric/10 p-3 text-sm text-white/80">
+          👋 First game in Cape Town: {newcomerNames.join(", ")}. Say hi when they arrive.
+        </p>
+      )}
+      {canTagFirstGame && <FirstGameToggle matchId={match.id} on={!!myRaw?.first_game_ct} />}
+
+      {/* S6: played with → regulars */}
+      {teammates.length > 0 && (
+        <PlayedWith
+          title="You played with"
+          intro="Add your regulars. When one of them joins a game you’re not on, you’ll see it in the app."
+          people={teammates.map((t) => ({
+            user_id: t.user_id,
+            name: t.profile?.name ?? "Player",
+            avatar_url: t.profile?.avatar_url ?? null,
+            is_regular: regularIds.has(t.user_id),
+          }))}
+        />
+      )}
+      {isGuest && <RegularAlerts alerts={(alertRows ?? []) as RegularAlertRow[]} />}
 
       {/* Organiser: spots freed because nobody confirmed (refill them) */}
       {isOrganizer && live && released.length > 0 && (
@@ -321,6 +385,29 @@ export default async function MatchLobbyPage({
       {/* Actions */}
       {isOrganizer ? (
         <div className="space-y-4">
+          {completed && (
+            <section className="space-y-2 rounded-2xl border border-pitch/30 bg-pitch/5 p-4">
+              <h3 className="text-sm font-bold uppercase tracking-wide text-white/50">Game recap</h3>
+              <p className="text-xs text-white/50">
+                An image of who played, new faces and where. Post it to your group or your story.
+              </p>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/api/card/game/${match.id}`}
+                alt="Game recap card"
+                className="mx-auto w-48 rounded-xl border border-ink-700"
+              />
+              <ShareImage
+                src={`/api/card/game/${match.id}`}
+                filename="5sfindr-recap.png"
+                label="Share the recap"
+                via="recap_card"
+              />
+            </section>
+          )}
+          {live && (
+            <GameLabelsEditor matchId={match.id} initial={labels} inSeries={!!match.series_id} />
+          )}
           {!completed && match.status !== "cancelled" && (
             <>
               <WhatsAppInvite
@@ -332,6 +419,7 @@ export default async function MatchLobbyPage({
                 maxPlayers={match.max_players}
                 shareSlug={match.share_slug}
                 siteUrl={SITE_URL}
+                labels={labelChips}
               />
               <PingBallers
                 matchId={match.id}

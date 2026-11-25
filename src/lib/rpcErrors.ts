@@ -37,6 +37,11 @@ const MESSAGES: Record<string, string> = {
   NOT_ATTENDEE: "Only players who showed up can vote.",
   BAD_VOTEE: "You can only vote for someone who attended.",
   ALREADY_VOTED: "You’ve already voted in this match.",
+  // S6 social
+  NOT_PLAYED_WITH: "You can add someone as a regular once you’ve played a game together.",
+  SELF: "That’s you.",
+  TOO_MANY: "You’ve got 200 regulars already. Remove some first.",
+  NOT_NEW: "This tag is for your first game. You’ve played on 5sFindr before.",
 };
 
 export function friendlyRpcError(message: string | undefined): string {

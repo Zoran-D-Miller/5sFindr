@@ -85,6 +85,19 @@ export default function PrivacyPage() {
               many people join with it.
             </li>
           </List>
+          <p>When you play through the app:</p>
+          <List>
+            <li>the games you join, and whether the organiser ticked you as there</li>
+            <li>
+              a “first game in Cape Town” tag, only if you add it to a game. People on that game can see it
+              next to your name.
+            </li>
+            <li>
+              the people you add as regulars. Only you can see your list. You can only add someone you’ve
+              played a game with, and when one of them joins a game you’re not on we show you that game (and
+              email you if your account has an email; turn that off on your profile).
+            </li>
+          </List>
           <p>Automatically, when you visit the site:</p>
           <List>
             <li>

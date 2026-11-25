@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { canPostGames } from "@/lib/entitlements";
 import { randomSlug } from "@/lib/slug";
 import type { CreateMatchInput, Position, VenueType } from "@/lib/types";
+import { cleanLabels, type GameLabels } from "@/lib/labels";
 
 const clamp = (n: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, Math.round(Number.isFinite(n) ? n : lo)));
@@ -104,6 +105,7 @@ export async function createMatch(input: CreateMatchInput): Promise<CreateMatchR
     min_reliability_score: instant ? clamp(input.minReliabilityScore ?? 0, 0, 100) : null,
     status: "open" as const,
     series_id: seriesId,
+    ...cleanLabels(input.labels),
   };
 
   const createdIds: string[] = [];
@@ -141,4 +143,38 @@ export async function createMatch(input: CreateMatchInput): Promise<CreateMatchR
   revalidatePath("/feed");
   // Straight to the first game, where the WhatsApp share is. ?posted=1 → Umami.
   redirect(`/matches/${createdIds[0]}?posted=1`);
+}
+
+/** Organiser changes a game's labels; `series` = also every later game in the same weekly series. */
+export async function setMatchLabels(
+  matchId: string,
+  labels: Partial<GameLabels>,
+  series: boolean,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "Not signed in." };
+
+  const { data: m } = await supabase
+    .from("matches")
+    .select("id, organizer_id, series_id, kickoff_at, status")
+    .eq("id", matchId)
+    .maybeSingle<{ id: string; organizer_id: string; series_id: string | null; kickoff_at: string; status: string }>();
+  if (!m || m.organizer_id !== user.id) return { ok: false, error: "Only the organiser can change labels." };
+  if (m.status === "completed" || m.status === "cancelled") return { ok: false, error: "This game is closed." };
+
+  const clean = cleanLabels(labels);
+  // RLS: "organizer updates match" (only your own games).
+  let q = supabase.from("matches").update(clean).eq("organizer_id", user.id);
+  q = series && m.series_id
+    ? q.eq("series_id", m.series_id).gte("kickoff_at", m.kickoff_at).in("status", ["open", "full", "draft"])
+    : q.eq("id", m.id);
+  const { error } = await q;
+  if (error) return { ok: false, error: "Could not save the labels." };
+
+  revalidatePath(`/matches/${m.id}`);
+  revalidatePath("/feed");
+  return { ok: true };
 }

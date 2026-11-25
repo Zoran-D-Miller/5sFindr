@@ -25,6 +25,7 @@ export function buildGroupList(params: {
   maxPlayers: number;
   shareSlug: string;
   siteUrl: string;
+  labels?: string[]; // S6: "Beginner · Mixed · 30+"
 }): { text: string; whatsappUrl: string; link: string } {
   const link = `${params.siteUrl}/m/${params.shareSlug}`;
   const price = params.pricePerPlayer > 0 ? `R${params.pricePerPlayer} each` : "Free";
@@ -32,7 +33,8 @@ export function buildGroupList(params: {
   const list = params.names.slice(0, params.maxPlayers).map((n, i) => `${i + 1}. ${n}`);
   const left = Math.max(0, params.maxPlayers - params.names.length);
   const tail = left > 0 ? `${left} spot${left === 1 ? "" : "s"} left → ${link}` : `Full. Waiting list → ${link}`;
-  const text = [`⚽ ${head}`, ...list, tail].join("\n");
+  const tags = params.labels?.length ? [params.labels.join(" · ")] : [];
+  const text = [`⚽ ${head}`, ...tags, ...list, tail].join("\n");
   return { text, link, whatsappUrl: `https://wa.me/?text=${encodeURIComponent(text)}` };
 }
 

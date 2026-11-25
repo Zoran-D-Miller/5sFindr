@@ -15,6 +15,7 @@ export function WhatsAppInvite(props: {
   maxPlayers: number;
   shareSlug: string;
   siteUrl: string;
+  labels?: string[];
 }) {
   const [copied, setCopied] = useState(false);
   const { text, whatsappUrl } = buildGroupList(props);

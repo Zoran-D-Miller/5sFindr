@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { canPostGames } from "@/lib/entitlements";
 import { MatchCreateForm } from "@/components/match/MatchCreateForm";
 import type { JoinMode, LastGameDefaults, VenueOption } from "@/lib/types";
+import { cleanLabels, type GameLabels } from "@/lib/labels";
 
 export default async function NewMatchPage() {
   const supabase = createClient();
@@ -22,11 +23,11 @@ export default async function NewMatchPage() {
     supabase.from("locations").select("id, name, type, neighborhood").eq("created_by_id", uid)
       .order("created_at", { ascending: false }).returns<VenueOption[]>(),
     supabase.from("matches")
-      .select("id, location_id, kickoff_at, duration_min, max_players, price_per_player_zar, join_mode, title")
+      .select("id, location_id, kickoff_at, duration_min, max_players, price_per_player_zar, join_mode, title, skill_tag, group_tag, over_30")
       .eq("organizer_id", uid).neq("status", "cancelled")
       .order("created_at", { ascending: false }).limit(1)
       .maybeSingle<{ id: string; location_id: string; kickoff_at: string; duration_min: number; max_players: number;
-        price_per_player_zar: number; join_mode: JoinMode; title: string | null }>(),
+        price_per_player_zar: number; join_mode: JoinMode; title: string | null } & GameLabels>(),
   ]);
 
   // One entry per saved field name (older duplicates hidden).
@@ -49,6 +50,7 @@ export default async function NewMatchPage() {
       joinMode: last.join_mode,
       title: last.title,
       paymentDetails: pay?.details ?? null,
+      labels: cleanLabels(last),
     };
   }
 

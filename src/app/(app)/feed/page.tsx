@@ -8,6 +8,7 @@ import { areaFor, UNLOCK } from "@/lib/areas";
 import { getAreaProgress } from "@/server/areaProgress";
 import { AreaBoard } from "@/components/unlock/AreaBoard";
 import { FeedShell } from "@/components/feed/FeedShell";
+import { RegularAlerts, type RegularAlertRow } from "@/components/social/RegularAlerts";
 import type { MatchFeedItem, ViewMode } from "@/lib/types";
 
 interface PingRow {
@@ -109,6 +110,12 @@ export default async function FeedPage({ searchParams }: { searchParams: { poste
       .slice(0, 2);
   }
 
+  // S6: games your regulars joined that you're not on (marks them seen).
+  const { data: alertRows, error: alertErr } = uid
+    ? await supabase.rpc("my_regular_alerts")
+    : { data: [], error: null };
+  if (alertErr) console.error("[feed] regular alerts:", alertErr.message);
+
   return (
     <>
       <TrackEvent name="browse" data={{ who: member ? "member" : user ? "guest" : "visitor" }} />
@@ -135,6 +142,8 @@ export default async function FeedPage({ searchParams }: { searchParams: { poste
           ))}
         </div>
       )}
+
+      <RegularAlerts alerts={(alertRows ?? []) as RegularAlertRow[]} />
 
       {PRELAUNCH && (
         <section className="mb-6 space-y-3">

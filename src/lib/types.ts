@@ -1,4 +1,5 @@
 // Domain types — mirror the Supabase column shapes (snake_case) from 0001_init.sql.
+import type { GameLabels, GroupTag, SkillTag } from "@/lib/labels";
 
 export type Position = "GK" | "DEF" | "MID" | "FWD" | "ANY";
 export type SubscriptionState = "trialing" | "active" | "past_due" | "cancelled" | "free";
@@ -130,6 +131,10 @@ export interface MatchFeedItem {
   latitude: number | null;
   longitude: number | null;
   spots_taken: number;
+  // S6 game labels (0031)
+  skill_tag: SkillTag | null;
+  group_tag: GroupTag | null;
+  over_30: boolean;
 }
 
 /** A seeded venue option for the create-match dropdown. */
@@ -160,6 +165,8 @@ export interface CreateMatchInput {
   repeatWeeks?: number;
   /** Paid courts: SnapScan link / EFT details, shown only to people on the list. */
   paymentDetails?: string;
+  /** S6 labels: skill, women's / mixed, 30+. */
+  labels?: Partial<GameLabels>;
 }
 
 /** The organiser's last game, used to pre-fill the post form. */
@@ -172,6 +179,7 @@ export interface LastGameDefaults {
   joinMode: JoinMode;
   title: string | null;
   paymentDetails: string | null;
+  labels: GameLabels;
 }
 
 /** The editable slice of a profile (what the Profile Editor writes back). */
