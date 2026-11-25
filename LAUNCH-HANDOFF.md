@@ -303,14 +303,16 @@ linked to the FB Page.
 - **Migration 0030_unlock_founding** (`waitlist.founding_number` + backfill, `waitlist.referred_by_profile`,
   `private.founding_number_for`, `handle_new_user` / `handle_guest_upgraded` re-created with that one change,
   `join_waitlist` re-created with a `founding_number` result column (same args, service role only), `my_invites()`).
-  Tested locally: new scenario 11, all scenarios 1–11 pass. **Not applied to prod yet.**
-- Order matters: apply 0030 **before** merging (the new app calls `my_invites` and reads `founding_number`; the old
-  app ignores the extra column, so applying first is safe).
+  Tested locally: new scenario 11, all scenarios 1–11 pass. **Applied to prod 2026-11-25** with Zoran's OK and
+  checked: the 4 waitlist rows are numbered #094–#097 (profiles hold 1–93), both triggers use the waitlist lookup,
+  `join_waitlist` is service-role only and returns `founding_number`, `my_invites` is callable signed in (not anon),
+  `private.founding_number_for` is not callable by users. The security advisor's only new item is `my_invites`
+  (signed-in, intended).
 - Checked in a local preview (no Supabase env): landing page + demo (all 7 steps), board and invite card with sample
   data. Not checked against prod data.
 
 **Zoran, for S5:**
-1. OK applying migration 0030 to prod, then merge the S5 PR.
+1. ~~OK applying migration 0030 to prod~~ Done 2026-11-25. Merge the S5 PR (#22).
 2. After deploy: open 5sfindr.com, check the board shows (all areas near 0/50 for now) and your profile shows your
    Founding Member number + invite link.
 
