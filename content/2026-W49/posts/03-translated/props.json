@@ -1,0 +1,127 @@
+{
+  "type": "short",
+  "id": "w49-03-translated",
+  "coord": "33.902° S, 18.409° E · FRI 19:00",
+  "hook": {
+    "text": "CAPE TOWN 5s,\n*TRANSLATED.*",
+    "minSec": 1.6,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ],
+    "vo": "vo/03-hook.wav",
+    "voText": "Cape Town five-a-side… ~translated:stutter~."
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "“FIVE MINUTES",
+          "AWAY.”"
+        ],
+        "small": "= STILL AT HOME"
+      },
+      "caption": "Five minutes away. Means: still at home.",
+      "vo": "vo/03-b1.wav",
+      "minSec": 2.2,
+      "voText": "Five minutes away. Means: still at home.",
+      "sfx": [
+        {
+          "src": "data-chirp",
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "3–0",
+        "label": "“NEXT GOAL WINS”",
+        "small": "= WE'RE LOSING"
+      },
+      "caption": "Next goal wins. Means: we're losing.",
+      "vo": "vo/03-b2.wav",
+      "minSec": 2.2,
+      "voText": "Next goal wins. Means: we're ~losing:tapestop~.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "list",
+        "title": "ALSO",
+        "items": [
+          "“I'll pay you Friday” = it's a mystery",
+          "“I'm not a keeper” = you're in goal",
+          "“Last game, guys” = three more"
+        ]
+      },
+      "caption": "I'll pay you Friday. Mystery. I'm not a keeper. You're in goal. Last game, guys… three more.",
+      "vo": "vo/03-b3.wav",
+      "minSec": 3.4,
+      "voText": "I'll pay you Friday. Mystery. I'm not a keeper. You're in goal. Last game, guys… three more.",
+      "sfx": [
+        {
+          "src": "relay",
+          "vol": 0.5
+        },
+        {
+          "src": "relay",
+          "at": 1.2,
+          "vol": 0.5
+        },
+        {
+          "src": "relay",
+          "at": 2.4,
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "WHAT'S ONE",
+          "WE *MISSED?*"
+        ]
+      },
+      "caption": "What's one we missed? Tell us.",
+      "vo": "vo/03-b4.wav",
+      "minSec": 1.8,
+      "voText": "What's one we missed? Tell us.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "vol": 0.6
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Get on the list · 5sfindr.com",
+    "vo": "vo/03-end.wav",
+    "voText": "Fives Finder. Free five-a-side in Cape Town. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}

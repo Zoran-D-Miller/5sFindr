@@ -1,0 +1,142 @@
+{
+  "type": "short",
+  "id": "w49-06-no-app-no-account",
+  "coord": "33.902° S, 18.409° E · SUN 18:12",
+  "hook": {
+    "text": "18:12.\nNO APP.\n*NO ACCOUNT.*",
+    "minSec": 1.6,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      }
+    ],
+    "vo": "vo/06-hook.wav",
+    "voText": "Eighteen twelve. No app. ~No:pitch~ account."
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "COMING SOON · ONE LINK",
+        "screen": "invite",
+        "organiser": "Sipho",
+        "venue": "Green Point Urban Park",
+        "area": "Green Point",
+        "kickoff": "Sunday 18:30",
+        "court": false,
+        "claimAt": 0.65
+      },
+      "caption": "A mate sends you a link. Kick-off's at half six. You tap… I'm in.",
+      "vo": "vo/06-b1.wav",
+      "minSec": 3,
+      "voText": "A mate sends you a link. Kick-off's at half six. You tap… ~I'm:stutter~ in.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "vol": 0.6
+        },
+        {
+          "src": "data-chirp",
+          "at": -0.9,
+          "vol": 0.5
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "list",
+        "title": "THAT'S IT",
+        "items": [
+          "First name",
+          "WhatsApp number",
+          "Done"
+        ]
+      },
+      "caption": "First name. WhatsApp number. Done.",
+      "vo": "vo/06-b2.wav",
+      "minSec": 2.6,
+      "voText": "First name. WhatsApp number. Done.",
+      "sfx": [
+        {
+          "src": "relay",
+          "vol": 0.5
+        },
+        {
+          "src": "relay",
+          "at": 0.9,
+          "vol": 0.5
+        },
+        {
+          "src": "servo",
+          "at": 1.7,
+          "vol": 0.4
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "phone",
+        "label": "COMING SOON",
+        "screen": "fill",
+        "title": "Sunday 5s",
+        "kickoff": "Sun 18:30",
+        "max": 10,
+        "startTaken": 9,
+        "names": [
+          "You"
+        ],
+        "endLabel": "FULL"
+      },
+      "caption": "You're on the list. Game full.",
+      "vo": "vo/06-b3.wav",
+      "minSec": 2.4,
+      "voText": "You're on the list. Game full.",
+      "sfx": [
+        {
+          "src": "im-alert",
+          "at": -0.6,
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "2",
+        "label": "TAPS",
+        "small": "COMING SOON · CAPE TOWN FIRST"
+      },
+      "caption": "Two taps to a game. Coming soon.",
+      "vo": "vo/06-b4.wav",
+      "minSec": 2,
+      "voText": "Two taps to a game. Coming soon.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.5
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Get on the list · 5sfindr.com",
+    "vo": "vo/06-end.wav",
+    "voText": "Fives Finder. Free five-a-side in Cape Town. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}

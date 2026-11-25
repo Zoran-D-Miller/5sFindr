@@ -4,7 +4,7 @@ Week runs **Thu 26 Nov – Wed 2 Dec**. Approve by **Wed 25 Nov evening**, so 02
 
 ## Decision only you can make
 
-- [ ] **06 "2 SPOTS. 11 MINUTES."** The 11 minutes is an example of what we're building, not a measured result (it's labelled "building now"). Keep it, or change the hook to "2 SPOTS. ONE LINK."?
+- [x] **06 "2 SPOTS. 11 MINUTES."** Zoran: keep it (23 Nov). The 11 minutes is an example of what we're building, not a measured result (it's labelled "building now"). Keep it, or change the hook to "2 SPOTS. ONE LINK."?
 
 Everything else follows the same rules as W47: unbuilt features say "building now", no people on screen, no music, and the AI voice is labelled.
 

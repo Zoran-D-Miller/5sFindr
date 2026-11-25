@@ -1,0 +1,126 @@
+{
+  "type": "short",
+  "id": "w49-09-first-organiser",
+  "coord": "33.927° S, 18.457° E · WOODSTOCK",
+  "hook": {
+    "text": "THE FIRST\nORGANISER IN\nEACH AREA *GETS…*",
+    "minSec": 1.8,
+    "sfx": [
+      {
+        "src": "crt-on",
+        "vol": 0.8
+      },
+      {
+        "src": "alien-sweep",
+        "at": 1,
+        "vol": 0.3
+      }
+    ],
+    "vo": "vo/09-hook.wav",
+    "voText": "The first organiser in each area gets…"
+  },
+  "beats": [
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "…SET UP",
+          "*BY HAND.*"
+        ]
+      },
+      "caption": "…set up by hand.",
+      "vo": "vo/09-b1.wav",
+      "minSec": 1.8,
+      "voText": "…set up by ~hand:stutter~.",
+      "sfx": [
+        {
+          "src": "glitch-burst",
+          "vol": 0.6
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "list",
+        "title": "WHAT THAT MEANS",
+        "items": [
+          "We set up your weekly game with you",
+          "Your game is the first one in your area",
+          "Free. No catch."
+        ]
+      },
+      "caption": "We set up your weekly game with you. Yours is the first in your area. Free.",
+      "vo": "vo/09-b2.wav",
+      "minSec": 3.2,
+      "voText": "We set up your weekly game with you. Yours is the first in your area. Free.",
+      "sfx": [
+        {
+          "src": "relay",
+          "vol": 0.5
+        },
+        {
+          "src": "data-chirp",
+          "at": 1.6,
+          "vol": 0.4
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "stat",
+        "big": "3",
+        "label": "WEEKLY GAMES",
+        "small": "+ 50 PLAYERS = AREA OPENS"
+      },
+      "caption": "Three weekly games and fifty players open an area. You'd be game one.",
+      "vo": "vo/09-b3.wav",
+      "minSec": 2.6,
+      "voText": "Three weekly games and fifty players open an area. You'd be game one.",
+      "sfx": [
+        {
+          "src": "servo",
+          "vol": 0.4
+        }
+      ]
+    },
+    {
+      "visual": {
+        "kind": "type",
+        "lines": [
+          "RUN A GAME?",
+          "BE *FIRST*."
+        ]
+      },
+      "caption": "Run a game? Be first.",
+      "vo": "vo/09-b4.wav",
+      "minSec": 1.8,
+      "voText": "Run a game? Be first.",
+      "sfx": [
+        {
+          "src": "static-hit",
+          "vol": 0.5
+        }
+      ]
+    }
+  ],
+  "end": {
+    "cta": "Free for organisers · 5sfindr.com",
+    "vo": "vo/09-end.wav",
+    "voText": "Fives Finder. Free for organisers. Get on the list at Fives Finder dot com.",
+    "sfx": [
+      {
+        "src": "relay",
+        "vol": 0.6
+      },
+      {
+        "src": "crt-off",
+        "at": -0.45,
+        "vol": 0.8
+      }
+    ]
+  },
+  "aiVoice": true,
+  "voice": "Chatterbox (bm_george timbre)",
+  "gapSec": 0.12,
+  "bed": "bed-machine.wav"
+}
