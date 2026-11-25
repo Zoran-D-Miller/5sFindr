@@ -280,10 +280,47 @@ linked to the FB Page.
    email you own, then in the SQL editor move that game to ~20h out and run `select public.run_checkins();` and
    `select private.checkins_tick();`.
 
-## Next session → S5 (unlock mechanics + landing redesign) in PRODUCT-BRIEF.md
-Area progress board ("Sea Point 38/50"), Founding Member numbers, referrals that move your area closer to unlocking;
-landing page in the "Open door, inner circle" style. Outreach to organisers (GROWTH-STRATEGY.md §12) can start once S3
-is live. Content runs alongside: each week, `/content-week` → Zoran reviews `REVIEW.md` → records → schedules.
+## Update 2026-11-25: S5 built (unlock mechanics + landing), branch `claude/gifted-wozniak-3af1a7`
+- [x] **Area progress board** (`src/server/areaProgress.ts` + `components/unlock/AreaBoard.tsx`): per launch area,
+  players vs 50 and weekly games vs 3. Threshold stays in one place: `UNLOCK` in `src/lib/areas.ts`. Players = waitlist
+  players who ticked the area + everyone on a game there (organisers too) not already counted (matched on WhatsApp
+  number). Weekly games = games ±7 days, a weekly series counted once. Cached 5 min; a new signup refreshes it. Shown
+  on the landing page, the soft-launch feed (your area highlighted) and your profile. `/admin` now uses the same
+  numbers. Needs `SUPABASE_SERVICE_ROLE_KEY` (already in Vercel); without it the board is just hidden.
+- [x] **Founding Member numbers, one per person:** waitlist signups now draw from the same sequence as profiles
+  (existing waitlist rows numbered in signup order). An account / kept guest with the same **verified email** as a
+  waitlist row takes that number (not the WhatsApp number: guests' numbers are unverified). Shown as
+  "Founding Member #047" (≤1000; "Founding Baller" ≤100, as before) on the claim screen, your profile and the player
+  drawer. The keep-profile card mentions it.
+- [x] **Referrals that move your area:** profiles get an invite card (`/?ref=<their code>`, WhatsApp share, "3 mates
+  have joined with your link"). The waitlist now accepts profile codes as well as waitlist codes
+  (`waitlist.referred_by_profile`). A mate who claims a spot counts as a player in the areas they pick. The claim
+  screen shows your home area's progress and asks you to invite mates.
+- [x] **Landing page** ("Open door, inner circle"): condensed display type (Barlow Condensed, self-hosted by Next),
+  monochrome + pitch green, coordinates as graphics. Product first: a 7-step tap-through "claim a spot" demo
+  (labelled Example; only things the app does today), one main button ("Claim your spot"), a plain line under every
+  teaser, the area board, then the form ("Claim my spot"). Umami event `demo` = reached the last demo step.
+- **Migration 0030_unlock_founding** (`waitlist.founding_number` + backfill, `waitlist.referred_by_profile`,
+  `private.founding_number_for`, `handle_new_user` / `handle_guest_upgraded` re-created with that one change,
+  `join_waitlist` re-created with a `founding_number` result column (same args, service role only), `my_invites()`).
+  Tested locally: new scenario 11, all scenarios 1–11 pass. **Applied to prod 2026-11-25** with Zoran's OK and
+  checked: the 4 waitlist rows are numbered #094–#097 (profiles hold 1–93), both triggers use the waitlist lookup,
+  `join_waitlist` is service-role only and returns `founding_number`, `my_invites` is callable signed in (not anon),
+  `private.founding_number_for` is not callable by users. The security advisor's only new item is `my_invites`
+  (signed-in, intended).
+- Checked in a local preview (no Supabase env): landing page + demo (all 7 steps), board and invite card with sample
+  data. Not checked against prod data.
+
+**Zoran, for S5:**
+1. ~~OK applying migration 0030 to prod~~ Done 2026-11-25. Merge the S5 PR (#22).
+2. After deploy: open 5sfindr.com, check the board shows (all areas near 0/50 for now) and your profile shows your
+   Founding Member number + invite link.
+
+## Next session → S6 (social stickiness) in PRODUCT-BRIEF.md
+"Played with" after each game + alerts when your regulars join a game + a "first game in Cape Town" newcomer tag;
+game labels (skill, women's, mixed, 30+); shareable images (organiser recap card, player card for IG stories);
+The Drop and Sessions. Outreach to organisers (GROWTH-STRATEGY.md §12) runs alongside. Content: `/content-week` →
+Zoran reviews `REVIEW.md` → records → schedules.
 
 ## Working style
 - The user starts a fresh session every couple of prompts. Keep this file current; don't re-derive context.

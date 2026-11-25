@@ -39,7 +39,9 @@ export function KeepProfile() {
     <section className="space-y-3 rounded-2xl border border-ink-700 bg-ink-800/60 p-4">
       <div>
         <p className="font-bold">Keep your profile and your regulars?</p>
-        <p className="mt-0.5 text-xs text-white/50">One tap. Your games come with you to any phone.</p>
+        <p className="mt-0.5 text-xs text-white/50">
+          One tap. Your games come with you to any phone, and you get your Founding Member number.
+        </p>
       </div>
       <button type="button" onClick={google} className="btn-primary w-full">
         Continue with Google

@@ -4,7 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 import { canPostGames } from "@/lib/entitlements";
 import { TrackEvent } from "@/components/analytics/TrackEvent";
 import { PRELAUNCH } from "@/lib/flags";
-import { UNLOCK } from "@/lib/areas";
+import { areaFor, UNLOCK } from "@/lib/areas";
+import { getAreaProgress } from "@/server/areaProgress";
+import { AreaBoard } from "@/components/unlock/AreaBoard";
 import { FeedShell } from "@/components/feed/FeedShell";
 import type { MatchFeedItem, ViewMode } from "@/lib/types";
 
@@ -67,6 +69,7 @@ export default async function FeedPage({ searchParams }: { searchParams: { poste
     playerMatches = (playerMatches ?? []).filter((m) => ids.has(m.id));
   }
   const organizerMatches = organizerRes.data;
+  const areas = PRELAUNCH ? await getAreaProgress() : null;
 
   const initialView: ViewMode =
     cookies().get("view")?.value === "organizer" ? "organizer" : "player";
@@ -134,10 +137,20 @@ export default async function FeedPage({ searchParams }: { searchParams: { poste
       )}
 
       {PRELAUNCH && (
-        <p className="mb-5 rounded-2xl border border-ink-700 bg-ink-800/60 p-4 text-sm text-white/60">
-          Soft launch: games are shared by link for now. Each area’s feed opens once it has {UNLOCK.players} players
-          and {UNLOCK.weeklyGames} weekly games. Here you’ll see the games you run or are on.
-        </p>
+        <section className="mb-6 space-y-3">
+          <p className="text-sm text-white/60">
+            Soft launch: games are shared by link for now. Each area’s feed opens once it has {UNLOCK.players} players
+            and {UNLOCK.weeklyGames} weekly games. Here you’ll see the games you run or are on.
+          </p>
+          {areas && <AreaBoard areas={areas} highlight={areaFor(me?.neighborhood)} />}
+          {member && (
+            <p className="text-meta text-white/45">
+              Bring your mates with your invite link on{" "}
+              <Link href="/profile/edit" className="font-semibold text-pitch underline">your profile</Link>. Each one
+              who joins counts toward their area.
+            </p>
+          )}
+        </section>
       )}
 
       <FeedShell

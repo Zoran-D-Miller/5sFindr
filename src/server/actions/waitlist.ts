@@ -2,6 +2,9 @@
 
 import { createHmac } from "node:crypto";
 import { headers } from "next/headers";
+import { revalidateTag } from "next/cache";
+import { areaFor } from "@/lib/areas";
+import { AREA_PROGRESS_TAG, getAreaProgress } from "@/server/areaProgress";
 import { createServiceClient } from "@/lib/supabase/server";
 import { toE164 } from "@/lib/phone";
 import {
@@ -86,6 +89,7 @@ export async function joinWaitlist(
         referral_code: string | null;
         list_position: number | null;
         referrals: number | null;
+        founding_number: number | null;
       }>();
     if (error?.message.includes("rate_limited")) {
       return { error: "Too many sign-ups from this connection. Please try again in a few minutes." };
@@ -99,12 +103,19 @@ export async function joinWaitlist(
       };
     }
 
+    // Their signup counts straight away on the board.
+    revalidateTag(AREA_PROGRESS_TAG);
+    const homeKey = areaFor(home);
+    const homeArea = homeKey === "other" ? null : (await getAreaProgress())?.find((a) => a.key === homeKey) ?? null;
+
     return {
       joined: {
         code: data.referral_code,
         position: Number(data.list_position),
         referrals: Number(data.referrals),
         communityUrl: COMMUNITY_URL,
+        foundingNumber: data.founding_number,
+        home: homeArea && { label: homeArea.label, players: homeArea.players, weeklyGames: homeArea.weeklyGames },
       },
     };
   } catch (e) {

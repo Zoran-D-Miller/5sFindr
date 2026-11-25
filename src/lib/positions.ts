@@ -17,6 +17,11 @@ export function foundingTier(n: number | null | undefined): FoundingTier {
   return null;
 }
 
+// "#047": Founding Member numbers are shown padded to three digits.
+export function foundingNo(n: number): string {
+  return `#${String(n).padStart(3, "0")}`;
+}
+
 export const FOUNDING_LABEL: Record<"baller" | "member", string> = {
   baller: "Founding Baller",
   member: "Founding Member",

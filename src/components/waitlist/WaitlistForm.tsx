@@ -5,12 +5,14 @@ import { track } from "@/lib/analytics";
 import { useFormState, useFormStatus } from "react-dom";
 import { joinWaitlist } from "@/server/actions/waitlist";
 import { AVAILABILITY, CONSENT_COPY, NEIGHBOURHOODS, ROLES, type WaitlistState } from "@/lib/waitlist";
+import { UNLOCK } from "@/lib/areas";
+import { foundingNo, foundingTier, FOUNDING_LABEL } from "@/lib/positions";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <button type="submit" disabled={pending} className="btn-primary w-full" data-umami-event="waitlist-submit">
-      {pending ? "One sec…" : "Join the waitlist"}
+      {pending ? "One sec…" : "Claim my spot"}
     </button>
   );
 }
@@ -231,12 +233,17 @@ function Joined({
   position,
   referrals,
   communityUrl,
+  foundingNumber,
+  home,
   siteUrl,
 }: NonNullable<WaitlistState["joined"]> & { siteUrl: string }) {
   const [copied, setCopied] = useState(false);
+  const tier = foundingTier(foundingNumber);
   const link = `${siteUrl}/?ref=${code}`;
   useEffect(() => track("waitlist_submit"), []);
-  const shareText = `I just joined the 5sFindr waitlist — find or fill a 5-a-side in Cape Town. Join the founding squad: ${link}`;
+  const shareText = home
+    ? `I just claimed a founding spot on 5sFindr: free 5-a-side games in Cape Town. ${home.label} opens at ${UNLOCK.players} players, and you count if you join with my link: ${link}`
+    : `I just claimed a founding spot on 5sFindr: free 5-a-side games in Cape Town. Join with my link: ${link}`;
 
   async function copy() {
     track("share", { via: "waitlist_copy" });
@@ -248,15 +255,48 @@ function Joined({
   return (
     <div className="card-hero space-y-5 p-6 text-center">
       <div>
-        <p className="section-label">You’re on the list</p>
-        <p className="mt-1 text-display font-black text-pitch">#{position}</p>
-        <p className="mt-1 text-body text-white/60">
-          Welcome to the founding squad. We’ll be in touch before launch.
-        </p>
+        <p className="section-label">You’re in the founding squad</p>
+        {tier && foundingNumber ? (
+          <>
+            <p className="mt-3 font-display text-heading font-extrabold uppercase tracking-[0.2em] text-white/60">
+              {FOUNDING_LABEL[tier]}
+            </p>
+            <p className="font-display text-[4.5rem] font-extrabold leading-none tracking-tight text-pitch">
+              {foundingNo(foundingNumber)}
+            </p>
+            <p className="mt-2 text-body text-white/60">
+              The number is yours. Sign up with this email when your area opens and it comes with you.
+            </p>
+          </>
+        ) : (
+          <p className="mt-1 text-display font-black text-pitch">#{position}</p>
+        )}
       </div>
 
+      {home && (
+        <div className="surface-sunken p-4 text-left">
+          <div className="flex items-baseline justify-between gap-3">
+            <p className="font-display text-heading font-extrabold uppercase tracking-wide">{home.label}</p>
+            <p className="font-display text-title font-extrabold tabular-nums">
+              {home.players}
+              <span className="text-white/30">/{UNLOCK.players}</span>
+            </p>
+          </div>
+          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-ink-700">
+            <div
+              className="h-full rounded-full bg-pitch"
+              style={{ width: `${Math.min(100, Math.round((home.players / UNLOCK.players) * 100))}%` }}
+            />
+          </div>
+          <p className="mt-2 text-meta text-white/50">
+            Your area opens at {UNLOCK.players} players and {UNLOCK.weeklyGames} weekly games. Every mate who joins
+            with your link counts.
+          </p>
+        </div>
+      )}
+
       <div className="surface-sunken space-y-3 p-4">
-        <p className="text-body font-semibold">Bring your mates</p>
+        <p className="text-body font-semibold">Invite mates, open it sooner</p>
         <p className="truncate text-meta text-white/50">{link}</p>
         <div className="flex gap-2">
           <a

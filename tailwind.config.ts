@@ -54,6 +54,9 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        // Condensed display type for the "Open door, inner circle" look:
+        // kit numbers, area names, big counts. Headlines only, never body copy.
+        display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],
       },
       boxShadow: {
         glow: "0 0 24px -4px #0AE98A66",

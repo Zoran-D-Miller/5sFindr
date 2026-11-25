@@ -39,7 +39,7 @@ friends through football, and anyone who wants a quick game when their schedule 
 - Socials: TikTok `@5sfindr.com`, IG `@5sfindr.official`. About 0 followers, nothing to report yet.
 - Zoran: works **online only** (can't travel for now), **R0 marketing budget**, about 5–7 hours a day,
   and is a member of 2–3 social 5-a-side WhatsApp groups.
-- Code (2026-11-23): S1 essentials + S2 built (see `LAUNCH-HANDOFF.md`). Joining and posting are free,
+- Code (2026-11-25): S1–S5 built (0030 in prod 2026-11-25). Earlier: S1 essentials + S2 built (see `LAUNCH-HANDOFF.md`). Joining and posting are free,
   guests join with name + WhatsApp, extras sit behind flags. Migration 0027 is in prod (2026-11-23).
 
 ## Locked decisions
@@ -126,8 +126,8 @@ metadata, pinch-zoom, 5sfindr.com on Vercel, Umami visits, seed bots removed.
 - [x] "Still coming?" at 24h/3h, unconfirmed spots auto-released, show-up rate on profile
 
 **S5 — Unlock mechanics + landing redesign**
-- [ ] Area progress board ("Sea Point 38/50"), Founding Member numbers, referrals that move your area closer to unlocking
-- [ ] Landing page in the "Open door, inner circle" style: product first, tap-through "claim a spot"
+- [x] Area progress board ("Sea Point 38/50"), Founding Member numbers, referrals that move your area closer to unlocking
+- [x] Landing page in the "Open door, inner circle" style: product first, tap-through "claim a spot"
       demo (6–7 steps, best part first), one main button, plain line under every teaser
 
 **S6 — Social stickiness**

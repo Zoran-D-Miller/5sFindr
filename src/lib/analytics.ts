@@ -1,7 +1,8 @@
 // Umami funnel events (cloud.umami.is script, loaded in app/layout.tsx when
 // NEXT_PUBLIC_UMAMI_WEBSITE_ID is set). No-op when the script isn't there
 // (dev, previews, ad blockers). Event names are the funnel in PRODUCT-BRIEF.md.
-export type FunnelEvent = "waitlist_submit" | "browse" | "im_in" | "post_game" | "share";
+// "demo" = someone tapped through to the last step of the landing-page demo.
+export type FunnelEvent = "waitlist_submit" | "browse" | "im_in" | "post_game" | "share" | "demo";
 
 type Umami = { track: (name: string, data?: Record<string, string | number>) => void };
 
