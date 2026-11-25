@@ -9,7 +9,7 @@ begin;
 -- ═════════════════════════════════════════════════════════════════════════
 --  PART A (scenarios 1–3): the token economy, with the tokens flag ON.
 --  Kept so the deposit logic still works if NEXT_PUBLIC_FLAG_TOKENS returns.
---  PART B (scenarios 4–10): the launch rules, tokens OFF (the default).
+--  PART B (scenarios 4–11): the launch rules, tokens OFF (the default).
 -- ═════════════════════════════════════════════════════════════════════════
 update public.app_config set tokens_enabled = true;
 
@@ -753,5 +753,121 @@ begin
 
   raise notice 'SCENARIO 10 PASSED — 24h/3h asks (email + in-app), link + app confirm, auto-release refunds token, reopens game';
 end $$;
+
+-- ─────────────────────────────────────────────────────────────────────────
+--  SCENARIO 11 — S5: Founding Member numbers + invite links.
+--  Waitlist signups draw from founding_seq (re-joins keep theirs, never burn
+--  one); an account / kept guest with the same email takes that number;
+--  profile codes work as invite links and my_invites() counts them.
+-- ─────────────────────────────────────────────────────────────────────────
+do $$
+declare
+  r      record;
+  v_w1   record;
+  v_w2   record;
+  v_p    uuid := gen_random_uuid();
+  v_x    uuid := gen_random_uuid();
+  v_g    uuid := gen_random_uuid();
+  v_code text;
+  v_n    int;
+begin
+  -- New signup: numbered.
+  select * into v_w1 from public.join_waitlist('Ana', 's11_ana@test.co', '+27820000011', array['player'],
+    array['Rondebosch / Newlands'], null, '{}', true, false, false, 'v', null, null, null);
+  if v_w1.status <> 'joined' or v_w1.founding_number is null then raise exception 'S11 FAIL: no founding number'; end if;
+  if (select founding_number from public.waitlist where email = 's11_ana@test.co') <> v_w1.founding_number
+    then raise exception 'S11 FAIL: number not stored'; end if;
+
+  -- Re-join (same email + number): same number, and none is burnt.
+  select * into r from public.join_waitlist('Ana B', 's11_ana@test.co', '+27820000011', array['player'],
+    array['Rondebosch / Newlands'], null, '{}', true, false, false, 'v', null, null, null);
+  if r.founding_number <> v_w1.founding_number then raise exception 'S11 FAIL: re-join changed the number'; end if;
+
+  -- A mate joins with Ana's link (lower-case is fine): next number, Ana's referrals = 1.
+  select * into v_w2 from public.join_waitlist('Ben', 's11_ben@test.co', '+27820000012', array['player'],
+    array['Claremont / Kenilworth'], null, '{}', true, false, false, 'v', lower(v_w1.referral_code), null, null);
+  if v_w2.founding_number <> v_w1.founding_number + 1 then
+    raise exception 'S11 FAIL: number burnt on re-join (% then %)', v_w1.founding_number, v_w2.founding_number; end if;
+  select * into r from public.join_waitlist('Ana', 's11_ana@test.co', '+27820000011', array['player'],
+    array['Rondebosch / Newlands'], null, '{}', true, false, false, 'v', null, null, null);
+  if r.referrals <> 1 then raise exception 'S11 FAIL: waitlist referral not counted'; end if;
+
+  -- Someone else's email with a different number: nothing revealed, no number.
+  select * into r from public.join_waitlist('X', 's11_ana@test.co', '+27820009999', array['player'],
+    array['City Bowl'], null, '{}', true, false, false, 'v', null, null, null);
+  if r.status <> 'exists' or r.founding_number is not null then raise exception 'S11 FAIL: leaked a number'; end if;
+
+  -- A profile's code is an invite link too.
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data) values
+    ('00000000-0000-0000-0000-000000000000', v_p, 'authenticated', 'authenticated', 's11_org@test.co', '{"name":"Org11"}');
+  select referral_code into v_code from public.profiles where id = v_p;
+  select * into r from public.join_waitlist('Cal', 's11_cal@test.co', '+27820000013', array['player'],
+    array['City Bowl'], null, '{}', true, false, false, 'v', v_code, null, null);
+  if (select referred_by_profile from public.waitlist where email = 's11_cal@test.co') <> v_p
+    then raise exception 'S11 FAIL: profile code not credited'; end if;
+  if (select referred_by from public.waitlist where email = 's11_cal@test.co') is not null
+    then raise exception 'S11 FAIL: profile code stored as a waitlist code'; end if;
+  -- …and a later re-join with another code doesn't move the credit.
+  select * into r from public.join_waitlist('Cal', 's11_cal@test.co', '+27820000013', array['player'],
+    array['City Bowl'], null, '{}', true, false, false, 'v', v_w1.referral_code, null, null);
+  if (select referred_by_profile from public.waitlist where email = 's11_cal@test.co') <> v_p
+     or (select referred_by from public.waitlist where email = 's11_cal@test.co') is not null
+    then raise exception 'S11 FAIL: referrer changed on re-join'; end if;
+  -- Unknown codes are ignored.
+  select * into r from public.join_waitlist('Dee', 's11_dee@test.co', '+27820000014', array['player'],
+    array['City Bowl'], null, '{}', true, false, false, 'v', 'NOPE1234', null, null);
+  if (select referred_by is not null or referred_by_profile is not null from public.waitlist where email = 's11_dee@test.co')
+    then raise exception 'S11 FAIL: unknown code credited'; end if;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_p)::text, true);
+  if public.my_invites() <> 1 then raise exception 'S11 FAIL: my_invites = % (want 1)', public.my_invites(); end if;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_p, 'is_anonymous', true)::text, true);
+  if public.my_invites() <> 0 then raise exception 'S11 FAIL: guest got an invite count'; end if;
+  perform set_config('request.jwt.claims', '', true);
+
+  -- An account with a waitlist email takes the waitlist number.
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data) values
+    ('00000000-0000-0000-0000-000000000000', v_x, 'authenticated', 'authenticated', 'S11_Ben@test.co', '{"name":"Ben"}');
+  if (select founding_number from public.profiles where id = v_x) <> v_w2.founding_number
+    then raise exception 'S11 FAIL: account did not take its waitlist number'; end if;
+
+  -- A guest who keeps their profile with a waitlist email takes it too.
+  select founding_number into v_n from public.waitlist where email = 's11_dee@test.co';
+  insert into auth.users (instance_id, id, aud, role, email, is_anonymous) values
+    ('00000000-0000-0000-0000-000000000000', v_g, 'authenticated', 'authenticated', null, true);
+  if (select founding_number from public.profiles where id = v_g) is not null then raise exception 'S11 FAIL: guest numbered'; end if;
+  update auth.users set is_anonymous = false, email = 's11_dee@test.co' where id = v_g;
+  if (select founding_number from public.profiles where id = v_g) <> v_n
+    then raise exception 'S11 FAIL: kept guest did not take its waitlist number'; end if;
+
+  -- The 'exists' caller's number is never handed to anyone: a fresh account
+  -- with no waitlist row gets a new, unused number.
+  if (select founding_number from public.profiles where id = v_p) in
+       (select founding_number from public.waitlist where founding_number is not null and email <> 's11_org@test.co')
+    then raise exception 'S11 FAIL: fresh account reused a waitlist number'; end if;
+
+  -- Lockdown: only the server (service role) can join; anon can't count invites.
+  set local role anon;
+  begin
+    perform public.join_waitlist('E', 's11_e@test.co', '+27820000015', array['player'], array['City Bowl'],
+      null, '{}', true, false, false, 'v', null, null, null);
+    raise exception 'S11 FAIL: anon called join_waitlist';
+  exception when insufficient_privilege then null; end;
+  begin perform public.my_invites(); raise exception 'S11 FAIL: anon called my_invites';
+  exception when insufficient_privilege then null; end;
+  reset role;
+  set local role authenticated;
+  begin
+    perform public.join_waitlist('E', 's11_e@test.co', '+27820000015', array['player'], array['City Bowl'],
+      null, '{}', true, false, false, 'v', null, null, null);
+    raise exception 'S11 FAIL: user called join_waitlist';
+  exception when insufficient_privilege then null; end;
+  begin perform private.founding_number_for('s11_ana@test.co'); raise exception 'S11 FAIL: user called founding_number_for';
+  exception when insufficient_privilege then null; end;
+  reset role;
+
+  raise notice 'SCENARIO 11 PASSED — founding numbers shared with the waitlist (kept on re-join, carried to accounts/kept guests); profile invite links counted';
+end $$;
+
 
 rollback;  -- leave the database untouched

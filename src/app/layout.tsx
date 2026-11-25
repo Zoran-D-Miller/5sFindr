@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -41,6 +42,14 @@ export const metadata: Metadata = {
   },
 };
 
+// Self-hosted by Next at build time (no request to Google from the browser).
+const display = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["600", "800"],
+  variable: "--font-display",
+  display: "swap",
+});
+
 export const viewport: Viewport = {
   themeColor: "#070A09",
   width: "device-width",
@@ -50,7 +59,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const umamiId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className={`dark ${display.variable}`}>
       <body>
         {children}
         {/* Umami (free/open-source analytics) — only injected when configured.

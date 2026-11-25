@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { followUser, unfollowUser } from "@/server/actions/social";
 import { Avatar } from "@/components/ui/Avatar";
 import { FollowList } from "./FollowList";
-import { foundingTier, FOUNDING_LABEL, POSITION_BADGE } from "@/lib/positions";
+import { foundingNo, foundingTier, FOUNDING_LABEL, POSITION_BADGE } from "@/lib/positions";
 import type { DrawerProfile } from "@/lib/types";
 import { showUp } from "@/lib/showUp";
 
@@ -94,7 +94,7 @@ export function UserDrawer({
             <p className="truncate text-xl font-black">{profile?.name ?? fallbackName}</p>
             {tier && (
               <span className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[11px] font-bold ${tier === "baller" ? "bg-yellow-400/15 text-yellow-400" : "bg-zinc-300/15 text-zinc-300"}`}>
-                {FOUNDING_LABEL[tier]}
+                {FOUNDING_LABEL[tier]} {profile?.founding_number != null && foundingNo(profile.founding_number)}
               </span>
             )}
           </div>

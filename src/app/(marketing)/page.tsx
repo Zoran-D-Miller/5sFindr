@@ -1,28 +1,16 @@
 import { headers } from "next/headers";
 import Link from "next/link";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
+import { ClaimDemo } from "@/components/landing/ClaimDemo";
+import { AreaBoard } from "@/components/unlock/AreaBoard";
+import { UNLOCK } from "@/lib/areas";
+import { getAreaProgress } from "@/server/areaProgress";
 
-const POINTS = [
-  {
-    title: "Find a game near you",
-    body: "Browse games across Cape Town by neighbourhood. Open fields and courts, all skill levels.",
-    accent: "pitch",
-  },
-  {
-    title: "Short a player? Fill it in minutes",
-    body: "Post your game, drop the link in your WhatsApp group, and newcomers claim the open spots.",
-    accent: "electric",
-  },
-  {
-    title: "Meet people who play",
-    body: "New in town or just want more football? Every game is a squad of people worth knowing.",
-    accent: "pitch",
-  },
-];
-
-// Pre-launch: the landing page IS the waitlist. Organizers and venues on the
-// list get early access to post launch-week games.
-export default function LandingPage({
+// Pre-launch landing page, "Open door, inner circle" (GROWTH-STRATEGY.md §6a):
+// underground look, plain words. Product first (the tap-through demo), one
+// main button, and a plain line under every teaser. The form is the "claim a
+// spot" step: it gives a Founding Member number and counts toward the areas.
+export default async function LandingPage({
   searchParams,
 }: {
   searchParams: { ref?: string; utm_source?: string };
@@ -31,34 +19,61 @@ export default function LandingPage({
   const siteUrl = `${host.startsWith("localhost") ? "http" : "https"}://${host}`;
   const refCode = searchParams.ref?.replace(/[^a-zA-Z0-9]/g, "").slice(0, 12) || undefined;
   const source = searchParams.utm_source?.slice(0, 120) || undefined;
+  const areas = await getAreaProgress();
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-16 pt-10 sm:max-w-xl">
-      <header className="flex items-center justify-center">
+    <main className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-16 pt-6 sm:max-w-xl">
+      <header className="flex items-center justify-between">
         <span className="text-lg font-extrabold tracking-tight">
           5s<span className="text-pitch">Findr</span>
         </span>
+        <span className="font-mono text-micro uppercase tracking-widest text-white/40">33.92° S · 18.42° E</span>
       </header>
 
-      <section className="mt-12 text-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-pitch/30 bg-pitch/10 px-3 py-1 text-xs font-semibold text-pitch">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-pitch" />
-          Launching soon in Cape Town
-        </span>
-        <h1 className="mt-6 text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
-          Find your next
+      <section className="mt-10">
+        <p className="font-mono text-micro uppercase tracking-widest text-pitch">Cape Town · 5-a-side · Free</p>
+        <h1 className="mt-3 font-display text-[3.25rem] font-extrabold uppercase leading-[0.92] tracking-tight sm:text-7xl">
+          Find a game.
           <br />
-          <span className="text-pitch">5-a-side.</span>
+          <span className="text-pitch">Fill yours.</span>
         </h1>
-        <p className="mx-auto mt-5 max-w-md text-balance text-base text-white/60 sm:text-lg">
-          Find or fill a game across Cape Town, and meet people who play. Free at launch.
-        </p>
-        <p className="mt-2 text-sm font-semibold text-white/80">
-          Founding members get Premium free for their first year.
+        <p className="mt-4 max-w-md text-balance text-body text-white/60 sm:text-base">
+          Free 5-a-side games across Cape Town, posted by the people who run them. Join one with your first name and
+          WhatsApp number, and meet people who play.
         </p>
       </section>
 
-      <section className="mt-8">
+      <div className="mt-8">
+        <ClaimDemo />
+      </div>
+
+      <div className="mt-6">
+        <a href="#claim" className="btn-primary block" data-umami-event="landing-claim">
+          Claim your spot
+        </a>
+        <p className="mt-2 text-center text-meta text-white/45">
+          Free. Founding members are numbered and get Premium free for their first year.
+        </p>
+      </div>
+
+      {areas && (
+        <section className="mt-14">
+          <h2 className="font-display text-title font-extrabold uppercase tracking-wide">
+            Areas open at {UNLOCK.players}
+          </h2>
+          <p className="mb-4 mt-1 text-body text-white/55">
+            Anyone with a game’s link can join it today. Each area’s feed opens to everyone once it has{" "}
+            {UNLOCK.players} players and {UNLOCK.weeklyGames} weekly games. Every signup counts.
+          </p>
+          <AreaBoard areas={areas} />
+        </section>
+      )}
+
+      <section id="claim" className="mt-14 scroll-mt-6">
+        <h2 className="font-display text-title font-extrabold uppercase tracking-wide">Claim your spot</h2>
+        <p className="mb-4 mt-1 text-body text-white/55">
+          Tell us where you play. You get your Founding Member number and a link to bring your mates.
+        </p>
         <WaitlistForm refCode={refCode} source={source} siteUrl={siteUrl} />
         <p className="mt-4 text-center text-sm text-white/60">
           Run a regular game?{" "}
@@ -66,19 +81,6 @@ export default function LandingPage({
             Post it now, free
           </Link>
         </p>
-      </section>
-
-      <div className="pitch-line my-14" />
-
-      <section className="grid gap-4">
-        {POINTS.map((p) => (
-          <div key={p.title} className="card p-5">
-            <h3 className={`text-heading font-bold ${p.accent === "pitch" ? "text-pitch" : "text-electric"}`}>
-              {p.title}
-            </h3>
-            <p className="mt-1.5 text-body text-white/60">{p.body}</p>
-          </div>
-        ))}
       </section>
 
       <footer className="mt-16 text-center text-xs text-white/30">

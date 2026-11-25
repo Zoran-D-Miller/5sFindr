@@ -43,5 +43,14 @@ export const AVAILABILITY = [
 
 export type WaitlistState = {
   error?: string;
-  joined?: { code: string; position: number; referrals: number; communityUrl: string };
+  joined?: {
+    code: string;
+    position: number;
+    referrals: number;
+    communityUrl: string;
+    /** Founding Member number (shared with profiles, kept when they make an account). */
+    foundingNumber: number | null;
+    /** Progress of their home area, if it's one of the launch areas. */
+    home: { label: string; players: number; weeklyGames: number } | null;
+  };
 };
