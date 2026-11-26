@@ -347,12 +347,17 @@ linked to the FB Page.
   (no grants), trigger `queue_regular_alerts`, views `private.live_regular_alerts` / `private.due_regular_alert_emails`,
   `my_regular_alerts`, `regular_alert_emails_due`, `claim_regular_alert_emails` (service role only),
   `private.checkins_tick` re-created; `game_recap` + `player_card` (anon OK, public data only)). Tested locally: new
-  scenario 12, all scenarios 1–12 pass. **Not applied to prod yet.**
+  scenario 12, all scenarios 1–12 pass. **0031 applied to prod 2026-11-26** (version 20261126104712) with Zoran's OK
+  and checked: grants match the file (anon only on `game_recap` / `player_card`; `claim_regular_alert_emails` and the
+  helpers service-only), RLS on `regulars` / `regular_alerts` / `user_settings`, both triggers exist, `checkins_tick`
+  checks `regular_alert_emails_due`, `match_feed` has the 3 label columns, `no-show-checkins` still every 10 min.
+  Security advisor: only the intended new items (anon `game_recap` / `player_card`, the signed-in RPCs,
+  `regular_alerts` RLS with no policy).
 - Checked: `tsc`, `next build`, both card images rendered locally against a mock of the two RPCs. Game page, profile
-  and feed changes not checked against real data (prod has no 0031 yet).
+  and feed changes not checked against real data yet (check after deploy).
 
 **Zoran, for S6 part 1:**
-1. OK applying migration 0031 to prod (`ujhbbwptsaefpzangvwa`). Then merge the PR (deploys on merge).
+1. ~~OK applying migration 0031 to prod~~ Done 2026-11-26. Merge the S6 PR (#23) (deploys on merge).
 2. After deploy: post a test game with labels, check the invite preview and WhatsApp text show them.
 
 ## Next session → S6 part 2 (The Drop + Sessions), then S7
