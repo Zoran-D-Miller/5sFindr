@@ -10,8 +10,13 @@
       "at": "2026-11-26T10:33:39.303Z"
     },
     "2026-W48/02/instagram": {
-      "status": "claimed",
-      "claimed_at": "2026-11-26T10:33:13.594Z"
+      "status": "published",
+      "claimed_at": "2026-11-26T10:33:13.594Z",
+      "container_id": "18140697919784859",
+      "platform_id": "17946627507091986",
+      "permalink": "https://www.instagram.com/p/DgM5rCsjJrn/",
+      "ai_label": null,
+      "at": "2026-11-26T10:34:17.373Z"
     }
   },
   "notices": {}
