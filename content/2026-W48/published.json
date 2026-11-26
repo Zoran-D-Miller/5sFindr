@@ -28,8 +28,12 @@
       "at": "2026-11-26T17:03:37.222Z"
     },
     "2026-W48/01/facebook": {
-      "status": "claimed",
-      "claimed_at": "2026-11-26T17:33:10.971Z"
+      "status": "published",
+      "claimed_at": "2026-11-26T17:33:10.971Z",
+      "platform_id": "1661493425517016",
+      "permalink": "https://www.facebook.com/reel/1661493425517016",
+      "ai_label": "caption + on-screen chip",
+      "at": "2026-11-26T17:33:23.591Z"
     }
   },
   "notices": {}
