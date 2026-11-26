@@ -36,8 +36,13 @@
       "at": "2026-11-26T17:33:23.591Z"
     },
     "2026-W48/01/instagram": {
-      "status": "claimed",
-      "claimed_at": "2026-11-26T17:33:10.971Z"
+      "status": "published",
+      "claimed_at": "2026-11-26T17:33:10.971Z",
+      "container_id": "18140748694784859",
+      "platform_id": "17896787472683672",
+      "permalink": "https://www.instagram.com/reel/DgNpqqfpM4W/",
+      "ai_label": "is_ai_generated",
+      "at": "2026-11-26T17:34:08.381Z"
     }
   },
   "notices": {}
