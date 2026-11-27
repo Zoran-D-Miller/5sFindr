@@ -52,6 +52,10 @@
       "tiktok_status": "SEND_TO_USER_INBOX",
       "ai_label": "Zoran turns it on in the app",
       "at": "2026-11-27T17:03:41.940Z"
+    },
+    "2026-W48/03/facebook": {
+      "status": "claimed",
+      "claimed_at": "2026-11-27T17:33:14.756Z"
     }
   },
   "notices": {}
