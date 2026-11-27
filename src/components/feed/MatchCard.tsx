@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { MatchFeedItem } from "@/lib/types";
+import { labelList } from "@/lib/labels";
 
 function kickoffLabel(iso: string): { day: string; time: string } {
   const d = new Date(iso);
@@ -51,6 +52,11 @@ export function MatchCard({ match, manage = false }: { match: MatchFeedItem; man
               R{match.price_per_player_zar}pp
             </span>
           )}
+          {labelList(match).map((l) => (
+            <span key={l} className="rounded-full border border-pitch/40 px-2 py-0.5 font-semibold text-pitch">
+              {l}
+            </span>
+          ))}
         </div>
       </div>
 

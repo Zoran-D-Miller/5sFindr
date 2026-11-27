@@ -316,11 +316,55 @@ linked to the FB Page.
 2. After deploy: open 5sfindr.com, check the board shows (all areas near 0/50 for now) and your profile shows your
    Founding Member number + invite link.
 
-## Next session → S6 (social stickiness) in PRODUCT-BRIEF.md
-"Played with" after each game + alerts when your regulars join a game + a "first game in Cape Town" newcomer tag;
-game labels (skill, women's, mixed, 30+); shareable images (organiser recap card, player card for IG stories);
-The Drop and Sessions. Outreach to organisers (GROWTH-STRATEGY.md §12) runs alongside. Content: `/content-week` →
-Zoran reviews `REVIEW.md` → records → schedules.
+## Update 2026-11-25: S6 part 1 built (social stickiness boxes 1–3), branch `claude/s6-social-stickiness-8083fc`
+- [x] **Game labels:** level (Beginner / Casual / Competitive), who it's for (Women's / Mixed) and 30+. Set when posting
+  (pre-filled from your last game) or on the game ("Labels: … Edit", optionally for the later games in a weekly series).
+  Shown on the game, the `/m/` invite + its link preview, feed cards and the WhatsApp group list. Labels only: nobody
+  is checked at the door. `src/lib/labels.ts`.
+- [x] **"First game in Cape Town":** a player on a game, before kickoff, who has never played a 5sFindr game sees
+  "First game in Cape Town? Tag me" (game page + `/m/`). The tag shows next to their name on the list; the organiser
+  sees "👋 First game in Cape Town: Sam. Say hi when they arrive." Playing a game clears it from later games.
+- [x] **Played with + regulars:** after a game, everyone ticked as playing sees "You played with" with "+ Regular" per
+  person; the profile has the full "Played with" list (games together). You can only add someone you were both ticked
+  in an ended game with; your list is private (RLS, own rows only).
+- [x] **Regular alerts:** when a regular joins (or is accepted into) a game you're not on, it shows as "Your regulars
+  are playing" on `/feed` (guests: on their game page), with spots left → `/m/<slug>`. Email too, if the account has
+  an email and "Email me when a regular joins…" (profile, default on) is on: sent ≥10 min after the first regular
+  joined (so several are grouped), only if still unseen in the app, game ≥1h away with a spot, at most one per person
+  per 12h. Sent by the existing 10-min cron: `private.checkins_tick` now also pings `/api/cron/checkins` when these are
+  due, and the route sends both kinds in one Resend batch (≤50 + ≤50). Same Vault secret / env as S4, nothing new.
+  The organiser's own Captain seat doesn't alert (posting isn't joining).
+- [x] **Shareable cards** (`next/og`): `/api/card/game/<id>` = organiser's recap, 1080×1350 (players, new faces =
+  first time in one of this organiser's games, first-game-in-Cape-Town count, labels, faces, "Run by Zoran on
+  5sFindr"), completed games only, shown + "Share the recap" on the closed game. `/api/card/player/<slug>` = IG story
+  card, 1080×1920 (name, Founding #, games, show-up %, played with). "Share your player card" on the profile. Share
+  button uses the phone's share sheet with the PNG (straight to a story/WhatsApp), else a link to save it. Umami
+  `share` with `via` = `recap_card` / `player_card`.
+- Privacy page: added "When you play through the app" (games joined, the tag, regulars + alert emails).
+- **Migration 0031_social_stickiness** (`matches.skill_tag/group_tag/over_30` + `match_feed` re-created with them;
+  `match_players.first_game_ct`, `set_first_game_ct`, trigger `clear_first_game_ct`; `regulars` (select own only, no
+  direct writes), `played_together`, `set_regular`, `my_played_with`; `user_settings` (own rows); `regular_alerts`
+  (no grants), trigger `queue_regular_alerts`, views `private.live_regular_alerts` / `private.due_regular_alert_emails`,
+  `my_regular_alerts`, `regular_alert_emails_due`, `claim_regular_alert_emails` (service role only),
+  `private.checkins_tick` re-created; `game_recap` + `player_card` (anon OK, public data only)). Tested locally: new
+  scenario 12, all scenarios 1–12 pass. **0031 applied to prod 2026-11-26** (version 20261126104712) with Zoran's OK
+  and checked: grants match the file (anon only on `game_recap` / `player_card`; `claim_regular_alert_emails` and the
+  helpers service-only), RLS on `regulars` / `regular_alerts` / `user_settings`, both triggers exist, `checkins_tick`
+  checks `regular_alert_emails_due`, `match_feed` has the 3 label columns, `no-show-checkins` still every 10 min.
+  Security advisor: only the intended new items (anon `game_recap` / `player_card`, the signed-in RPCs,
+  `regular_alerts` RLS with no policy).
+- Checked: `tsc`, `next build`, both card images rendered locally against a mock of the two RPCs. Game page, profile
+  and feed changes not checked against real data yet (check after deploy).
+
+**Zoran, for S6 part 1:**
+1. ~~OK applying migration 0031 to prod~~ Done 2026-11-26. Merge the S6 PR (#23) (deploys on merge).
+2. After deploy: post a test game with labels, check the invite preview and WhatsApp text show them.
+
+## Next session → S6 part 2 (The Drop + Sessions), then S7
+The Drop (new games in an area released at a set time each week, with alerts) and Sessions (a secret-location game
+run by an Area Captain, location revealed 24h before to those who claimed a spot; earned by showing up 3 times or
+bringing a new player who shows up). Needs an Area Captain role. See GROWTH-STRATEGY.md §6a. Then S7 (launch kit) in
+PRODUCT-BRIEF.md. Outreach to organisers (GROWTH-STRATEGY.md §12) runs alongside.
 
 ## Working style
 - The user starts a fresh session every couple of prompts. Keep this file current; don't re-derive context.

@@ -5,6 +5,8 @@ import { createMatch } from "@/server/actions/match";
 import { SkillMeter } from "@/components/profile/SkillMeter";
 import { PositionPicker } from "@/components/profile/PositionPicker";
 import { NEIGHBOURHOODS } from "@/lib/waitlist";
+import { LabelPicker } from "@/components/match/LabelPicker";
+import { cleanLabels, type GameLabels } from "@/lib/labels";
 import type { CreateMatchInput, JoinMode, LastGameDefaults, Position, VenueOption } from "@/lib/types";
 
 const inputCls =
@@ -118,6 +120,7 @@ export function MatchCreateForm({
   const [price, setPrice] = useState(defaults?.pricePerPlayerZar ?? 0);
   const [paymentDetails, setPaymentDetails] = useState(defaults?.paymentDetails ?? "");
   const [repeatWeeks, setRepeatWeeks] = useState(1);
+  const [labels, setLabels] = useState<GameLabels>(cleanLabels(defaults?.labels));
 
   const [moreOpen, setMoreOpen] = useState(false);
   const [joinMode, setJoinMode] = useState<JoinMode>(defaults?.joinMode ?? "instant");
@@ -153,6 +156,7 @@ export function MatchCreateForm({
       minReliabilityScore: joinMode === "instant" ? minReliability : undefined,
       repeatWeeks,
       paymentDetails: price > 0 ? paymentDetails : undefined,
+      labels,
     };
 
     startTransition(async () => {
@@ -269,6 +273,10 @@ export function MatchCreateForm({
             { key: 8, label: "Weekly × 8" },
           ]}
         />
+      </Section>
+
+      <Section label="Labels">
+        <LabelPicker value={labels} onChange={setLabels} />
       </Section>
 
       <button

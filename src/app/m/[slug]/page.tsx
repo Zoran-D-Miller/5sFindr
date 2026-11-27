@@ -8,6 +8,8 @@ import { PlayerActions } from "@/components/match/PlayerActions";
 import { KeepProfile } from "@/components/match/KeepProfile";
 import { StillComing } from "@/components/match/StillComing";
 import { ConfirmFromEmail } from "@/components/match/ConfirmFromEmail";
+import { FirstGameToggle } from "@/components/match/FirstGameToggle";
+import { labelList } from "@/lib/labels";
 import type { ParticipantStatus } from "@/lib/types";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -16,6 +18,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const title = `${m.organizer?.name ?? "A game"} needs players · ${inviteWhen(m.kickoff_at)}`;
   const description = [
     m.location?.name,
+    ...labelList(m),
     m.price_per_player_zar > 0 ? `R${m.price_per_player_zar} each` : "Free",
     spotsLabel(m),
     "Tap “I’m in”, no app needed.",
@@ -43,16 +46,23 @@ export default async function MatchInvitePage({
   let myStatus: ParticipantStatus | null = null;
   let myConfirmed = false;
   let myReleased = false;
+  let myFirstGame = false;
+  let myGamesPlayed = 1;
   if (uid) {
-    const { data } = await supabase
-      .from("match_players")
-      .select("status, confirmed_at, released_at")
-      .eq("match_id", match.id)
-      .eq("user_id", uid)
-      .maybeSingle<{ status: ParticipantStatus; confirmed_at: string | null; released_at: string | null }>();
+    const [{ data }, { data: me }] = await Promise.all([
+      supabase
+        .from("match_players")
+        .select("status, confirmed_at, released_at, first_game_ct")
+        .eq("match_id", match.id)
+        .eq("user_id", uid)
+        .maybeSingle<{ status: ParticipantStatus; confirmed_at: string | null; released_at: string | null; first_game_ct: boolean }>(),
+      supabase.from("profiles").select("games_played").eq("id", uid).maybeSingle<{ games_played: number }>(),
+    ]);
     myStatus = data?.status ?? null;
     myConfirmed = !!data?.confirmed_at;
     myReleased = data?.status === "cancelled_early" && !!data?.released_at;
+    myFirstGame = !!data?.first_game_ct;
+    myGamesPlayed = me?.games_played ?? 1;
   }
 
   const isOrganizer = uid === match.organizer_id;
@@ -64,6 +74,10 @@ export default async function MatchInvitePage({
   const taken = match.players.length;
   const left = Math.max(0, match.max_players - taken);
   const faces = match.players.slice(0, 8);
+  const labels = labelList(match);
+  // S6: "First game in Cape Town?" for players who've never played a 5sFindr game.
+  const canTagFirstGame = !isOrganizer && (myStatus === "requested" || myStatus === "accepted") &&
+    msToKickoff > 0 && (match.status === "open" || match.status === "full") && myGamesPlayed === 0;
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col px-6 py-10">
@@ -85,6 +99,13 @@ export default async function MatchInvitePage({
           <span className="font-semibold text-white">{match.location?.name}</span>
           {match.location?.neighborhood ? ` · ${match.location.neighborhood}` : ""}
         </p>
+        {labels.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {labels.map((l) => (
+              <span key={l} className="rounded-full border border-pitch/40 px-2.5 py-0.5 text-xs font-semibold text-pitch">{l}</span>
+            ))}
+          </div>
+        )}
 
         <dl className="mt-5 space-y-2 text-sm">
           <div className="flex justify-between border-t border-ink-700 pt-2">
@@ -150,6 +171,7 @@ export default async function MatchInvitePage({
           />
         )}
 
+        {canTagFirstGame && <FirstGameToggle matchId={match.id} on={myFirstGame} />}
         {inGame && (
           <Link href={`/matches/${match.id}`} className="block text-center text-sm font-semibold text-pitch">
             Game details{match.price_per_player_zar > 0 ? " and how to pay" : ""} →

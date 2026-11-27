@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { loadInvite, inviteWhen, spotsLabel } from "@/lib/invite";
+import { labelList } from "@/lib/labels";
 
 export const alt = "5sFindr game invite";
 export const size = { width: 1200, height: 630 };
@@ -28,6 +29,11 @@ export default async function Image({ params }: { params: { slug: string } }) {
           {m && (
             <div style={{ marginTop: 18, fontSize: 34, color: "rgba(255,255,255,0.7)" }}>
               {`${inviteWhen(m.kickoff_at)} · ${m.location?.name ?? ""} · ${m.price_per_player_zar > 0 ? `R${m.price_per_player_zar} each` : "Free"}`}
+            </div>
+          )}
+          {m && labelList(m).length > 0 && (
+            <div style={{ marginTop: 14, display: "flex", fontSize: 30, fontWeight: 700, color: "#0AE98A" }}>
+              {labelList(m).join(" · ")}
             </div>
           )}
         </div>

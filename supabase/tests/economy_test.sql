@@ -869,5 +869,223 @@ begin
   raise notice 'SCENARIO 11 PASSED — founding numbers shared with the waitlist (kept on re-join, carried to accounts/kept guests); profile invite links counted';
 end $$;
 
+-- ─────────────────────────────────────────────────────────────────────────
+--  SCENARIO 12 — S6: game labels, "first game in Cape Town", played with +
+--  regulars, regular alerts (in-app + email queue), recap + player cards.
+-- ─────────────────────────────────────────────────────────────────────────
+do $$
+declare
+  v_o   uuid := gen_random_uuid();   -- organiser of the played game
+  v_o2  uuid := gen_random_uuid();   -- another organiser
+  v_a   uuid := gen_random_uuid();
+  v_b   uuid := gen_random_uuid();
+  v_c   uuid := gen_random_uuid();   -- never played with anyone
+  v_loc uuid;
+  v_m1  uuid; v_m2 uuid; v_m3 uuid; v_m4 uuid; v_m5 uuid;
+  v_n   int;
+  v_j   jsonb;
+  r     record;
+begin
+  insert into auth.users (instance_id, id, aud, role, email, raw_user_meta_data) values
+    ('00000000-0000-0000-0000-000000000000', v_o,  'authenticated', 'authenticated', 's12_o@test.co',  '{"name":"Org12 Smith"}'),
+    ('00000000-0000-0000-0000-000000000000', v_o2, 'authenticated', 'authenticated', 's12_o2@test.co', '{"name":"Org12b"}'),
+    ('00000000-0000-0000-0000-000000000000', v_a,  'authenticated', 'authenticated', 's12_a@test.co',  '{"name":"Ana Twelve"}'),
+    ('00000000-0000-0000-0000-000000000000', v_b,  'authenticated', 'authenticated', 's12_b@test.co',  '{"name":"Ben Twelve"}'),
+    ('00000000-0000-0000-0000-000000000000', v_c,  'authenticated', 'authenticated', 's12_c@test.co',  '{"name":"Cal"}');
+  select id into v_loc from public.locations where is_seeded limit 1;
+
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at, max_players, join_mode, status, share_slug)
+    values (v_o, v_loc, 'open_area', now() + interval '2 days', 60, now() + interval '2 days 1 hour', 10, 'instant', 'open',
+            's12a-' || substr(md5(random()::text), 1, 8)) returning id into v_m1;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at, max_players, join_mode, status, share_slug)
+    values (v_o, v_loc, 'open_area', now() + interval '9 days', 60, now() + interval '9 days 1 hour', 10, 'instant', 'open',
+            's12b-' || substr(md5(random()::text), 1, 8)) returning id into v_m2;
+
+  -- ── Labels ──
+  update public.matches set skill_tag = 'beginner', group_tag = 'mixed', over_30 = true where id = v_m1;
+  begin update public.matches set skill_tag = 'pro' where id = v_m1; raise exception 'S12 FAIL: bad skill label saved';
+  exception when check_violation then null; end;
+  begin update public.matches set group_tag = 'men' where id = v_m1; raise exception 'S12 FAIL: bad group label saved';
+  exception when check_violation then null; end;
+  if (select skill_tag || group_tag || over_30::text from public.match_feed where id = v_m1) <> 'beginnermixedtrue'
+    then raise exception 'S12 FAIL: labels missing from match_feed'; end if;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  perform public.join_match(v_m1);
+  perform public.join_match(v_m2);
+  perform set_config('request.jwt.claims', json_build_object('sub', v_b)::text, true);
+  perform public.join_match(v_m1);
+
+  -- ── First game in Cape Town ──
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  if not public.set_first_game_ct(v_m1, true) then raise exception 'S12 FAIL: newcomer tag'; end if;
+  perform public.set_first_game_ct(v_m2, true);
+  if not (select first_game_ct from public.match_players where match_id = v_m1 and user_id = v_a)
+    then raise exception 'S12 FAIL: newcomer tag not stored'; end if;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_c)::text, true);
+  begin perform public.set_first_game_ct(v_m1, true); raise exception 'S12 FAIL: tagged a game they are not on';
+  exception when others then if sqlerrm not like '%NOT_IN%' then raise; end if; end;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_o)::text, true);
+  begin perform public.set_first_game_ct(v_m1, true); raise exception 'S12 FAIL: organiser tagged own game';
+  exception when others then if sqlerrm not like '%OWN_MATCH%' then raise; end if; end;
+
+  -- ── Regulars need a game played together ──
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  begin perform public.set_regular(v_b, true); raise exception 'S12 FAIL: regular added before playing';
+  exception when others then if sqlerrm not like '%NOT_PLAYED_WITH%' then raise; end if; end;
+
+  update public.matches set kickoff_at = now() - interval '65 minutes', ends_at = now() - interval '5 minutes' where id = v_m1;
+  begin perform public.set_first_game_ct(v_m1, false); raise exception 'S12 FAIL: tag changed after kickoff';
+  exception when others then if sqlerrm not like '%STARTED%' then raise; end if; end;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_o)::text, true);
+  perform public.set_attendance(v_m1, v_o, true);
+  perform public.set_attendance(v_m1, v_a, true);
+  perform public.set_attendance(v_m1, v_b, true);
+  -- Ana has now played: her later seat isn't a first game any more.
+  if (select first_game_ct from public.match_players where match_id = v_m2 and user_id = v_a)
+    then raise exception 'S12 FAIL: later newcomer tag not cleared'; end if;
+  if not (select first_game_ct from public.match_players where match_id = v_m1 and user_id = v_a)
+    then raise exception 'S12 FAIL: played game lost its newcomer tag'; end if;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  begin perform public.set_first_game_ct(v_m2, true); raise exception 'S12 FAIL: player re-tagged after playing';
+  exception when others then if sqlerrm not like '%NOT_NEW%' then raise; end if; end;
+
+  if not public.set_regular(v_b, true) then raise exception 'S12 FAIL: add regular'; end if;
+  if not public.set_regular(v_o, true) then raise exception 'S12 FAIL: add organiser as regular'; end if;
+  perform public.set_regular(v_b, true);  -- twice is fine
+  begin perform public.set_regular(v_c, true); raise exception 'S12 FAIL: stranger added as regular';
+  exception when others then if sqlerrm not like '%NOT_PLAYED_WITH%' then raise; end if; end;
+  begin perform public.set_regular(v_a, true); raise exception 'S12 FAIL: self as regular';
+  exception when others then if sqlerrm not like '%SELF%' then raise; end if; end;
+
+  select count(*) into v_n from public.my_played_with(50);
+  if v_n <> 2 then raise exception 'S12 FAIL: played with % (want 2)', v_n; end if;
+  if not exists (select 1 from public.my_played_with(50) where user_id = v_b and is_regular and games_together = 1)
+    then raise exception 'S12 FAIL: played-with row for Ben'; end if;
+
+  -- Regular lists are private; nobody writes them directly.
+  set local role authenticated;
+  select count(*) into v_n from public.regulars;
+  if v_n <> 2 then raise exception 'S12 FAIL: Ana sees % of her regulars', v_n; end if;
+  begin insert into public.regulars (user_id, regular_id) values (v_a, v_c); raise exception 'S12 FAIL: direct regulars insert';
+  exception when insufficient_privilege then null; end;
+  reset role;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_b)::text, true);
+  set local role authenticated;
+  select count(*) into v_n from public.regulars;
+  if v_n <> 0 then raise exception 'S12 FAIL: Ben can read Ana''s regulars'; end if;
+  reset role;
+
+  -- Removing works.
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  if public.set_regular(v_o, false) then raise exception 'S12 FAIL: remove regular'; end if;
+  perform public.set_regular(v_o, true);
+
+  -- ── Recap + player card ──
+  if public.game_recap(v_m1) is not null then raise exception 'S12 FAIL: recap before the game closed'; end if;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_o)::text, true);
+  if public.settle_match(v_m1) <> 'completed' then raise exception 'S12 FAIL: settle'; end if;
+  v_j := public.game_recap(v_m1);
+  if (v_j->>'players')::int <> 3 or (v_j->>'new_faces')::int <> 2 or (v_j->>'first_game_ct')::int <> 1
+    then raise exception 'S12 FAIL: recap counts %', v_j; end if;
+  if v_j->'faces'->0->>'name' <> 'Org12' or jsonb_array_length(v_j->'faces') <> 3
+    then raise exception 'S12 FAIL: recap faces %', v_j->'faces'; end if;
+  if v_j->>'skill_tag' <> 'beginner' then raise exception 'S12 FAIL: recap labels'; end if;
+  v_j := public.player_card((select public_slug from public.profiles where id = v_a));
+  if (v_j->>'games_played')::int <> 1 or (v_j->>'played_with')::int <> 2
+    then raise exception 'S12 FAIL: player card %', v_j; end if;
+  if public.player_card('no-such-slug') is not null then raise exception 'S12 FAIL: card for unknown slug'; end if;
+
+  -- ── Regular alerts ──
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at, max_players, join_mode, status, share_slug)
+    values (v_o2, v_loc, 'open_area', now() + interval '3 days', 60, now() + interval '3 days 1 hour', 10, 'instant', 'open',
+            's12c-' || substr(md5(random()::text), 1, 8)) returning id into v_m3;
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at, max_players, join_mode, status, share_slug)
+    values (v_o2, v_loc, 'open_area', now() + interval '4 days', 60, now() + interval '4 days 1 hour', 10, 'instant', 'open',
+            's12d-' || substr(md5(random()::text), 1, 8)) returning id into v_m4;
+  -- Ana's regular (the organiser) posting a game isn't "joining" it: no alert.
+  insert into public.matches (organizer_id, location_id, venue_type, kickoff_at, duration_min, ends_at, max_players, join_mode, status, share_slug)
+    values (v_o, v_loc, 'open_area', now() + interval '5 days', 60, now() + interval '5 days 1 hour', 10, 'instant', 'open',
+            's12e-' || substr(md5(random()::text), 1, 8)) returning id into v_m5;
+  if exists (select 1 from public.regular_alerts where match_id = v_m5) then raise exception 'S12 FAIL: organiser seat alerted'; end if;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', v_b)::text, true);
+  perform public.join_match(v_m3);
+  if (select count(*) from public.regular_alerts where match_id = v_m3) <> 1
+     or not exists (select 1 from public.regular_alerts where match_id = v_m3 and user_id = v_a)
+    then raise exception 'S12 FAIL: alert not queued for Ana only'; end if;
+
+  -- Email waits 10 min (so several regulars are grouped), respects the off switch.
+  if public.regular_alert_emails_due() <> 0 then raise exception 'S12 FAIL: alert email due immediately'; end if;
+  update public.regular_alerts set created_at = now() - interval '11 minutes' where match_id = v_m3;
+  if public.regular_alert_emails_due() <> 1 then raise exception 'S12 FAIL: alert email not due'; end if;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  set local role authenticated;
+  insert into public.user_settings (user_id, regulars_email) values (v_a, false);
+  begin insert into public.user_settings (user_id, regulars_email) values (v_b, false); raise exception 'S12 FAIL: wrote someone else''s settings';
+  exception when insufficient_privilege then null; end;
+  reset role;
+  if public.regular_alert_emails_due() <> 0 then raise exception 'S12 FAIL: email due after opting out'; end if;
+  update public.user_settings set regulars_email = true where user_id = v_a;
+
+  -- The server claims it once; the second run finds nothing.
+  select count(*) into v_n from public.claim_regular_alert_emails(10) c
+   where c.email = 's12_a@test.co' and c.regulars = array['Ben'] and c.spots_left = 8 and c.name = 'Ana Twelve';
+  if v_n <> 1 then raise exception 'S12 FAIL: claim returned % rows', v_n; end if;
+  if (select count(*) from public.claim_regular_alert_emails(10)) <> 0 then raise exception 'S12 FAIL: claimed twice'; end if;
+
+  -- In-app card shows it (and stamps seen).
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  select * into r from public.my_regular_alerts();
+  if r.match_id <> v_m3 or r.regulars <> array['Ben'] or r.spots_left <> 8 then raise exception 'S12 FAIL: in-app alert %', r; end if;
+  if (select seen_at from public.regular_alerts where match_id = v_m3 and user_id = v_a) is null
+    then raise exception 'S12 FAIL: alert not marked seen'; end if;
+
+  -- A second game the same day: in-app yes, email no (one per 12h).
+  perform set_config('request.jwt.claims', json_build_object('sub', v_b)::text, true);
+  perform public.join_match(v_m4);
+  update public.regular_alerts set created_at = now() - interval '11 minutes' where match_id = v_m4;
+  if public.regular_alert_emails_due() <> 0 then raise exception 'S12 FAIL: second email inside 12h'; end if;
+  -- Ben drops out → that game is no longer announced.
+  perform public.cancel_participation(v_m4);
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a)::text, true);
+  if exists (select 1 from public.my_regular_alerts() where match_id = v_m4) then raise exception 'S12 FAIL: alert after regular left'; end if;
+  -- Ana joins the first game → it drops off her list.
+  perform public.join_match(v_m3);
+  if exists (select 1 from public.my_regular_alerts()) then raise exception 'S12 FAIL: alert for a game she is on'; end if;
+  perform set_config('request.jwt.claims', '', true);
+
+  -- ── Lockdown ──
+  set local role anon;
+  begin perform public.set_regular(v_b, true); raise exception 'S12 FAIL: anon set_regular';
+  exception when insufficient_privilege then null; end;
+  begin perform public.my_regular_alerts(); raise exception 'S12 FAIL: anon my_regular_alerts';
+  exception when insufficient_privilege then null; end;
+  begin perform public.my_played_with(5); raise exception 'S12 FAIL: anon my_played_with';
+  exception when insufficient_privilege then null; end;
+  begin perform public.set_first_game_ct(v_m2, true); raise exception 'S12 FAIL: anon set_first_game_ct';
+  exception when insufficient_privilege then null; end;
+  begin select count(*) into v_n from public.regulars; raise exception 'S12 FAIL: anon read regulars';
+  exception when insufficient_privilege then null; end;
+  perform public.game_recap(v_m1);          -- public: completed games only
+  perform public.player_card('no-such-slug');
+  reset role;
+  set local role authenticated;
+  begin perform public.claim_regular_alert_emails(5); raise exception 'S12 FAIL: user claimed alert emails';
+  exception when insufficient_privilege then null; end;
+  begin perform public.regular_alert_emails_due(); raise exception 'S12 FAIL: user counted due emails';
+  exception when insufficient_privilege then null; end;
+  begin perform public.played_together(v_a, v_b); raise exception 'S12 FAIL: user called played_together';
+  exception when insufficient_privilege then null; end;
+  begin select count(*) into v_n from public.regular_alerts; raise exception 'S12 FAIL: user read regular_alerts';
+  exception when insufficient_privilege then null; end;
+  begin select count(*) into v_n from private.live_regular_alerts; raise exception 'S12 FAIL: user read private view';
+  exception when insufficient_privilege then null; end;
+  reset role;
+
+  raise notice 'SCENARIO 12 PASSED — labels, first-game tag, played with + regulars (private, earned), alerts (grouped, throttled, opt-out), recap + player card';
+end $$;
+
 
 rollback;  -- leave the database untouched

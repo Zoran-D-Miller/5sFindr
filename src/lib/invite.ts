@@ -1,10 +1,11 @@
 import { createClient as createSupabase } from "@supabase/supabase-js";
 import type { JoinMode, MatchStatus, ParticipantStatus, VenueType } from "@/lib/types";
+import type { GameLabels } from "@/lib/labels";
 
 // Public data for a /m/<slug> invite: the game, the organiser and the faces
 // of who's in. Read with the anon key (live matches + rosters are public,
 // 0016), so the page and its link-preview image show the same thing.
-export interface InviteData {
+export interface InviteData extends GameLabels {
   id: string;
   title: string | null;
   venue_type: VenueType;
@@ -28,7 +29,7 @@ export async function loadInvite(slug: string): Promise<InviteData | null> {
   const { data: match } = await db
     .from("matches")
     .select(
-      "id, title, venue_type, kickoff_at, max_players, price_per_player_zar, join_mode, status, organizer_id, location:locations(name, neighborhood), organizer:profiles!organizer_id(name)",
+      "id, title, venue_type, kickoff_at, max_players, price_per_player_zar, join_mode, status, organizer_id, skill_tag, group_tag, over_30, location:locations(name, neighborhood), organizer:profiles!organizer_id(name)",
     )
     .eq("share_slug", slug)
     .maybeSingle<Omit<InviteData, "players">>();
